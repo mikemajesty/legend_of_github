@@ -15,5 +15,19 @@
   "bugs": {
     "url": "https://github.com/mikemajesty/legend_of_github/issues"
   },
-  "homepage": "https://github.com/mikemajesty/legend_of_github#readme"
+  "homepage": "https://github.com/mikemajesty/legend_of_github#readme",
+  "dependencies": {
+    "angular": "^1.2.32",
+    "express": "^4.14.0",
+    "serve-favicon": "^2.3.2"
+  },
+  "devDependencies": {
+    "babel-preset-es2015": "^6.9.0",
+    "eslint": "^3.13.1",
+    "gulp": "^3.9.1",
+    "gulp-babel": "^6.1.2",
+    "gulp-concat": "^2.6.0",
+    "gulp-uglify": "^1.5.3",
+    "gulp-uglifycss": "^1.0.6"
+  }
 }
