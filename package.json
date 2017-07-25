@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/mikemajesty/legend_of_github.git"
+    "url": "git@github.com:mikemajesty/legend_of_github.git"
   },
   "author": "Mike Lima",
   "license": "MIT",
