@@ -1,0 +1,19 @@
+{
+  "name": "legend_of_github",
+  "version": "0.0.1",
+  "description": "this The most epic battles between github accounts.",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mikemajesty/legend_of_github.git"
+  },
+  "author": "Mike Lima",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/mikemajesty/legend_of_github/issues"
+  },
+  "homepage": "https://github.com/mikemajesty/legend_of_github#readme"
+}
