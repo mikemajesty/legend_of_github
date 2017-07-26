@@ -1,23 +1,25 @@
 <html ng-app="Legend">
-	<head>
-		<title>Legend of GitHub</title>
-	</head>
-	<script src="node_modules/angular/angular.min.js"></script>
 
-	<script src="public/js/app.js"></script>
-	<script src="public/js/controller/legend-controller.js"></script>
-	<script src="public/js/service/legend-service.js"></script>
-	<script src="public/js/util/legend-constants.js"></script>
+<head>
+	<title>Legend of GitHub</title>
+</head>
+<script src="node_modules/angular/angular.min.js"></script>
+<script src="public/js/app.js"></script>
+<script src="public/js/controller/legend-controller.js"></script>
+<script src="public/js/service/legend-service.js"></script>
+<script src="public/js/util/legend-constants.js"></script>
+<script src="public/js/config/legend-config.js"></script>
 
-	<body ng-controller="LegendController">
-		<label for="">User 1</label>
-		<input type="text" name="user1" ng-model="model.user1">
-		<br>
-		<hr>
-		<label for="">User 2</label>
-		<input type="text" name="user2" ng-model="model.user2">
-		<br>
-		<hr>
-		<button ng-click="compare()">Compare</button>
-	</body>
+<body ng-controller="LegendController">
+	<label for="">User 1</label>
+	<input type="text" name="user1" ng-model="model.user1">
+	<br>
+	<hr>
+	<label for="">User 2</label>
+	<input type="text" name="user2" ng-model="model.user2">
+	<br>
+	<hr>
+	<button ng-click="compare()">Compare</button>
+</body>
+
 </html>

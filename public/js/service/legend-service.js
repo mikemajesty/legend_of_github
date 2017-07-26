@@ -14,8 +14,18 @@
             });
         };
 
+        var findStreak = function (userName) {
+            return $http({
+                method: 'GET',
+                url: LegendConstants.STREAK + userName,
+            }).then(function (res) {
+                return res.data;
+            });
+        };
+
         return {
             findUser: findUser,
+            findStreak: findStreak
         };
     }]);
 

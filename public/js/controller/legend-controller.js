@@ -9,12 +9,16 @@
       };
 
       $scope.compare = function () {
-
+        console.log('clicou')
         var findUser1 = LegendService.findUser($scope.model.user1);
 
         var findUser2 = LegendService.findUser($scope.model.user2);
 
-        $q.all([findUser1, findUser2]).then(function (data) {
+        var findUser1Streak = LegendService.findStreak($scope.model.user1);
+
+        var findUser2Streak = LegendService.findStreak($scope.model.user2);
+
+        $q.all([findUser1, findUser2, findUser1Streak, findUser2Streak]).then(function (data) {
 
           var user1Result = data[0];
           console.log("name", user1Result.name);
@@ -29,6 +33,11 @@
           console.log("public_repos", user2Result.public_repos);
           console.log("followers", user2Result.followers);
           console.log("following", user2Result.following);
+
+          var user1Streak = data[2];
+          console.log('currentStreak user 1', user1Streak.currentStreak);
+          var user2Streak = data[3];
+          console.log('currentStreak user 1', user2Streak.currentStreak);
         });
       };
     }]);
