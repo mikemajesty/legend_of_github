@@ -15,10 +15,7 @@
         };
 
         var findStreak = function (userName) {
-            return $http({
-                method: 'GET',
-                url: LegendConstants.STREAK + userName,
-            }).then(function (res) {
+            $http.post('/streak', {username: userName}).then(function (res) {
                 return res.data;
             });
         };
