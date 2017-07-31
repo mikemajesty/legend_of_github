@@ -15,7 +15,7 @@
         };
 
         var findStreak = function (userName) {
-            $http.post('/streak', {username: userName}).then(function (res) {
+            return $http.post('/streak', {username: userName}).then(function (res) {
                 return res.data;
             });
         };

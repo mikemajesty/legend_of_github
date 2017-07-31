@@ -26,14 +26,16 @@
           console.log("followers", user1Result.followers);
           console.log("following", user1Result.following);
 
-          var user2Result = data[1];
+          /*var user2Result = data[1];
           console.log("name", user2Result.name);
           console.log("created_at", user2Result.created_at);
           console.log("public_repos", user2Result.public_repos);
           console.log("followers", user2Result.followers);
-          console.log("following", user2Result.following);
+          console.log("following", user2Result.following);*/
 
           var user1Streak = data[2];
+          console.log('current streak', user1Streak.streak || 0);
+
           //var user2Streak = data[3];
         });
       };
