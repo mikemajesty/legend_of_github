@@ -1,12 +1,15 @@
-var express = require('express');
-var favicon = require('serve-favicon');
-var app = express();
+const express = require('express');
+const favicon = require('serve-favicon');
+const app = express();
+const bodyParser = require('body-parser')
 
 app.use('/',  express.static(__dirname + '/'));
 
 app.use(favicon(__dirname + '/public/img/favicon.ico'));
 
-var PORT = process.env.PORT || 3000;
+app.use(bodyParser.json());
+
+const PORT = process.env.PORT || 3000;
 
 app.get('/', function (req, res) {
   res.sendfile('public/index.html');
@@ -15,3 +18,5 @@ app.get('/', function (req, res) {
 app.listen(PORT, function () {
     console.log('Server Running on '+ PORT);
 });
+
+app.use('/', require('./server/api'));
