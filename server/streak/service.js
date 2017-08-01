@@ -30,12 +30,10 @@ const getStreakBody = (userName) => {
 					tempDate.setHours(0, 0, 0, 0);
 
 					if (date.getTime() === tempDate.getTime()) {
-						if ($(this).prop('fill') != '#ebedf0') {
-							currentStreak.push({
-								date: date,
-								commit: $(this).prop('data-count')
-							});
-						}
+						currentStreak.push({
+							date: date,
+							commit: $(this).prop('data-count')
+						});
 					} else {
 						currentStreak = [];
 					}
@@ -47,11 +45,10 @@ const getStreakBody = (userName) => {
 
 			return currentStreak;
 		})
-		.catch( (err) => {
-			console.log('errror', err);
+		.catch((err) => {
+			console.log('error', err);
 		});
 };
-
 
 module.exports = {
 	getStreakBody
