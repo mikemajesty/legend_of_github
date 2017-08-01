@@ -19,4 +19,6 @@ app.listen(PORT, function () {
     console.log('Server Running on '+ PORT);
 });
 
+process.env.TZ = 'America/Sao_Paulo';
+
 app.use('/', require('./server/api'));
