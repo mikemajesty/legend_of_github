@@ -67,4 +67,13 @@ public string RenderRazorViewToString(string viewName, object model)
             Response.Buffer = true;
         }
         
+        
+        string fileName = string.Format("PerfilClienteRelatorio_{0}.{1}", DateTime.Now.ToString("ddMMyyyymmss"), "pdf");
+            
+            var table = RenderRazorViewToString("PerfilClientePrint", response.Result);
+            AddResponseHeader(Response, fileName);
+
+            var pdfBytes = ConvertHtmltoPdf(table, fileName);
+            DownloadPdf(Response, pdfBytes);
+            
 ```
