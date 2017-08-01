@@ -17,9 +17,7 @@ const getStreakBody = (userName) => {
 			const currentDateStreak = [];
 			let currentStreak = [];
 
-			$('.day').filter(function (i, el) {
-				return $(this).prop('data-count') !== '0';
-			}).each(function (index) {
+			$('.day').each(function (index) {
 
 				const date = new Date($(this).prop('data-date'));
 				date.setHours(0, 0, 0, 0);
