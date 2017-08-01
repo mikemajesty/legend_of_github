@@ -17,47 +17,37 @@ const getStreakBody = (userName) => {
 			const currentDateStreak = [];
 			let currentStreak = [];
 
-			$('.day').each(function (index) {
+			$('.day').filter(function (i, el) {
+				return $(this).prop('data-count') !== '0';
+			}).each(function (index) {
 
 				const date = new Date($(this).prop('data-date'));
-				console.log('final', date);
-				
 				date.setHours(0, 0, 0, 0);
-
-				const commit = $(this).prop('data-count');
 
 				if (currentDateStreak[index - 1]) {
 					const tempDate = currentDateStreak[index - 1].date;
 					tempDate.setDate(tempDate.getDate() + 1);
 					tempDate.setHours(0, 0, 0, 0);
 
-					if (commit > 0 && date.getTime() === tempDate.getTime()) {
-						console.log('fisrt', $(this).prop('data-date'));
-						currentStreak.push({
-							date: date,
-							commit: commit
-						});
-						console.log('quantity', currentStreak.length);
+					if (date.getTime() === tempDate.getTime()) {
+						if ($(this).prop('fill') != '#ebedf0') {
+							currentStreak.push({
+								date: date,
+								commit: $(this).prop('data-count')
+							});
+						}
 					} else {
-						console.log('zerou');
-						console.log('tempDate', tempDate);
-						console.log('date', date);
-						console.log('commit', commit);
-						console.log('tempDate.getTime', tempDate.getTime());
-						console.log('tempDate.getTime', tempDate.getTime());
 						currentStreak = [];
 					}
 				}
-
 				currentDateStreak.push({
 					date: date
 				});
-				
 			});
-			console.log('currentStreak', currentStreak.length);
+
 			return currentStreak;
 		})
-		.catch(function (err) {
+		.catch( (err) => {
 			console.log('errror', err);
 		});
 };
