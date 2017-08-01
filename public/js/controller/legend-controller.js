@@ -17,7 +17,7 @@
 
         var findUser2Streak = LegendService.findStreak($scope.model.user2);
 
-        $q.all([findUser1, findUser1Streak, findUser2, findUser2Streak]).then(function (data) {
+        $q.all([findUser1, findUser2, findUser1Streak, findUser2Streak]).then(function (data) {
 
           var user1Result = data[0];
           console.log("name", user1Result.name);

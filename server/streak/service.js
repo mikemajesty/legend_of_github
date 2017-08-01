@@ -20,33 +20,48 @@ const getStreakBody = (userName) => {
 			$('.day').each(function (index) {
 
 				const date = new Date($(this).prop('data-date'));
+				console.log('final', $(this).prop('data-date'));
+				
 				date.setHours(0, 0, 0, 0);
+
+				const commit = $(this).prop('data-count');
 
 				if (currentDateStreak[index - 1]) {
 					const tempDate = currentDateStreak[index - 1].date;
 					tempDate.setDate(tempDate.getDate() + 1);
 					tempDate.setHours(0, 0, 0, 0);
 
-					if (date.getTime() === tempDate.getTime()) {
+					if (commit > 0 && date.getTime() === tempDate.getTime()) {
+						console.log('fisrt', $(this).prop('data-date'));
 						currentStreak.push({
 							date: date,
-							commit: $(this).prop('data-count')
+							commit: commit
 						});
+						console.log('quantity', currentStreak.length);
 					} else {
+						console.log('zerou');
+						console.log('tempDate', tempDate);
+						console.log('date', date);
+						console.log('commit', commit);
+						console.log('tempDate.getTime', tempDate.getTime());
+						console.log('tempDate.getTime', tempDate.getTime());
 						currentStreak = [];
 					}
 				}
+
 				currentDateStreak.push({
 					date: date
 				});
+				
 			});
-
+			console.log('currentStreak', currentStreak.length);
 			return currentStreak;
 		})
-		.catch((err) => {
-			console.log('error', err);
+		.catch(function (err) {
+			console.log('errror', err);
 		});
 };
+
 
 module.exports = {
 	getStreakBody
