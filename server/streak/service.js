@@ -1,7 +1,6 @@
 const rp = require('request-promise');
 const cheerio = require('cheerio');
 
-
 const getStreakBody = (userName) => {
 	var options = {
 		uri: `https://github.com/users/${userName}/contributions`,
@@ -11,48 +10,39 @@ const getStreakBody = (userName) => {
 	};
 
 	return rp(options)
+		.then(function ($) {
 
-	.then(function ($) {
-
-			const currentDateStreak = [];
+			let commit = 0;
 			let currentStreak = [];
 
 			$('.day').each(function (index) {
 
-				const date = new Date($(this).prop('data-date'));
-				date.setHours(0, 0, 0, 0);
+				const date = $(this).prop('data-date')
+				const commitQuantity = $(this).prop('data-count');
 
-				const commit = $(this).prop('data-count');
+				console.log(`------------------${userName}----------------------`);
+				console.log('commit atual: ', commitQuantity);
+				console.log('commit anterior: ', commit);
+				console.log('date: ', date);
 
-				if (currentDateStreak[index - 1]) {
-					const tempDate = currentDateStreak[index - 1].date;
-					tempDate.setDate(tempDate.getDate() + 1);
-					tempDate.setHours(0, 0, 0, 0);
-
-					if (commit > 0 && date.getTime() === tempDate.getTime()) {
-						currentStreak.push({
-							date: date,
-							commit: commit
-						});
-					} else {
-						if(index < ($('.day').length -1)){
-							currentStreak = [];
-						}
-					}
+				if (commitQuantity > 0 && commit > 0 || index === 0) {
+					currentStreak.push({
+						date: date,
+						commit: commit
+					});
+				} else {
+					currentStreak = [];
 				}
 
-				currentDateStreak.push({
-					date: date
-				});
-				
+				commit = $(this).prop('data-count');
 			});
+			
 			return currentStreak;
 		})
 		.catch(function (err) {
 			console.log('errror', err);
 		});
 };
-
 
 module.exports = {
 	getStreakBody
