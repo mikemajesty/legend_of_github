@@ -20,7 +20,7 @@ const getStreakBody = (userName) => {
         const date = $(this).prop('data-date');
         const commitQuantity = $(this).prop('data-count');
 
-        //TODO remove esse codigo
+        //TODO remover esse codigo
         if (userName == 'mikemajesty') {
           console.log(`------------------${userName}----------------------`);
           console.log('commit atual: ', commitQuantity);
