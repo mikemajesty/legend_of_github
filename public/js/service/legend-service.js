@@ -3,13 +3,10 @@
 
     angular.module('Legend')
 
-    .factory("LegendService", ['$http', 'LegendConstants', function ($http, LegendConstants) {
+    .factory("LegendService", ['$http', function ($http) {
 
         var findUser = function (userName) {
-            return $http({
-                method: 'GET',
-                url: LegendConstants.API + "users/" + userName
-            }).then(function (res) {
+            return $http.post('/user', {username: userName}).then(function (res) {
                 return res.data;
             });
         };
