@@ -1,5 +1,4 @@
 const rp = require('request-promise');
-const cheerio = require('cheerio');
 
 const getBaseInformation = (userName) => {
   var options = {
