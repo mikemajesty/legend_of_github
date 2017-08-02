@@ -1,7 +1,7 @@
 (function (angular) {
   'use strict';
   angular.module('Legend')
-    .controller('LegendController', ['$scope', '$q', 'LegendService', 'LegendConstants', function ($scope, $q, LegendService, LegendConstants) {
+    .controller('LegendController', ['$scope', '$q', 'LegendService', function ($scope, $q, LegendService) {
 
       $scope.model = {
         user1: "mikemajesty",
@@ -34,10 +34,10 @@
           console.log("following", user2Result.following);
 
           var user1Streak = data[2];
-          console.log('current streak: '+ $scope.model.user1, user1Streak.streak || 0);
+          console.log('current streak: ' + $scope.model.user1, user1Streak.streak || 0);
 
           var user2Streak = data[3];
-           console.log('current streak: '+ $scope.model.user2, user2Streak.streak || 0);
+          console.log('current streak: ' + $scope.model.user2, user2Streak.streak || 0);
         });
       };
     }]);
