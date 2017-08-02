@@ -3,7 +3,7 @@ const cheerio = require('cheerio');
 
 const getStreakBody = (userName) => {
 	var options = {
-		uri: `https://github.com/users/${userName}/contributions`,
+		uri: `https://github.com/${userName}`,
 		transform: function (body) {
 			return cheerio.load(body);
 		}
@@ -17,13 +17,14 @@ const getStreakBody = (userName) => {
 
 			$('.day').each(function (index) {
 
-				const date = $(this).prop('data-date')
+				const date = $(this).prop('data-date');
 				const commitQuantity = $(this).prop('data-count');
 
 				console.log(`------------------${userName}----------------------`);
 				console.log('commit atual: ', commitQuantity);
 				console.log('commit anterior: ', commit);
 				console.log('date: ', date);
+				console.log('date: ', new Date());
 
 				if (commitQuantity > 0 && commit > 0 || index === 0) {
 					currentStreak.push({
@@ -36,7 +37,7 @@ const getStreakBody = (userName) => {
 
 				commit = $(this).prop('data-count');
 			});
-			
+
 			return currentStreak;
 		})
 		.catch(function (err) {
