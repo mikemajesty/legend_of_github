@@ -1,14 +1,14 @@
-(function (angular) {
+(function(angular) {
   'use strict';
   angular.module('Legend')
-    .controller('LegendController', ['$scope', '$q', 'LegendService', function ($scope, $q, LegendService) {
+    .controller('LegendController', ['$scope', '$q', 'LegendService', function($scope, $q, LegendService) {
 
       $scope.model = {
         user1: "mikemajesty",
         user2: "celso-wo"
       };
 
-      $scope.compare = function () {
+      $scope.compare = function() {
         var findUser1 = LegendService.findUser($scope.model.user1);
 
         var findUser2 = LegendService.findUser($scope.model.user2);
@@ -17,7 +17,7 @@
 
         var findUser2Streak = LegendService.findStreak($scope.model.user2);
 
-        $q.all([findUser1, findUser2, findUser1Streak, findUser2Streak]).then(function (data) {
+        $q.all([findUser1, findUser2, findUser1Streak, findUser2Streak]).then(function(data) {
 
           var user1Result = data[0];
           console.log("name", user1Result.name);

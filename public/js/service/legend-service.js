@@ -1,26 +1,26 @@
-(function (angular) {
-    'use strict';
+(function(angular) {
+  'use strict';
 
-    angular.module('Legend')
+  angular.module('Legend')
 
-    .factory("LegendService", ['$http', function ($http) {
+  .factory("LegendService", ['$http', function($http) {
 
-        var findUser = function (userName) {
-            return $http.post('/user', {username: userName}).then(function (res) {
-                return res.data;
-            });
-        };
+    var findUser = function(userName) {
+      return $http.post('/user', { username: userName }).then(function(res) {
+        return res.data;
+      });
+    };
 
-        var findStreak = function (userName) {
-            return $http.post('/streak', {username: userName}).then(function (res) {
-                return res.data;
-            });
-        };
+    var findStreak = function(userName) {
+      return $http.post('/streak', { username: userName }).then(function(res) {
+        return res.data;
+      });
+    };
 
-        return {
-            findUser: findUser,
-            findStreak: findStreak
-        };
-    }]);
+    return {
+      findUser: findUser,
+      findStreak: findStreak
+    };
+  }]);
 
 })(window.angular);
