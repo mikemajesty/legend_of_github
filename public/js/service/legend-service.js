@@ -17,9 +17,16 @@
       });
     };
 
+    var getRepository = function(userName) {
+      return $http.post('/repository', { username: userName }).then(function(res) {
+        return res.data;
+      });
+    };
+
     return {
-      findUser: findUser,
-      findStreak: findStreak
+      findUser,
+      findStreak,
+      getRepository
     };
   }]);
 
