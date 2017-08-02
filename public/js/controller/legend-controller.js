@@ -17,7 +17,11 @@
 
         var findUser2Streak = LegendService.findStreak($scope.model.user2);
 
-        $q.all([findUser1, findUser2, findUser1Streak, findUser2Streak]).then(function(data) {
+        var getUser1Repository = LegendService.getRepository($scope.model.user1);
+
+        var getUser2Repository = LegendService.getRepository($scope.model.user2);
+
+        $q.all([findUser1, findUser2, findUser1Streak, findUser2Streak, getUser1Repository, getUser2Repository]).then(function(data) {
 
           var user1Result = data[0];
           console.log("name", user1Result.name);
@@ -38,6 +42,12 @@
 
           var user2Streak = data[3];
           console.log('current streak: ' + $scope.model.user2, user2Streak.streak || 0);
+
+          var user1Repository = data[4];
+          console.log('repository information: ' + $scope.model.user1, user1Repository || 0);
+
+          var user2Repository = data[5];
+          console.log('repository information: ' + $scope.model.user2, user2Repository || 0);
         });
       };
     }]);
