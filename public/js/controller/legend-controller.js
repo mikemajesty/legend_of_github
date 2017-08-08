@@ -14,7 +14,10 @@
         var getUser2Repository = LegendService.getRepository($scope.model.user2);
 
         $q.all([getUser1Repository, getUser2Repository]).then(function(data) {
-
+          var user1Result = data[0];
+          console.log("repositorio: " + 'mikemajesty', user1Result);
+          var user2Result = data[1];
+          console.log("repositorio: " + 'celso-wo', user2Result);
         });
 
         /*$q.all([findUser1, findUser2, findUser1Streak, findUser2Streak, getUser1Repository, getUser2Repository]).then(function(data) {

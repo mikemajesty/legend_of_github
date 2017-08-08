@@ -12,7 +12,6 @@ const getRepository = (userName) => {
 
   const pagination = rp(options)
     .then(function($) {
-
       let pagination = [];
 
       $('div.pagination').each(function(index) {
@@ -24,41 +23,50 @@ const getRepository = (userName) => {
       console.log('error', err);
     });
 
-  const linguagens = [];
+  return new Promise(function(resolve, reject) {
+    pagination.then(function(pages) {
+      const linguagens = [];
+      const promises = pages.reduce((promiseChain, page) => {
 
-  const request = pagination.then(function(pages) {
-    const promises = pages.reduce((promiseChain, page) => {
+        var options = {
+          uri: `https://github.com/${userName}?page=${page}&tab=repositories`,
+          transform: function(body) {
+            return cheerio.load(body);
+          }
+        };
 
-      var options = {
-        uri: `https://github.com/${userName}?page=${page}&tab=repositories`,
-        transform: function(body) {
-          return cheerio.load(body);
-        }
-      };
+        return promiseChain.then(() => rp(options)
+          .then(function($) {
 
-      return promiseChain.then(() => rp(options)
-        .then(function($) {
+            $('li').filter(function(i, el) {
+              return $(this).attr('itemprop') === 'owns' && $(this).find('span').text() && !$(this).find('span').text().trim().startsWith('Forked from');
+            }).each(function(index) {
 
-          $('li').filter(function(i, el) {
-            return $(this).attr('itemprop') === 'owns' && $(this).find('span').text() && !$(this).find('span').text().trim().startsWith('Forked from');
-          }).each(function(index) {
-            linguagens.push({ name: $(this).find('span').text().replace(/\s/g, '') });
-          });
-          return linguagens;
-        })
-        .catch(function(err) {
-          console.log('error', err);
-        }));
+              const starFork = [];
 
-    }, Promise.resolve());
+              $(this).find('a.muted-link').each(function(index, data) {
+                starFork[index] = $(data).text().trim().replace(/\n|\r/g, "");
+              });
 
-    promises.then(() => linguagens.forEach(data => console.log(`done - ${linguagens.length}` + userName, data)));
+              const language = $(this).find('span').text().replace(/\s/g, '');
+              const name = $(this).find('a').attr('itemprop', 'name codeRepository').html().trim().replace(/\n|\r/g, "");
+              const stars = starFork[0];
+              const forks = starFork[1];
 
-    return Promise.resolve(linguagens);
+              linguagens.push({ name: name, language: language, stars: stars || '0', forks: forks || '0' });
+            });
+            return linguagens;
+          })
+          .catch(function(err) {
+            console.log('error', err);
+          }));
+
+      }, Promise.resolve());
+
+      promises.then(data => resolve(data));
+
+    }).catch(err => reject(err));
   });
-
-  request.then(data => console.log('data', data));
-  return request;
 };
 
 module.exports = {
