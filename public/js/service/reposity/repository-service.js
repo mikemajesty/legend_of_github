@@ -3,7 +3,7 @@
 
   angular.module('Legend')
 
-  .factory("LegendService", ['$http', ($http) => {
+  .factory("RepositoryService", ['$http', ($http) => {
 
     const findUser = (userName) => {
       return $http.post('/user', { username: userName }).then((res) => {

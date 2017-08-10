@@ -9,7 +9,7 @@ app.use(favicon(__dirname + '/public/img/favicon.ico'));
 
 app.use(bodyParser.json());
 
-const PORT = process.env.PORT || 300;
+const PORT = process.env.PORT || 3000;
 
 app.get('/', function(req, res) {
   res.sendfile('public/index.html');
