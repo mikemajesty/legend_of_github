@@ -24,9 +24,9 @@
           console.log("repositorio: " + 'celso-wo', user2Repository);
 
           const user1Streak = data[2];
-          console.log("repositorio: " + 'mikemajesty', user1Streak);
+          console.log("streak: " + 'mikemajesty', user1Streak);
           const user2Streak = data[3];
-          console.log("repositorio: " + 'celso-wo', user2Streak);
+          console.log("streak: " + 'celso-wo', user2Streak);
 
         });
 
