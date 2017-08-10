@@ -5,9 +5,9 @@
 
       $scope.model = {
         user1: "mikemajesty",
-        user2: "celso-wo"
+        user2: "celso-wood"
       };
-
+ 
       $scope.compare = function() {
         var getUser1Repository = LegendService.getRepository($scope.model.user1);
 

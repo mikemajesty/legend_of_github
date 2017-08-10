@@ -2,6 +2,7 @@ const gulp = require('gulp');
 const babel = require('gulp-babel');
 const uglify = require('gulp-uglify');
 const concat = require('gulp-concat');
+const livereload = require('gulp-livereload');
 
 gulp.task('js', () => {
   return gulp.src(['public/js/*.js', 'public/js/**/*.js'])
@@ -11,4 +12,9 @@ gulp.task('js', () => {
       .pipe(uglify({mangle: false}))
         .pipe(concat('all.js'))
           .pipe(gulp.dest('www/js/'));
+});
+
+gulp.task('default', ['js'], () => {
+  livereload.listen();
+  gulp.watch(['public/js/*.js', 'public/js/**/*.js'], ['js']);
 });

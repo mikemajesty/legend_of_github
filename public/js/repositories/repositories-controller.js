@@ -4,7 +4,7 @@
     .controller('LegendController', ['$scope', '$q', 'LegendService', function($scope, $q, LegendService) {
 
       $scope.model = {
-        user1: "mikemajesty",
+        user1: "mikemajestys",
         user2: "celso-wo"
       };
 
@@ -51,4 +51,4 @@
       };
     }]);
 
-})(window.angular); 
+})(window.angular);   

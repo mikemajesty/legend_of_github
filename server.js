@@ -9,7 +9,7 @@ app.use(favicon(__dirname + '/public/img/favicon.ico'));
 
 app.use(bodyParser.json());
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 300;
 
 app.get('/', function(req, res) {
   res.sendfile('public/index.html');
@@ -18,7 +18,5 @@ app.get('/', function(req, res) {
 app.listen(PORT, function() {
   console.log('Server Running on ' + PORT);
 });
-
-process.env.TZ = 'America/Sao_Paulo';
 
 app.use('/', require('./server/api'));
