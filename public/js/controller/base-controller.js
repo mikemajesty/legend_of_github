@@ -6,7 +6,7 @@
 
       $scope.model = {
         user1: "mikemajesty",
-        user2: "celso-wo"
+        user2: "samfrezza"
       };
 
       $scope.compare = () => {
@@ -24,19 +24,19 @@
 
         $q.all([getUser1Repository, getUser2Repository, getUser1Streak, getUser2Streak, getUser1Information, getUser2Information]).then((data) => {
           const user1Repository = data[0];
-          console.log("repositorio: " + 'mikemajesty', user1Repository);
+          console.log("repositorio: " + $scope.model.user1, user1Repository);
           const user2Repository = data[1];
-          console.log("repositorio: " + 'celso-wo', user2Repository);
+          console.log("repositorio: " + $scope.model.user2, user2Repository);
 
           const user1Streak = data[2];
-          console.log("streak: " + 'mikemajesty', user1Streak);
+          console.log("streak: " + $scope.model.user1, user1Streak);
           const user2Streak = data[3];
-          console.log("streak: " + 'celso-wo', user2Streak);
+          console.log("streak: " + $scope.model.user2, user2Streak);
 
           const user1Information = data[4];
-          console.log("information: " + 'mikemajesty', user1Information);
+          console.log("information: " + $scope.model.user1, user1Information);
           const user2Information = data[5];
-          console.log("information: " + 'celso-wo', user2Information);
+          console.log("information: " + $scope.model.user2, user2Information);
         });
       };
     }]);
