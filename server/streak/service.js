@@ -2,7 +2,7 @@ const rp = require('request-promise');
 const cheerio = require('cheerio');
 
 const getStreakBody = (userName) => {
-  var options = {
+  const options = {
     uri: `https://github.com/${userName}`,
     transform: function(body) {
       return cheerio.load(body);
