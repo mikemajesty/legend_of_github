@@ -12,13 +12,15 @@
           return (parseInt(value.stars) + parseInt(value.forks));
         }));
 
-        const bestRepositoty = _.find(res.data, (value) => { return (parseInt(value.stars) + parseInt(value.forks)) == sumStarAndFork;});
+        const bestRepositoty = _.find(res.data, (value) => { return (parseInt(value.stars) + parseInt(value.forks)) == sumStarAndFork; });
+
+        const relevantsRepositories = _.filter(res.data, (value) => { return value.stars > 5 && value.forks > 0 });
 
         const starts = _.sumBy(res.data, (value) => { return parseInt(value.stars); });
 
         const forks = _.sumBy(res.data, (value) => { return parseInt(value.forks); });
 
-        return { starts, forks, repositories: res.data, bestRepositoty: bestRepositoty || "noob" }
+        return { starts, forks, repositories: { full: res.data, relevants: relevantsRepositories}, bestRepositoty: bestRepositoty || "noob" }
       });
     };
 
