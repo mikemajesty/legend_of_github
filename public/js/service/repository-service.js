@@ -18,7 +18,7 @@
 
         const forks = _.sumBy(res.data, (value) => { return parseInt(value.forks); });
 
-        return { starts, forks, repositories: res.data, bestRepositoty }
+        return { starts, forks, repositories: res.data, bestRepositoty: bestRepositoty || "noob" }
       });
     };
 

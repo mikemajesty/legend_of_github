@@ -12,7 +12,7 @@ const getBaseInformation = (userName) => {
 
   return rp(options)
     .then(function($) {
-
+      console.log('entrou', userName);
       const arrayInformation = [];
 
       $("span.Counter").each(function(index, data) {
@@ -23,13 +23,14 @@ const getBaseInformation = (userName) => {
 
       const commits = $("h2.f4.text-normal.mb-2").text().trim().match(/\d+,?\d+/g);
 
-      return {
+      return  {
         stars: arrayInformation[1],
         fallowers: arrayInformation[2],
         fallowing: arrayInformation[3],
-        commits: commits[0],
+        commits: commits ? parseInt(commits[0].replace(",", "").replace(".", "")) : 0,
         organizations: organizations
       };
+
     })
     .catch(function(err) {
       console.log('error', err);
