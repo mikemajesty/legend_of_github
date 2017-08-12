@@ -12,6 +12,10 @@
           return (parseInt(value.stars) + parseInt(value.forks));
         }));
 
+        const groupRepository = _.groupBy(res.data, function(value) { return value.language; });
+
+        const language = _.orderBy(groupRepository, 'length', 'desc')[0]
+
         const bestRepositoty = _.find(res.data, (value) => { return (parseInt(value.stars) + parseInt(value.forks)) == sumStarAndFork; });
 
         const relevantsRepositories = _.filter(res.data, (value) => { return value.stars > 5 && value.forks > 0 });
@@ -20,7 +24,13 @@
 
         const forks = _.sumBy(res.data, (value) => { return parseInt(value.forks); });
 
-        return { starts, forks, repositories: { full: res.data, relevants: relevantsRepositories}, bestRepositoty: bestRepositoty || "noob" }
+        return {
+          starts,
+          forks,
+          repositories: { full: res.data, relevants: relevantsRepositories },
+          bestRepositoty: bestRepositoty || "noob",
+          language: language ? language[0].language : "noob"
+        }
       });
     };
 
