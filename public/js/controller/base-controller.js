@@ -6,7 +6,7 @@
 
         $scope.model = {
           user1: "mikemajesty",
-          user2: "samfrezza"
+          user2: "luiguild"
         };
 
         $scope.compare = () => {
