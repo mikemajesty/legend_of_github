@@ -3,7 +3,6 @@
   angular.module('Legend')
     .controller('LegendController', ['$scope', '$q', 'RepositoryService', 'StreakService', 'InformationService',
       ($scope, $q, RepositoryService, StreakService, InformationService) => {
-
         $scope.model = {
           user1: "mikemajesty",
           user2: "luiguild"

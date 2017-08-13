@@ -1,22 +1,41 @@
-<html ng-app="Legend">
+<html lang="en" ng-app="Legend">
 
 <head>
-	<title>Legend of GitHub</title>
-</head>
-<script src="node_modules/angular/angular.min.js"></script>
-<script src="node_modules/lodash/lodash.min.js"></script>
-<script src="www/js/all.js"></script>
 
-<body ng-controller="LegendController">
-	<label for="">User 1</label>
-	<input type="text" name="user1" ng-model="model.user1">
-	<br>
-	<hr>
-	<label for="">User 2</label>
-	<input type="text" name="user2" ng-model="model.user2">
-	<br>
-	<hr>
-	<button ng-click="compare()">Compare</button>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Legend of GitHub</title>
+  <link rel="stylesheet" href="https://gitcdn.link/repo/angular/bower-material/master/angular-material.css">
+
+</head>
+
+<body>
+
+  <div ng-controller="LegendController" layout="column" ng-cloak class="md-inline-form">
+    <md-content md-theme="docs-dark" layout-gt-sm="row" layout-padding>
+      <md-input-container flex="50">
+        <label>User 1</label>
+        <input ng-model="model.user1">
+      </md-input-container>
+
+      <md-input-container flex="50">
+        <label>User 2</label>
+        <input ng-model="model.user2">
+      </md-input-container>
+    </md-content>
+
+    <button ng-click="compare()">Compare</button>
+  </div>
+  <!-- AngularJS Material Dependencies -->
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.11/angular.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.11/angular-animate.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.11/angular-aria.js"></script>
+
+  <!-- AngularJS Material Javascript using GitCDN to load directly from `bower-material/master` -->
+  <script src="https://gitcdn.link/repo/angular/bower-material/master/angular-material.js"></script>
+  
+  <script src="node_modules/lodash/lodash.min.js"></script>
+  <script src="www/js/all.js"></script>
+
 </body>
 
 </html>

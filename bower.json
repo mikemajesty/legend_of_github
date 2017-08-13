@@ -1,0 +1,17 @@
+{
+  "name": "legend_of_github",
+  "description": "This The most epic battles between github accounts.",
+  "main": "server.js",
+  "authors": [
+    "Mike Lima"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/mikemajesty/legend_of_github",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
