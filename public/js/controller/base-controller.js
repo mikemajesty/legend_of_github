@@ -14,9 +14,6 @@
 
         $scope.progressbar = ngProgressFactory.createInstance();
 
-
-
-
         $scope.compare = () => {
           $scope.progressbar.start();
           const getUser1Repository = RepositoryService.getRepository($scope.model.user1);
@@ -38,6 +35,8 @@
             const user1Repository = data[0];
             const user1Streak = data[2];
             const user1Information = data[4];
+
+            console.log(`current streak ${ $scope.model.user1 }`, user1Streak);
 
             const avatar1 = {
               repository: user1Repository,
@@ -63,6 +62,8 @@
             const user2Repository = data[1];
             const user2Streak = data[3];
             const user2Information = data[5];
+
+            console.log(`current streak ${ $scope.model.user2 }`, user2Streak);
 
             const avatar2 = {
               repository: user2Repository,
