@@ -20,12 +20,12 @@
 
         const relevantsRepositories = _.filter(res.data, (value) => { return value.stars > 5 && value.forks > 0 });
 
-        const starts = _.sumBy(res.data, (value) => { return parseInt(value.stars); });
+        const stars = _.sumBy(res.data, (value) => { return parseInt(value.stars); });
 
         const forks = _.sumBy(res.data, (value) => { return parseInt(value.forks); });
 
         return {
-          starts,
+          stars,
           forks,
           repositories: { full: res.data, relevants: relevantsRepositories },
           bestRepositoty: bestRepositoty || "noob",

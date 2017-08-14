@@ -1,8 +1,8 @@
 (function(angular) {
   'use strict';
   angular.module('Legend')
-    .controller('LegendController', ['$scope', '$q', 'RepositoryService', 'StreakService', 'InformationService',
-      ($scope, $q, RepositoryService, StreakService, InformationService) => {
+    .controller('LegendController', ['$scope', '$q', 'RepositoryService', 'StreakService', 'InformationService', 'CalculateSkillsService',
+      ($scope, $q, RepositoryService, StreakService, InformationService, CalculateSkillsService) => {
         $scope.model = {
           user1: "mikemajesty",
           user2: "luiguild"
@@ -21,20 +21,24 @@
 
           const getUser2Information = InformationService.findUser($scope.model.user2);
 
+          let avatar = {};
+
           $q.all([getUser1Repository, getUser2Repository, getUser1Streak, getUser2Streak, getUser1Information, getUser2Information]).then((data) => {
             const user1Repository = data[0];
-            console.log("repositorio: " + $scope.model.user1, user1Repository);
             const user1Streak = data[2];
-            console.log("current streak: " + $scope.model.user1, user1Streak);
             const user1Information = data[4];
-            console.log("information: " + $scope.model.user1, user1Information);
-            console.log("----------------------------------------------------")
+
+            const avatar1 = { repository: user1Repository, currentStreak: user1Streak, information: user1Information };
+
+            $scope.user1Avatar = JSON.stringify(CalculateSkillsService.calculate(avatar1));
+
             const user2Repository = data[1];
-            console.log("repositorio: " + $scope.model.user2, user2Repository);
             const user2Streak = data[3];
-            console.log("current streak: " + $scope.model.user2, user2Streak);
             const user2Information = data[5];
-            console.log("information: " + $scope.model.user2, user2Information);
+
+            const avatar2 = { repository: user2Repository, currentStreak: user2Streak, information: user2Information };
+
+            $scope.user2Avatar =  JSON.stringify(CalculateSkillsService.calculate(avatar2));
           });
         };
       }
