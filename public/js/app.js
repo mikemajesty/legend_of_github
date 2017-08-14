@@ -1,4 +1,4 @@
-angular.module('Legend', ['ngMaterial', 'chart.js'])
+angular.module('Legend', ['ngMaterial', 'chart.js', 'ngProgress'])
   .config(function($mdThemingProvider) {
     $mdThemingProvider.theme('docs-dark');
   }).config(['ChartJsProvider', function(ChartJsProvider) {

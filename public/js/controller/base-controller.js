@@ -1,8 +1,8 @@
 (function(angular) {
   'use strict';
   angular.module('Legend')
-    .controller('LegendController', ['$scope', '$timeout', '$q', 'RepositoryService', 'StreakService', 'InformationService', 'CalculateSkillsService',
-      ($scope, $timeout, $q, RepositoryService, StreakService, InformationService, CalculateSkillsService) => {
+    .controller('LegendController', ['$scope', '$timeout', '$q', 'RepositoryService', 'StreakService', 'InformationService', 'CalculateSkillsService', 'ngProgressFactory',
+      ($scope, $timeout, $q, RepositoryService, StreakService, InformationService, CalculateSkillsService, ngProgressFactory) => {
         $scope.model = {
           user1: "mikemajesty",
           user2: "celso-wo"
@@ -12,8 +12,13 @@
         $scope.labels = ['HP', 'MP', 'P.ATCK', 'P.DEF', 'CAST/SPEED', 'CRITICAL', 'ACCURACY', 'STAMINA'];
         $scope.series = ['Avatar'];
 
+        $scope.progressbar = ngProgressFactory.createInstance();
+
+
+
 
         $scope.compare = () => {
+          $scope.progressbar.start();
           const getUser1Repository = RepositoryService.getRepository($scope.model.user1);
 
           const getUser2Repository = RepositoryService.getRepository($scope.model.user2);
@@ -29,7 +34,7 @@
           let avatar = {};
 
           $q.all([getUser1Repository, getUser2Repository, getUser1Streak, getUser2Streak, getUser1Information, getUser2Information]).then((data) => {
-
+            $timeout($scope.progressbar.complete(), 5000);
             const user1Repository = data[0];
             const user1Streak = data[2];
             const user1Information = data[4];
