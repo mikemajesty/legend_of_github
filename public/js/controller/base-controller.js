@@ -5,7 +5,7 @@
       ($scope, $q, RepositoryService, StreakService, InformationService, CalculateSkillsService) => {
         $scope.model = {
           user1: "mikemajesty",
-          user2: "luiguild"
+          user2: "celso-wo"
         };
 
         $scope.compare = () => {
