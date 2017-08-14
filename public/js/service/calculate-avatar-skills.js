@@ -18,7 +18,7 @@
       const cast_speed = (information.commits + ((streak === 0 ? 1 : streak) * (information.organizations === 0 ? 1 : information.organizations)));
       const accuracy = ((information.fallowers + information.fallowing) * (information.organizations === 0 ? 1 : information.organizations));
       const stamina = (information.commits * information.commitsAvarage);
-      const resistence = (information.commits + streak);
+      const criticalChance = (information.commits + streak);
 
       return {
         HP: parseInt(hp),
@@ -26,9 +26,9 @@
         P_ATCK: parseInt(pAtack),
         P_DEF: parseInt(pDef),
         CAST_SPEED: parseInt(cast_speed),
+        CRITICAL: parseInt(criticalChance),
         ACCURACY: parseInt(accuracy),
-        STAMINA: parseInt(stamina),
-        RESISTENCE: parseInt(resistence)
+        STAMINA: parseInt(stamina)
       };
     };
 

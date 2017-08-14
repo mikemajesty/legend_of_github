@@ -9,7 +9,7 @@
         };
 
 
-        $scope.labels = ['HP', 'P.ATCK', 'P.DEF', 'CAST/SPEED', 'ACCURACY', 'STAMINA', 'RESISTENCE'];
+        $scope.labels = ['HP', 'MP', 'P.ATCK', 'P.DEF', 'CAST/SPEED', 'CRITICAL', 'ACCURACY', 'STAMINA'];
         $scope.series = ['Avatar'];
 
 
@@ -40,12 +40,13 @@
             $scope.user1data = [
               [
                 $scope.user1Avatar.HP,
+                $scope.user1Avatar.MP,
                 $scope.user1Avatar.P_ATCK,
                 $scope.user1Avatar.P_DEF,
                 $scope.user1Avatar.CAST_SPEED,
+                $scope.user1Avatar.CRITICAL,
                 $scope.user1Avatar.ACCURACY,
-                $scope.user1Avatar.STAMINA,
-                $scope.user1Avatar.RESISTENCE
+                $scope.user1Avatar.STAMINA
               ]
             ];
 
@@ -59,12 +60,13 @@
 
             $scope.user2data = [
               $scope.user2Avatar.HP,
+              $scope.user2Avatar.MP,
               $scope.user2Avatar.P_ATCK,
               $scope.user2Avatar.P_DEF,
               $scope.user2Avatar.CAST_SPEED,
+              $scope.user2Avatar.CRITICAL,
               $scope.user2Avatar.ACCURACY,
-              $scope.user2Avatar.STAMINA,
-              $scope.user2Avatar.RESISTENCE
+              $scope.user2Avatar.STAMINA
             ];
           });
         };
