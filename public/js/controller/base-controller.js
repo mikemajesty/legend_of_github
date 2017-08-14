@@ -1,12 +1,17 @@
 (function(angular) {
   'use strict';
   angular.module('Legend')
-    .controller('LegendController', ['$scope', '$q', 'RepositoryService', 'StreakService', 'InformationService', 'CalculateSkillsService',
-      ($scope, $q, RepositoryService, StreakService, InformationService, CalculateSkillsService) => {
+    .controller('LegendController', ['$scope', '$timeout', '$q', 'RepositoryService', 'StreakService', 'InformationService', 'CalculateSkillsService',
+      ($scope, $timeout, $q, RepositoryService, StreakService, InformationService, CalculateSkillsService) => {
         $scope.model = {
           user1: "mikemajesty",
           user2: "celso-wo"
         };
+
+
+        $scope.labels = ['HP', 'P.ATCK', 'P.DEF', 'CAST/SPEED', 'ACCURACY', 'STAMINA', 'RESISTENCE'];
+        $scope.series = ['Avatar'];
+
 
         $scope.compare = () => {
           const getUser1Repository = RepositoryService.getRepository($scope.model.user1);
@@ -30,7 +35,19 @@
 
             const avatar1 = { repository: user1Repository, currentStreak: user1Streak, information: user1Information };
 
-            $scope.user1Avatar = JSON.stringify(CalculateSkillsService.calculate(avatar1));
+            $scope.user1Avatar = CalculateSkillsService.calculate(avatar1);
+
+            $scope.user1data = [
+              [
+                $scope.user1Avatar.HP,
+                $scope.user1Avatar.P_ATCK,
+                $scope.user1Avatar.P_DEF,
+                $scope.user1Avatar.CAST_SPEED,
+                $scope.user1Avatar.ACCURACY,
+                $scope.user1Avatar.STAMINA,
+                $scope.user1Avatar.RESISTENCE
+              ]
+            ];
 
             const user2Repository = data[1];
             const user2Streak = data[3];
@@ -38,7 +55,17 @@
 
             const avatar2 = { repository: user2Repository, currentStreak: user2Streak, information: user2Information };
 
-            $scope.user2Avatar =  JSON.stringify(CalculateSkillsService.calculate(avatar2));
+            $scope.user2Avatar = CalculateSkillsService.calculate(avatar2);
+
+            $scope.user2data = [
+              $scope.user2Avatar.HP,
+              $scope.user2Avatar.P_ATCK,
+              $scope.user2Avatar.P_DEF,
+              $scope.user2Avatar.CAST_SPEED,
+              $scope.user2Avatar.ACCURACY,
+              $scope.user2Avatar.STAMINA,
+              $scope.user2Avatar.RESISTENCE
+            ];
           });
         };
       }

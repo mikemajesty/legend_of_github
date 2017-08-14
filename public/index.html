@@ -23,13 +23,12 @@
     </md-content>
     <md-content md-theme="docs-dark" layout-gt-sm="row" layout-padding>
       <md-input-container class="md-block" flex="50">
-        <label>Biography</label>
-        <textarea ng-model="user1Avatar" md-maxlength="150" rows="5" md-select-on-focus></textarea>
+        <canvas id="user1" class="chart-horizontal-bar" chart-data="user1data" chart-labels="labels">
+</canvas>
       </md-input-container>
-      
-      <md-input-container class="md-block" flex="50">
-        <label>Biography</label>
-        <textarea ng-model="user2Avatar" md-maxlength="150" rows="5" md-select-on-focus></textarea>
+       <md-input-container class="md-block" flex="50">
+        <canvas id="user1" class="chart-horizontal-bar" chart-data="user2data" chart-labels="labels">
+</canvas>
       </md-input-container>
     </md-content>
 
@@ -41,7 +40,8 @@
   <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.11/angular-aria.js"></script>
 
   <script src="https://gitcdn.link/repo/angular/bower-material/master/angular-material.js"></script>
-
+  <script src="node_modules/chart.js/dist/Chart.js"></script>
+  <script src="node_modules/angular-chart.js/dist/angular-chart.min.js"></script>
   <script src="node_modules/lodash/lodash.min.js"></script>
   <script src="www/js/all.js"></script>
 
