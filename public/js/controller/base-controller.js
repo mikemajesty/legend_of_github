@@ -8,7 +8,6 @@
           user2: "celso-wo"
         };
 
-
         $scope.labels = ['HP', 'MP', 'P.ATCK', 'P.DEF', 'CAST/SPEED', 'CRITICAL', 'ACCURACY', 'STAMINA'];
         $scope.series = ['Avatar'];
 
@@ -31,7 +30,7 @@
           let avatar = {};
 
           $q.all([getUser1Repository, getUser2Repository, getUser1Streak, getUser2Streak, getUser1Information, getUser2Information]).then((data) => {
-            $timeout($scope.progressbar.complete(), 5000);
+            $timeout($scope.progressbar.complete(), 1000);
             const user1Repository = data[0];
             const user1Streak = data[2];
             const user1Information = data[4];
