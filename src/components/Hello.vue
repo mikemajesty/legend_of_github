@@ -8,7 +8,7 @@
 import Game from './Game.vue'
 
 export default {
-  name: 'hello',
+  name: 'game',
   components: {
     'Game': Game
   },
