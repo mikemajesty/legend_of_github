@@ -154,7 +154,6 @@
     width: 90% !Important;
   }
 
-  /* Absolute Center Spinner */
 .loading {
   position: fixed;
   z-index: 999;
@@ -168,7 +167,6 @@
   right: 0;
 }
 
-/* Transparent Overlay */
 .loading:before {
   content: '';
   display: block;
@@ -180,9 +178,7 @@
   background-color: rgba(0,0,0,0.3);
 }
 
-/* :not(:required) hides these rules from IE9 and below */
 .loading:not(:required) {
-  /* hide "loading..." text */
   font: 0/0 a;
   color: transparent;
   text-shadow: none;
