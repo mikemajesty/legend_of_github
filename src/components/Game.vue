@@ -433,6 +433,7 @@
       },
       findFriends () {
         this.showSpinner = true
+
         axios.get(`/api/friends?username=${this.hero}`).then(res => {
           this.showSpinner = false
           this.friends = res.data.map(data => {
