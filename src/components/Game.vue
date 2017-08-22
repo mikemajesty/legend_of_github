@@ -401,7 +401,9 @@
     },
     mounted () {
       this.showSpinner = true
+
       let self = this
+
       if (this.game === null) {
         this.game = new Phaser.Game(this.width, this.height, Phaser.AUTO, this.$refs['phaser'], {
           preload: function preload () {
