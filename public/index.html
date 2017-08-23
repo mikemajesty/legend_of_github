@@ -14,21 +14,18 @@
     <md-content md-theme="docs-dark" layout-gt-sm="row" layout-padding>
       <md-input-container flex="50">
         <label>User 1</label>
-        <input ng-model="model.user1">
+        <input ng-model="model.user1" style="background-color: #FBD8D8">
       </md-input-container>
 
       <md-input-container flex="50">
         <label>User 2</label>
-        <input ng-model="model.user2">
+        <input ng-model="model.user2" style="background-color: #CFCFCF">
       </md-input-container>
     </md-content>
+
     <md-content md-theme="docs-dark" layout-gt-sm="row" layout-padding>
-      <md-input-container class="md-block" flex="50">
-        <canvas id="user1" class="chart-horizontal-bar" chart-data="user1data" chart-labels="labels">
-</canvas>
-      </md-input-container>
-      <md-input-container class="md-block" flex="50">
-        <canvas id="user1" class="chart-horizontal-bar" chart-data="user2data" chart-labels="labels">
+      <md-input-container class="md-block" flex="100">
+        <canvas id="user1" class="chart-horizontal-bar" chart-data="data" chart-labels="labels">
 </canvas>
       </md-input-container>
     </md-content>

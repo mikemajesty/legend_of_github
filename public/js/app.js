@@ -4,7 +4,7 @@ angular.module('Legend', ['ngMaterial', 'chart.js', 'ngProgress'])
   }).config(['ChartJsProvider', function(ChartJsProvider) {
     // Configure all charts
     ChartJsProvider.setOptions({
-      chartColors: ['#FF5252', '#FF8A80'],
+      chartColors: ['#FF5252', '#222222'],
       responsive: true
     });
     // Configure all line charts
