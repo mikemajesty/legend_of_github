@@ -4,8 +4,8 @@
     .controller('LegendController', ['$scope', '$timeout', '$q', 'RepositoryService', 'StreakService', 'InformationService', 'CalculateSkillsService', 'ngProgressFactory',
       ($scope, $timeout, $q, RepositoryService, StreakService, InformationService, CalculateSkillsService, ngProgressFactory) => {
         $scope.model = {
-          user1: "mikemajesty",
-          user2: "celso-wo"
+          user1: "",
+          user2: ""
         };
 
         $scope.labels = ['HP', 'MP', 'P.ATCK', 'P.DEF', 'CAST/SPEED', 'CRITICAL', 'ACCURACY', 'STAMINA'];
