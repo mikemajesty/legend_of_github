@@ -461,6 +461,7 @@
       calculateSpeed () {
         const heroSpeed = this.heroAvatar.SPEED
         const enemySpeed = this.enemyAvatar.SPEED
+
         return {
           hero: heroSpeed > enemySpeed ? 5 : 4,
           enemy: enemySpeed > heroSpeed ? 5 : 4
