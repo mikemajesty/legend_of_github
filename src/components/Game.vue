@@ -577,15 +577,19 @@
       },
       cleanBattle () {
         this.cleanBar()
+
         if (this.enemyChar) {
           this.enemyChar.destroy()
         }
+
         if (this.heroChar) {
           this.heroChar.destroy()
         }
+
         if (this.heroName) {
           this.heroName.destroy()
         }
+
         if (this.enemyName) {
           this.enemyName.destroy()
         }
