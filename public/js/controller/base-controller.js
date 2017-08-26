@@ -9,7 +9,7 @@
         };
 
         $scope.labels = ['HP', 'MP', 'P.ATCK', 'P.DEF', 'CAST/SPEED', 'CRITICAL', 'ACCURACY', 'STAMINA'];
-        $scope.series = ['Avatar'];
+        $scope.series = ['Avatar1', 'Avatar2'];
         $scope.inProcess = false;
         $scope.progressbar = ngProgressFactory.createInstance();
 
@@ -30,8 +30,6 @@
 
           const getUser2Information = InformationService.findUser($scope.model.user2);
 
-          let avatar = {};
-
           $q.all([getUser1Repository, getUser2Repository, getUser1Streak, getUser2Streak, getUser1Information, getUser2Information]).then((data) => {
 
             $timeout($scope.progressbar.complete(), 1000);
@@ -50,19 +48,6 @@
 
             $scope.user1Avatar = CalculateSkillsService.calculate(avatar1);
 
-            $scope.user1data = [
-              [
-                $scope.user1Avatar.HP,
-                $scope.user1Avatar.MP,
-                $scope.user1Avatar.P_ATCK,
-                $scope.user1Avatar.P_DEF,
-                $scope.user1Avatar.CAST_SPEED,
-                $scope.user1Avatar.CRITICAL,
-                $scope.user1Avatar.ACCURACY,
-                $scope.user1Avatar.STAMINA
-              ]
-            ];
-
             const user2Repository = data[1];
             const user2Streak = data[3];
             const user2Information = data[5];
@@ -78,14 +63,25 @@
             $scope.user2Avatar = CalculateSkillsService.calculate(avatar2);
 
             $scope.user2data = [
-              $scope.user2Avatar.HP,
-              $scope.user2Avatar.MP,
-              $scope.user2Avatar.P_ATCK,
-              $scope.user2Avatar.P_DEF,
-              $scope.user2Avatar.CAST_SPEED,
-              $scope.user2Avatar.CRITICAL,
-              $scope.user2Avatar.ACCURACY,
-              $scope.user2Avatar.STAMINA
+              [$scope.user2Avatar.HP,
+                $scope.user2Avatar.MP,
+                $scope.user2Avatar.P_ATCK,
+                $scope.user2Avatar.P_DEF,
+                $scope.user2Avatar.CAST_SPEED,
+                $scope.user2Avatar.CRITICAL,
+                $scope.user2Avatar.ACCURACY,
+                $scope.user2Avatar.STAMINA
+              ],
+              [
+                $scope.user1Avatar.HP,
+                $scope.user1Avatar.MP,
+                $scope.user1Avatar.P_ATCK,
+                $scope.user1Avatar.P_DEF,
+                $scope.user1Avatar.CAST_SPEED,
+                $scope.user1Avatar.CRITICAL,
+                $scope.user1Avatar.ACCURACY,
+                $scope.user1Avatar.STAMINA
+              ]
             ];
 
             $scope.inProcess = false;
