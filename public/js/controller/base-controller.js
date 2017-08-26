@@ -4,12 +4,12 @@
     .controller('LegendController', ['$scope', '$timeout', '$q', 'RepositoryService', 'StreakService', 'InformationService', 'CalculateSkillsService', 'ngProgressFactory',
       ($scope, $timeout, $q, RepositoryService, StreakService, InformationService, CalculateSkillsService, ngProgressFactory) => {
         $scope.model = {
-          user1: "mikemajesty",
-          user2: "celso-wo"
+
         };
 
         $scope.labels = ['HP', 'MP', 'P.ATCK', 'P.DEF', 'CAST/SPEED', 'CRITICAL', 'ACCURACY', 'STAMINA'];
         $scope.series = ['Avatar1', 'Avatar2'];
+
         $scope.inProcess = false;
         $scope.progressbar = ngProgressFactory.createInstance();
 
@@ -62,16 +62,7 @@
 
             $scope.user2Avatar = CalculateSkillsService.calculate(avatar2);
 
-            $scope.user2data = [
-              [$scope.user2Avatar.HP,
-                $scope.user2Avatar.MP,
-                $scope.user2Avatar.P_ATCK,
-                $scope.user2Avatar.P_DEF,
-                $scope.user2Avatar.CAST_SPEED,
-                $scope.user2Avatar.CRITICAL,
-                $scope.user2Avatar.ACCURACY,
-                $scope.user2Avatar.STAMINA
-              ],
+            $scope.data = [
               [
                 $scope.user1Avatar.HP,
                 $scope.user1Avatar.MP,
@@ -81,6 +72,16 @@
                 $scope.user1Avatar.CRITICAL,
                 $scope.user1Avatar.ACCURACY,
                 $scope.user1Avatar.STAMINA
+              ],
+              [
+                $scope.user2Avatar.HP,
+                $scope.user2Avatar.MP,
+                $scope.user2Avatar.P_ATCK,
+                $scope.user2Avatar.P_DEF,
+                $scope.user2Avatar.CAST_SPEED,
+                $scope.user2Avatar.CRITICAL,
+                $scope.user2Avatar.ACCURACY,
+                $scope.user2Avatar.STAMINA
               ]
             ];
 
