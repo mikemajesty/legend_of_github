@@ -596,6 +596,7 @@
       },
       preload () {
         this.showSpinner = true
+
         this.game.load.spritesheet('tanker-java', 'static/game/char/tanker-385x318.png', 385, 318, 27)
         this.game.load.spritesheet('atacker-c#', 'static/game/char/paladin-249x100.png', 249, 100, 39)
         this.game.load.spritesheet('archer-javascript', 'static/game/char/archer-158x173.png', 158, 173, 46)
