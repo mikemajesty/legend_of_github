@@ -607,6 +607,7 @@
       },
       create (phaser) {
         this.game.add.tileSprite(0, 0, 1300, 700, 'background')
+
         this.showSpinner = false
       },
       update (phaser) {
@@ -614,6 +615,7 @@
       onHeroUpdate (anim, frame) {
         if (this.isTrueBattle() && this.punchHeroFrame(frame)) {
           console.log('hero punch', frame.index)
+
           this.createHeroBattle()
           this.updateAvatarBar()
         }
