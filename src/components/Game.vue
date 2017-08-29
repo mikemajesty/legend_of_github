@@ -623,6 +623,7 @@
       onEnemyUpdate (anim, frame) {
         if (this.isTrueBattle() && this.punchEnemyFrame(frame)) {
           console.log('enemy punch', frame.index)
+
           this.createEnemyBattle()
           this.updateAvatarBar()
         }
