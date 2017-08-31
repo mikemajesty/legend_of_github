@@ -9,16 +9,72 @@
       const repositories = avatar.repository;
       const streak = avatar.currentStreak;
       const information = avatar.information;
-      const hp = ((information.commits + streak) * information.commitsAvarage) + ((information.fallowers + information.fallowing + information.stars) * (information.organizations === 0 ? 1 : information.organizations));
-      const mp = ((information.commits + streak) * information.commitsAvarage);
-      const pAtack = ((repositories.forks + repositories.stars + repositories.repositories.full.length) * repositories.repositories.relevants.length) +
-        ((information.commits) * (information.commitsAvarage + information.organizations));
-      const pDef   = ((repositories.forks + information.fallowers + information.fallowing + repositories.stars + repositories.repositories.full.length) * (repositories.repositories.relevants.length === 0 ? 1 : repositories.repositories.relevants.length)) +
-        (information.commits * information.commitsAvarage);
-      const cast_speed = (information.commits + ((streak === 0 ? 1 : streak) * (information.organizations === 0 ? 1 : information.organizations)));
-      const accuracy = ((information.fallowers + information.fallowing) * (information.organizations === 0 ? 1 : information.organizations));
-      const stamina = (information.commits * information.commitsAvarage);
-      const criticalChance = (information.commits + streak);
+      const hp = calculateHP();
+      const mp = calculateMP();
+      const pAtack = calculatePAtack();
+      const pDef = calculatePDef();
+      const cast_speed = calculateCastSpeed();
+      const criticalChance = calculateCriticalChance();
+      const accuracy = calculateAccuracy();
+      const stamina = calculateStamina();
+
+      function calculateHP() {
+        return ((information.commits + streak) * information.commitsAvarage) + (information.fallowers + getFallowingInformation() + getStartInformation());
+      }
+
+      function calculateMP() {
+        return ((information.commits + streak) * information.commitsAvarage);
+      }
+
+      function calculatePAtack() {
+        return ((getRepositoryForks() + getRepositoryStar() + repositories.repositories.full.length + information.commits) * getRepositoriesRelevants());
+      }
+
+      function calculatePDef() {
+        return ((getRepositoryForks() + information.fallowers + getFallowingInformation() + getRepositoryStar() + repositories.repositories.full.length) * getRepositoriesRelevants()) +
+          (information.commits * information.commitsAvarage);
+      }
+
+      function calculateCastSpeed() {
+        return (information.commits + streak) * getInformationOrganization();
+      }
+
+      function calculateCriticalChance() {
+        return (information.commits + streak + information.fallowers + getFallowingInformation()) * getInformationOrganization();
+      }
+
+      function calculateAccuracy() {
+        return ((information.fallowers + getFallowingInformation() + streak) * (getInformationOrganization() + information.commitsAvarage + getRepositoriesRelevants()));
+      }
+
+      function calculateStamina() {
+        return (information.commits * information.commitsAvarage);
+      }
+      
+
+      function getInformationOrganization() {
+        return information.organizations === 0 ? 1 : information.organizations;
+      }
+
+      function getStartInformation() {
+        return information.stars > 1000 ? 1000 : information.stars;
+      }
+
+      function getFallowingInformation() {
+        return information.fallowing > 1000 ? 1000 : information.fallowing;
+      }
+
+      function getRepositoryStar() {
+        return repositories.stars >= 4 ? (repositories.stars / 2) : 1;
+      }
+
+      function getRepositoryForks() {
+        return repositories.forks >= 4 ? (repositories.forks / 2) : 1;
+      }
+
+      function getRepositoriesRelevants() {
+        return repositories.repositories.relevants.length == 0 ? 1 : repositories.repositories.relevants.length;
+      }
 
       return {
         HP: parseInt(hp),
