@@ -1,7 +1,7 @@
 const express = require('express');
 const favicon = require('serve-favicon');
 const app = express();
-const bodyParser = require('body-parser')
+const bodyParser = require('body-parser');
 
 app.use('/', express.static(__dirname + '/'));
 
