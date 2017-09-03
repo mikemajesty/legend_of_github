@@ -658,9 +658,11 @@
           this.isBattle = false
           this.heroAvatar.HP = 0
           this.isFindingAvatar = false
+
           if (this.enemyAvatar.HP <= 0) {
             this.enemyAvatar.HP = 0
           }
+
           this.pauseBattle()
         } else {
           this.isBattle = true
