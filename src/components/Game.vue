@@ -676,6 +676,7 @@
         if (this.heroText) {
           this.heroText.destroy()
         }
+
         if (this.enemyText) {
           this.enemyText.destroy()
         }
