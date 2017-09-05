@@ -6,12 +6,17 @@
   <title>Legend of GitHub</title>
   <link rel="stylesheet" href="https://gitcdn.link/repo/angular/bower-material/master/angular-material.css">
   <link rel="stylesheet" href="bower_components/ngprogress/ngProgress.css">
+  <style type="text/css">
+    body {
+      margin: 0;
+    }
+  </style>
 </head>
 
 <body>
 
   <div ng-controller="LegendController" layout="column" ng-cloak class="md-inline-form">
-    <md-content md-theme="docs-dark" layout-gt-sm="row" layout-padding>
+    <!--<md-content md-theme="docs-dark" layout-gt-sm="row" layout-padding>
       <md-input-container flex="50">
         <label>User 1</label>
         <input ng-model="model.user1" style="background-color: #FBD8D8">
@@ -30,7 +35,7 @@
       </md-input-container>
     </md-content>
 
-    <md-button class="md-raised md-primary" ng-disabled="inProcess" ng-click="compare()">Compare</md-button>
+    <md-button class="md-raised md-primary" ng-disabled="inProcess" ng-click="compare()">Compare</md-button>-->
   </div>
 
   <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.11/angular.js"></script>
@@ -43,7 +48,29 @@
   <script src="node_modules/lodash/lodash.min.js"></script>
   <script src="bower_components/ngprogress/build/ngprogress.min.js"></script>
   <script src="www/js/all.js"></script>
-
+  <script src="public/lib/enchant.min.js"></script>
 </body>
+<script>
+  enchant();
+
+  window.onload = function() {
+    var core = new Game(320, 320);
+    core.preload('public/chara1.png', 'public/icon0.png')
+    core.onload = function() {
+
+      var bear = new enchant.Sprite(32, 32);
+      bear.image = core.assets['public/chara1.png'];
+      bear.moveTo(144, 144);
+      core.rootScene.addChild(bear);
+
+      var apple = new enchant.Sprite(16, 16);
+      apple.image = core.assets['public/icon0.png'];
+      apple.frame = 15;
+      apple.moveTo(180, 152);
+      core.rootScene.addChild(apple);
+    };
+    core.start();
+  };
+</script>
 
 </html>
