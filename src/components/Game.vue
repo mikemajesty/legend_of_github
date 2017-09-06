@@ -720,15 +720,19 @@
       find () {
         this.showSpinner = true
         this.cleanBattle()
+
         this.heroName = this.game.add.text(200, 32, null, { font: '32px Arial', fill: '#FFE848' })
         this.enemyName = this.game.add.text(this.width - 400, 32, null, { font: '32px Arial', fill: '#FFE848' })
+
         this.isFindingAvatar = true
+
         const getHeroRepository = axios.get(`/api/repository/format?username=${this.hero}`).then(res => {
           return res.data
         }).catch(e => {
           this.showInformation(this.hero)
           this.hero = null
         })
+
         const getEnemyRepository = axios.get(`/api/repository/format?username=${this.enemy}`).then(res => {
           return res.data
         }).catch(e => {
