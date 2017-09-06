@@ -687,9 +687,11 @@
       dealingWithLocale (data) {
         let currentStreak = []
         let lastCommit = 0
+
         data.forEach(function (data, index) {
           const date = data.date
           const currentCommit = data.commit
+
           if (new Date(data.date.replace('-', '/')).getTime() <= new Date().getTime()) {
             if (currentCommit > 0 && (lastCommit > 0 || currentStreak.length === 0)) {
               currentStreak.push({
@@ -700,6 +702,7 @@
               currentStreak = []
             }
           }
+
           lastCommit = data.commit
         })
         return currentStreak.length
