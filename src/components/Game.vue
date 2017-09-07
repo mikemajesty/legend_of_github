@@ -739,24 +739,28 @@
           this.showInformation(this.enemy)
           this.enemy = null
         })
+
         const getHeroInformation = axios.get(`/api/user/full?username=${this.hero}`).then(res => {
           return res.data
         }).catch(e => {
           this.showInformation(this.hero)
           this.hero = null
         })
+
         const getEnemyInformation = axios.get(`/api/user/full?username=${this.enemy}`).then(res => {
           return res.data
         }).catch(e => {
           this.showInformation(this.enemy)
           this.enemy = null
         })
+
         const getHeroCurrentStreak = axios.get(`/api/streak/full?username=${this.hero}`).then(res => {
           return this.dealingWithLocale(res.data)
         }).catch(e => {
           this.showInformation(this.hero)
           this.hero = null
         })
+
         const getEnemyCurrentStreak = axios.get(`/api/streak/full?username=${this.enemy}`).then(res => {
           return this.dealingWithLocale(res.data)
         }).catch(e => {
