@@ -781,6 +781,7 @@
             information: getHeroUserInformation,
             currentStreak: getHeroUserCurrentStreak
           }
+
           this.heroApiResult = heroAvatar
           const enemyAvatar = {
             repository: getEnemyRepository,
