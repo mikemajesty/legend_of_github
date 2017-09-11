@@ -31,10 +31,11 @@ window.onload = function() {
     map.loadData(baseMap);
     scene.addChild(map);
 
+    var image = new Surface(48, 63);
+
     var player = new Sprite(48, 63);
     player.x = 6 * 16 - 8;
     player.y = 10 * 16;
-    var image = new Surface(48, 63);
     image.draw(game.assets['public/game-tutorial/char.gif'], 0, 0, 96, 128, 0, 0, 96, 128);
     player.image = image;
 
@@ -50,7 +51,12 @@ window.onload = function() {
 
     player.addEventListener('touchstart', function() {
       player.x += 10;
-      if (player.intersect(enemy)) {
+
+      /*if (player.intersect(enemy)) {
+        alert("hit!");
+      }*/
+
+      if (player.within(enemy, 30)) {
         alert("hit!");
       }
     });
