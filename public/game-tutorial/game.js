@@ -1,7 +1,7 @@
 enchant();
 window.onload = function() {
   var game = new Game(320, 320);
-  game.preload('public/game-tutorial/char.gif', 'public/game-tutorial/map0.gif');
+  game.preload('public/game-tutorial/chara0.gif', 'public/game-tutorial/map0.gif');
   game.onload = function() {
 
     var scene = new Group();
@@ -31,27 +31,47 @@ window.onload = function() {
     map.loadData(baseMap);
     scene.addChild(map);
 
-    var image = new Surface(48, 63);
+    var player = new Sprite(32, 32);
+    player.spriteOffset = 5;
+    player.startingX = 6;
+    player.startingY = 10;
+    player.x = player.startingX * 16 - 8;
+    player.y = player.startingY * 16;
+    player.direction = 3;
+    player.walk = 1;
+    player.frame = 1;
 
-    var player = new Sprite(48, 63);
-    player.x = 6 * 16 - 8;
-    player.y = 10 * 16;
-    image.draw(game.assets['public/game-tutorial/char.gif']);
-    player.image = image;
+    player.image = new Surface(96, 128);
+    player.image.draw(game.assets['public/game-tutorial/chara0.gif']);
+
+    player.addEventListener('enterframe', function() {
+      //this.frame = this.frame + 1;
+    });
 
     scene.addChild(player);
 
-    var enemy = new Sprite(48, 63);
+    var enemy = new Sprite(32, 32);
     enemy.x = 6 * 30 - 8;
     enemy.y = 10 * 16;
-    image.draw(game.assets['public/game-tutorial/char.gif']);
-    enemy.image = image;
+    enemy.image = new Surface(96, 128);
+    enemy.image.draw(game.assets['public/game-tutorial/chara0.gif']);
 
     scene.addChild(enemy);
 
-    player.addEventListener('touchstart', function() {
-      player.x += 10;
+    enemy.addEventListener('touchstart', function() {
+      this.frame = this.frame + 1;
+      /*if (player.intersect(enemy)) {
+        alert("hit!");
+      }*/
+      
+      /*if (player.within(enemy, 30)) {
+        alert("hit!");
+      }*/
+    });
 
+    player.addEventListener('touchstart', function() {
+      this.frame = this.frame + 1;
+      this.x = this.x + 10;
       /*if (player.intersect(enemy)) {
         alert("hit!");
       }*/
