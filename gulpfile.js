@@ -5,7 +5,7 @@ const concat = require('gulp-concat');
 const livereload = require('gulp-livereload');
 
 gulp.task('js', () => {
-  return gulp.src(['public/js/*.js', 'public/js/**/*.js', '!public/js/game/*.js', '!public/lib/*.js'])
+  return gulp.src(['public/js/*.js', 'public/js/**/*.js', '!public/js/game/*.js', '!public/lib/*.js', '!public/game-tutorial/*.js'])
     .pipe(babel({
         presets: ['es2015']
       }))

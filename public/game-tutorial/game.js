@@ -36,7 +36,7 @@ window.onload = function() {
     var player = new Sprite(48, 63);
     player.x = 6 * 16 - 8;
     player.y = 10 * 16;
-    image.draw(game.assets['public/game-tutorial/char.gif'], 0, 0, 96, 128, 0, 0, 96, 128);
+    image.draw(game.assets['public/game-tutorial/char.gif']);
     player.image = image;
 
     scene.addChild(player);
@@ -44,7 +44,7 @@ window.onload = function() {
     var enemy = new Sprite(48, 63);
     enemy.x = 6 * 30 - 8;
     enemy.y = 10 * 16;
-    image.draw(game.assets['public/game-tutorial/char.gif'], 0, 0, 96, 128, 0, 0, 96, 128);
+    image.draw(game.assets['public/game-tutorial/char.gif']);
     enemy.image = image;
 
     scene.addChild(enemy);
