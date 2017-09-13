@@ -1,7 +1,7 @@
 enchant();
 window.onload = function() {
   var game = new Game(320, 320);
-  game.preload('public/game-tutorial/chara0.gif', 'public/game-tutorial/map0.gif');
+  game.preload('public/game-tutorial/char.png', 'public/game-tutorial/map0.gif');
   game.onload = function() {
 
     var scene = new Group();
@@ -31,7 +31,7 @@ window.onload = function() {
     map.loadData(baseMap);
     scene.addChild(map);
 
-    var player = new Sprite(32, 32);
+    var player = new Sprite(75, 64);
     player.spriteOffset = 5;
     player.startingX = 6;
     player.startingY = 10;
@@ -41,45 +41,43 @@ window.onload = function() {
     player.walk = 1;
     player.frame = 1;
 
-    player.image = new Surface(96, 128);
-    player.image.draw(game.assets['public/game-tutorial/chara0.gif']);
+    player.name = "Mike";
+    player.characterClass = "Knight";
+    player.exp = 0;
+    player.level = 1;
+    player.gp = 100;
+
+    player.image = new Surface(75, 1344);
+    player.image.draw(game.assets['public/game-tutorial/char.png']);
 
     player.addEventListener('enterframe', function() {
-      //this.frame = this.frame + 1;
+      this.frame = 3;
+    });
+
+    player.addEventListener('touchstart', function() {
+      console.log('this.frame ', this.frame )
+      this.frame++;
+      console.log('this.frame ', this.frame )
+      this.x = this.x + 10;
+
+      if (player.within(enemy, 30)) {
+        alert("within hit!");
+      }
     });
 
     scene.addChild(player);
 
-    var enemy = new Sprite(32, 32);
+    var enemy = new Sprite(75, 64);
     enemy.x = 6 * 30 - 8;
     enemy.y = 10 * 16;
-    enemy.image = new Surface(96, 128);
-    enemy.image.draw(game.assets['public/game-tutorial/chara0.gif']);
+    enemy.image = new Surface(75, 1344);
+    enemy.image.draw(game.assets['public/game-tutorial/char.png']);
+
+    enemy.addEventListener('enterframe', function() {
+      this.frame = 5;
+    });
 
     scene.addChild(enemy);
-
-    enemy.addEventListener('touchstart', function() {
-      this.frame = this.frame + 1;
-      /*if (player.intersect(enemy)) {
-        alert("hit!");
-      }*/
-      
-      /*if (player.within(enemy, 30)) {
-        alert("hit!");
-      }*/
-    });
-
-    player.addEventListener('touchstart', function() {
-      this.frame = this.frame + 1;
-      this.x = this.x + 10;
-      /*if (player.intersect(enemy)) {
-        alert("hit!");
-      }*/
-
-      if (player.within(enemy, 30)) {
-        alert("hit!");
-      }
-    });
 
     game.rootScene.addChild(scene);
   };
