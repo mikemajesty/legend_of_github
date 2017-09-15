@@ -783,11 +783,13 @@
           }
 
           this.heroApiResult = heroAvatar
+
           const enemyAvatar = {
             repository: getEnemyRepository,
             information: getEnemyUserInformation,
             currentStreak: getEnemyUserCurrentStreak
           }
+
           this.enemyApiResult = enemyAvatar
 
           this.heroAvatar = Status.calculate(heroAvatar)
