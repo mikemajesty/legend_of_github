@@ -219,6 +219,7 @@
       transform: rotate(360deg);
     }
   }
+
   @-moz-keyframes spinner {
     0% {
       -webkit-transform: rotate(0deg);
@@ -227,6 +228,7 @@
       -o-transform: rotate(0deg);
       transform: rotate(0deg);
     }
+
     100% {
       -webkit-transform: rotate(360deg);
       -moz-transform: rotate(360deg);
@@ -235,6 +237,7 @@
       transform: rotate(360deg);
     }
   }
+
   @-o-keyframes spinner {
     0% {
       -webkit-transform: rotate(0deg);
@@ -251,6 +254,7 @@
       transform: rotate(360deg);
     }
   }
+
   @keyframes spinner {
     0% {
       -webkit-transform: rotate(0deg);
@@ -259,6 +263,7 @@
       -o-transform: rotate(0deg);
       transform: rotate(0deg);
     }
+
     100% {
       -webkit-transform: rotate(360deg);
       -moz-transform: rotate(360deg);
