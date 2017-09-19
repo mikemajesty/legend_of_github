@@ -617,6 +617,7 @@
         this.showSpinner = false
       },
       update (phaser) {
+
       },
       onHeroUpdate (anim, frame) {
         if (this.isTrueBattle() && this.punchHeroFrame(frame)) {
