@@ -636,11 +636,13 @@
         }
       },
       createHeroBattle () {
-        this.enemyAvatar.HP -= this.createBattleSystem(this.heroAvatar)
+        const punch = this.createBattleSystem(this.heroAvatar)
+        this.enemyAvatar.HP -= punch <= 0 ? 1 : punch
         this.verifyWinner()
       },
       createEnemyBattle () {
-        this.heroAvatar.HP -= this.createBattleSystem(this.enemyAvatar)
+        const punch = this.createBattleSystem(this.enemyAvatar)
+        this.heroAvatar.HP -= punch <= 0 ? 1 : punch
         this.verifyWinner()
       },
       createBattleSystem (avatar) {
