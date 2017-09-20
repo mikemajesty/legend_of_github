@@ -1,281 +1,3 @@
-<style>
-  #gameScreen {
-    margin: 0 auto;
-  }
-
-  #gameScreen .top-bar {
-    margin: 0 auto;
-    padding: 14px;
-    width: 900px;
-    height: 126px;
-    background: url("/static/img/top-bar-background.svg")
-  }
-
-  #gameScreen .top-bar .button {
-    background: url("/static/img/button.svg");
-    width: 234px;
-    height: 48px;
-    border: 0;
-    border-radius: 2px;
-    font-size: 20px;
-    color: rgba(255,255,255,0.8);
-  }
-
-  #gameScreen .top-bar button:disabled {
-    color: #666;
-  }
-
-  #gameScreen .top-bar .battle-button {
-    background: url("/static/img/battle-button.svg");
-    width: 234px;
-    height: 48px;
-    border: 0;
-    border-radius: 2px;
-    margin-bottom: 6px;
-    font-size: 20px;
-    color: rgba(255,255,255,0.8);
-  }
-
-  #gameScreen .top-bar button:focus {
-    outline: none;
-  }
-
-  #gameScreen .input-container {
-    width: 100%;
-  }
-
-  #gameScreen .input-container label {
-    color: rgba(0,0,0,.54);
-    display: block;
-    font-weight: bold;
-    font-size: 16px;
-  }
-
-  #gameScreen .input-container input[type='text'] {
-    background: transparent;
-    border: none;
-    border-bottom: 2px solid rgba(0,0,0,0.34);
-    width: 100%;
-    height: 32px;
-    color: rgba(0,0,0,.54);
-    line-height: 32px;
-    font-size: 20px;
-  }
-
-  #gameScreen .input-container input[type='text']:focus {
-    outline: none;
-  }
-
-  #gameScreen #phaser {
-    position: relative;
-    margin: 10px auto 0;
-    padding: 6px;
-    width: 900px;
-    height: 668px;
-    background: url("/static/img/game-container-background.svg");
-  }
-
-  #gameScreen #phaser .phaser-overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-  }
-
-  #gameScreen #phaser .phaser-overlay .status {
-    position: absolute;
-    width: 369px;
-    height: 326px;
-    background: url("/static/img/status.svg");
-  }
-
-  #gameScreen #phaser .phaser-overlay .status.hero {
-    top: 20px;
-    left: 20px;
-  }
-
-  #gameScreen #phaser .phaser-overlay .status.challenger {
-    top: 20px;
-    right: 20px;
-  }
-
-  #gameScreen #phaser .phaser-overlay .status .hp {
-    position: absolute;
-    top: 76px;
-    left: 19px;
-    width: 331px;
-    height: 18px;
-    overflow: hidden;
-  }
-
-  #gameScreen #phaser .phaser-overlay .status .hp-background {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 331px;
-    height: 18px;
-  }
-
-  #gameScreen #phaser .phaser-overlay .status .hp .hp-begin {
-    position: absolute;
-    width: 9px;
-    height: 18px;
-    background: url("/static/img/hp_begin.svg");
-  }
-
-  #gameScreen #phaser .phaser-overlay .status .hp .hp-middle {
-    position: absolute;
-    left: 9px;
-    width: 9px;
-    width: 313px;
-    height: 18px;
-    background: url("/static/img/hp_middle.svg");
-  }
-
-  #gameScreen #phaser .phaser-overlay .status .hp .hp-end {
-    position: absolute;
-    right: 0px;
-    width: 9px;
-    height: 18px;
-    background: url("/static/img/hp_end.svg");
-  }
-
-  #gameScreen #phaser .phaser-overlay .status .info {
-    position: absolute;
-    top: 120px;
-    left: 32px;
-    right: 32px;
-    bottom: 20px;
-    text-align:left;
-  }
-
-  .large-button {
-    width: 90% !Important;
-  }
-
-  .loading {
-    position: fixed;
-    z-index: 999;
-    height: 2em;
-    width: 2em;
-    overflow: show;
-    margin: auto;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    right: 0;
-  }
-
-  .loading:before {
-    content: '';
-    display: block;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0,0,0,0.3);
-  }
-
-  .loading:not(:required) {
-    font: 0/0 a;
-    color: transparent;
-    text-shadow: none;
-    background-color: transparent;
-    border: 0;
-  }
-
-  .loading:not(:required):after {
-    content: '';
-    display: block;
-    font-size: 10px;
-    width: 1em;
-    height: 1em;
-    margin-top: -0.5em;
-    -webkit-animation: spinner 1500ms infinite linear;
-    -moz-animation: spinner 1500ms infinite linear;
-    -ms-animation: spinner 1500ms infinite linear;
-    -o-animation: spinner 1500ms infinite linear;
-    animation: spinner 1500ms infinite linear;
-    border-radius: 0.5em;
-    -webkit-box-shadow: rgba(0, 0, 0, 0.75) 1.5em 0 0 0, rgba(0, 0, 0, 0.75) 1.1em 1.1em 0 0, rgba(0, 0, 0, 0.75) 0 1.5em 0 0, rgba(0, 0, 0, 0.75) -1.1em 1.1em 0 0, rgba(0, 0, 0, 0.5) -1.5em 0 0 0, rgba(0, 0, 0, 0.5) -1.1em -1.1em 0 0, rgba(0, 0, 0, 0.75) 0 -1.5em 0 0, rgba(0, 0, 0, 0.75) 1.1em -1.1em 0 0;
-    box-shadow: rgba(0, 0, 0, 0.75) 1.5em 0 0 0, rgba(0, 0, 0, 0.75) 1.1em 1.1em 0 0, rgba(0, 0, 0, 0.75) 0 1.5em 0 0, rgba(0, 0, 0, 0.75) -1.1em 1.1em 0 0, rgba(0, 0, 0, 0.75) -1.5em 0 0 0, rgba(0, 0, 0, 0.75) -1.1em -1.1em 0 0, rgba(0, 0, 0, 0.75) 0 -1.5em 0 0, rgba(0, 0, 0, 0.75) 1.1em -1.1em 0 0;
-  }
-
-  @-webkit-keyframes spinner {
-    0% {
-      -webkit-transform: rotate(0deg);
-      -moz-transform: rotate(0deg);
-      -ms-transform: rotate(0deg);
-      -o-transform: rotate(0deg);
-      transform: rotate(0deg);
-    }
-
-    100% {
-      -webkit-transform: rotate(360deg);
-      -moz-transform: rotate(360deg);
-      -ms-transform: rotate(360deg);
-      -o-transform: rotate(360deg);
-      transform: rotate(360deg);
-    }
-  }
-
-  @-moz-keyframes spinner {
-    0% {
-      -webkit-transform: rotate(0deg);
-      -moz-transform: rotate(0deg);
-      -ms-transform: rotate(0deg);
-      -o-transform: rotate(0deg);
-      transform: rotate(0deg);
-    }
-
-    100% {
-      -webkit-transform: rotate(360deg);
-      -moz-transform: rotate(360deg);
-      -ms-transform: rotate(360deg);
-      -o-transform: rotate(360deg);
-      transform: rotate(360deg);
-    }
-  }
-
-  @-o-keyframes spinner {
-    0% {
-      -webkit-transform: rotate(0deg);
-      -moz-transform: rotate(0deg);
-      -ms-transform: rotate(0deg);
-      -o-transform: rotate(0deg);
-      transform: rotate(0deg);
-    }
-    100% {
-      -webkit-transform: rotate(360deg);
-      -moz-transform: rotate(360deg);
-      -ms-transform: rotate(360deg);
-      -o-transform: rotate(360deg);
-      transform: rotate(360deg);
-    }
-  }
-
-  @keyframes spinner {
-    0% {
-      -webkit-transform: rotate(0deg);
-      -moz-transform: rotate(0deg);
-      -ms-transform: rotate(0deg);
-      -o-transform: rotate(0deg);
-      transform: rotate(0deg);
-    }
-
-    100% {
-      -webkit-transform: rotate(360deg);
-      -moz-transform: rotate(360deg);
-      -ms-transform: rotate(360deg);
-      -o-transform: rotate(360deg);
-      transform: rotate(360deg);
-    }
-  }
-
-</style>
-
 <template>
   <div id='gameScreen' style='margin-bottom: 5%;text-align:center;'>
     <div class="top-bar">
@@ -852,3 +574,280 @@
     }
   }
 </script>
+<style>
+  #gameScreen {
+    margin: 0 auto;
+  }
+
+  #gameScreen .top-bar {
+    margin: 0 auto;
+    padding: 14px;
+    width: 900px;
+    height: 126px;
+    background: url("/static/img/top-bar-background.svg")
+  }
+
+  #gameScreen .top-bar .button {
+    background: url("/static/img/button.svg");
+    width: 234px;
+    height: 48px;
+    border: 0;
+    border-radius: 2px;
+    font-size: 20px;
+    color: rgba(255,255,255,0.8);
+  }
+
+  #gameScreen .top-bar button:disabled {
+    color: #666;
+  }
+
+  #gameScreen .top-bar .battle-button {
+    background: url("/static/img/battle-button.svg");
+    width: 234px;
+    height: 48px;
+    border: 0;
+    border-radius: 2px;
+    margin-bottom: 6px;
+    font-size: 20px;
+    color: rgba(255,255,255,0.8);
+  }
+
+  #gameScreen .top-bar button:focus {
+    outline: none;
+  }
+
+  #gameScreen .input-container {
+    width: 100%;
+  }
+
+  #gameScreen .input-container label {
+    color: rgba(0,0,0,.54);
+    display: block;
+    font-weight: bold;
+    font-size: 16px;
+  }
+
+  #gameScreen .input-container input[type='text'] {
+    background: transparent;
+    border: none;
+    border-bottom: 2px solid rgba(0,0,0,0.34);
+    width: 100%;
+    height: 32px;
+    color: rgba(0,0,0,.54);
+    line-height: 32px;
+    font-size: 20px;
+  }
+
+  #gameScreen .input-container input[type='text']:focus {
+    outline: none;
+  }
+
+  #gameScreen #phaser {
+    position: relative;
+    margin: 10px auto 0;
+    padding: 6px;
+    width: 900px;
+    height: 668px;
+    background: url("/static/img/game-container-background.svg");
+  }
+
+  #gameScreen #phaser .phaser-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+  }
+
+  #gameScreen #phaser .phaser-overlay .status {
+    position: absolute;
+    width: 369px;
+    height: 326px;
+    background: url("/static/img/status.svg");
+  }
+
+  #gameScreen #phaser .phaser-overlay .status.hero {
+    top: 20px;
+    left: 20px;
+  }
+
+  #gameScreen #phaser .phaser-overlay .status.challenger {
+    top: 20px;
+    right: 20px;
+  }
+
+  #gameScreen #phaser .phaser-overlay .status .hp {
+    position: absolute;
+    top: 76px;
+    left: 19px;
+    width: 331px;
+    height: 18px;
+    overflow: hidden;
+  }
+
+  #gameScreen #phaser .phaser-overlay .status .hp-background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 331px;
+    height: 18px;
+  }
+
+  #gameScreen #phaser .phaser-overlay .status .hp .hp-begin {
+    position: absolute;
+    width: 9px;
+    height: 18px;
+    background: url("/static/img/hp_begin.svg");
+  }
+
+  #gameScreen #phaser .phaser-overlay .status .hp .hp-middle {
+    position: absolute;
+    left: 9px;
+    width: 9px;
+    width: 313px;
+    height: 18px;
+    background: url("/static/img/hp_middle.svg");
+  }
+
+  #gameScreen #phaser .phaser-overlay .status .hp .hp-end {
+    position: absolute;
+    right: 0px;
+    width: 9px;
+    height: 18px;
+    background: url("/static/img/hp_end.svg");
+  }
+
+  #gameScreen #phaser .phaser-overlay .status .info {
+    position: absolute;
+    top: 120px;
+    left: 32px;
+    right: 32px;
+    bottom: 20px;
+    text-align:left;
+  }
+
+  .large-button {
+    width: 90% !Important;
+  }
+
+  .loading {
+    position: fixed;
+    z-index: 999;
+    height: 2em;
+    width: 2em;
+    overflow: show;
+    margin: auto;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+  }
+
+  .loading:before {
+    content: '';
+    display: block;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.3);
+  }
+
+  .loading:not(:required) {
+    font: 0/0 a;
+    color: transparent;
+    text-shadow: none;
+    background-color: transparent;
+    border: 0;
+  }
+
+  .loading:not(:required):after {
+    content: '';
+    display: block;
+    font-size: 10px;
+    width: 1em;
+    height: 1em;
+    margin-top: -0.5em;
+    -webkit-animation: spinner 1500ms infinite linear;
+    -moz-animation: spinner 1500ms infinite linear;
+    -ms-animation: spinner 1500ms infinite linear;
+    -o-animation: spinner 1500ms infinite linear;
+    animation: spinner 1500ms infinite linear;
+    border-radius: 0.5em;
+    -webkit-box-shadow: rgba(0, 0, 0, 0.75) 1.5em 0 0 0, rgba(0, 0, 0, 0.75) 1.1em 1.1em 0 0, rgba(0, 0, 0, 0.75) 0 1.5em 0 0, rgba(0, 0, 0, 0.75) -1.1em 1.1em 0 0, rgba(0, 0, 0, 0.5) -1.5em 0 0 0, rgba(0, 0, 0, 0.5) -1.1em -1.1em 0 0, rgba(0, 0, 0, 0.75) 0 -1.5em 0 0, rgba(0, 0, 0, 0.75) 1.1em -1.1em 0 0;
+    box-shadow: rgba(0, 0, 0, 0.75) 1.5em 0 0 0, rgba(0, 0, 0, 0.75) 1.1em 1.1em 0 0, rgba(0, 0, 0, 0.75) 0 1.5em 0 0, rgba(0, 0, 0, 0.75) -1.1em 1.1em 0 0, rgba(0, 0, 0, 0.75) -1.5em 0 0 0, rgba(0, 0, 0, 0.75) -1.1em -1.1em 0 0, rgba(0, 0, 0, 0.75) 0 -1.5em 0 0, rgba(0, 0, 0, 0.75) 1.1em -1.1em 0 0;
+  }
+
+  @-webkit-keyframes spinner {
+    0% {
+      -webkit-transform: rotate(0deg);
+      -moz-transform: rotate(0deg);
+      -ms-transform: rotate(0deg);
+      -o-transform: rotate(0deg);
+      transform: rotate(0deg);
+    }
+
+    100% {
+      -webkit-transform: rotate(360deg);
+      -moz-transform: rotate(360deg);
+      -ms-transform: rotate(360deg);
+      -o-transform: rotate(360deg);
+      transform: rotate(360deg);
+    }
+  }
+
+  @-moz-keyframes spinner {
+    0% {
+      -webkit-transform: rotate(0deg);
+      -moz-transform: rotate(0deg);
+      -ms-transform: rotate(0deg);
+      -o-transform: rotate(0deg);
+      transform: rotate(0deg);
+    }
+
+    100% {
+      -webkit-transform: rotate(360deg);
+      -moz-transform: rotate(360deg);
+      -ms-transform: rotate(360deg);
+      -o-transform: rotate(360deg);
+      transform: rotate(360deg);
+    }
+  }
+
+  @-o-keyframes spinner {
+    0% {
+      -webkit-transform: rotate(0deg);
+      -moz-transform: rotate(0deg);
+      -ms-transform: rotate(0deg);
+      -o-transform: rotate(0deg);
+      transform: rotate(0deg);
+    }
+    100% {
+      -webkit-transform: rotate(360deg);
+      -moz-transform: rotate(360deg);
+      -ms-transform: rotate(360deg);
+      -o-transform: rotate(360deg);
+      transform: rotate(360deg);
+    }
+  }
+
+  @keyframes spinner {
+    0% {
+      -webkit-transform: rotate(0deg);
+      -moz-transform: rotate(0deg);
+      -ms-transform: rotate(0deg);
+      -o-transform: rotate(0deg);
+      transform: rotate(0deg);
+    }
+
+    100% {
+      -webkit-transform: rotate(360deg);
+      -moz-transform: rotate(360deg);
+      -ms-transform: rotate(360deg);
+      -o-transform: rotate(360deg);
+      transform: rotate(360deg);
+    }
+  }
+
+</style>
