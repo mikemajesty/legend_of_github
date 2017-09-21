@@ -1,7 +1,7 @@
 enchant();
 window.onload = function() {
-  var game = new Game(320, 320);
-  game.preload('public/game-tutorial/char.png', 'public/game-tutorial/map0.gif');
+  var game = new Game(320, 380);
+  game.preload('public/game-tutorial/char.png', 'public/game-tutorial/map0.gif', 'public/game-tutorial/char-enemy.png');
   game.onload = function() {
 
     var scene = new Group();
@@ -10,32 +10,32 @@ window.onload = function() {
     map.image = game.assets['public/game-tutorial/map0.gif'];
 
     var baseMap = [
-      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-      [0, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 0, 0],
-      [0, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 0],
-      [0, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 0],
-      [0, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 0],
-      [0, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 0],
-      [0, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 0],
-      [0, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 0],
-      [0, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 0],
-      [0, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 0],
-      [0, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 0, 0],
-      [0, 2, 2, 2, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-      [0, 2, 2, 2, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-      [0, 2, 2, 2, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-      [0, 2, 2, 2, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 0, 0, 2, 2, 0, 0],
+      [0, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 0, 2, 2, 2, 0],
+      [0, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 0, 2, 2, 2, 0],
+      [0, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 0, 2, 2, 2, 0],
+      [0, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 0, 2, 2, 2, 0],
+      [0, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 0, 2, 2, 2, 0],
+      [0, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 0, 2, 2, 2, 0],
+      [0, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 0, 2, 2, 2, 0],
+      [0, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 0, 2, 2, 2, 0],
+      [0, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 0, 0, 2, 2, 0, 0],
+      [0, 2, 2, 2, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 2, 2, 2, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 2, 2, 2, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 2, 2, 2, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
     ];
 
     map.loadData(baseMap);
     scene.addChild(map);
 
-    var player = new Sprite(75, 64);
+    var player = new Sprite(218, 123);
     player.spriteOffset = 5;
     player.startingX = 6;
-    player.startingY = 10;
-    player.x = player.startingX * 16 - 8;
+    player.startingY = 2;
+    player.x = player.startingX * 16;
     player.y = player.startingY * 16;
     player.direction = 3;
     player.walk = 1;
@@ -47,12 +47,17 @@ window.onload = function() {
     player.level = 1;
     player.gp = 100;
 
-    player.image = new Surface(75, 1344);
+    player.image = new Surface(218, 984);
     player.image.draw(game.assets['public/game-tutorial/char.png']);
 
     player.addEventListener('enterframe', function() {
-      this.frame = 3;
+    
+     
     });
+
+    setInterval(function () {
+      player.frame++;
+    }, 1000);
 
     player.addEventListener('touchstart', function() {
       console.log('this.frame ', this.frame )
@@ -67,15 +72,20 @@ window.onload = function() {
 
     scene.addChild(player);
 
-    var enemy = new Sprite(75, 64);
-    enemy.x = 6 * 30 - 8;
-    enemy.y = 10 * 16;
-    enemy.image = new Surface(75, 1344);
-    enemy.image.draw(game.assets['public/game-tutorial/char.png']);
+    var enemy = new Sprite(92, 187);
+    enemy.x = 2;
+    enemy.y = 2;
+    enemy.image = new Surface(92, 1310);
+    enemy.image.draw(game.assets['public/game-tutorial/char-enemy.png']);
 
     enemy.addEventListener('enterframe', function() {
-      this.frame = 5;
+
     });
+
+    setInterval(function () {
+      enemy.frame++;
+    }, 1000);
+
 
     scene.addChild(enemy);
 
