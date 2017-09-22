@@ -823,6 +823,7 @@
       -o-transform: rotate(0deg);
       transform: rotate(0deg);
     }
+
     100% {
       -webkit-transform: rotate(360deg);
       -moz-transform: rotate(360deg);
