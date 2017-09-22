@@ -24,6 +24,7 @@
         </md-layout>
       </md-layout>
     </div>
+
     <md-dialog-alert
       :md-content="alert.content"
       :md-ok-text="alert.ok"
@@ -31,6 +32,7 @@
       @close="onClose"
       ref="dialogUserNotFound">
     </md-dialog-alert>
+
     <div id="phaser" ref="phaser">
       <div class="loading" v-if="showSpinner">Loading&#8230;</div>
       <div class="phaser-overlay">
