@@ -316,12 +316,12 @@
           this.heroChar.destroy()
         }
 
-        if (this.heroName) {
-          this.heroName.destroy()
+        if (this.heroNameLabel) {
+          this.heroNameLabel.destroy()
         }
 
-        if (this.enemyName) {
-          this.enemyName.destroy()
+        if (this.enemyNameLabel) {
+          this.enemyNameLabel.destroy()
         }
       },
       preload () {
@@ -454,8 +454,8 @@
         this.showSpinner = true
         this.cleanBattle()
 
-        this.heroName = this.game.add.text(200, 32, null, { font: '32px Arial', fill: '#FFE848' })
-        this.enemyName = this.game.add.text(this.width - 400, 32, null, { font: '32px Arial', fill: '#FFE848' })
+        this.heroNameLabel = this.game.add.text(200, 32, null, { font: '32px Arial', fill: '#FFE848' })
+        this.enemyNameLabel = this.game.add.text(this.width - 400, 32, null, { font: '32px Arial', fill: '#FFE848' })
 
         this.isFindingAvatar = true
 
@@ -543,8 +543,8 @@
     data () {
       return {
         game: null,
-        heroName: null,
-        enemyName: null,
+        heroNameLabel: null,
+        enemyNameLabel: null,
         heroAvatar: null,
         enemyAvatar: null,
         hero: '',
