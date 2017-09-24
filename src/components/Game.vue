@@ -5,14 +5,14 @@
         <md-layout flex='100'>
           <div class="input-container" style="margin-top:20px">
             <label>HERO</label>
-            <input type="text"  style="cursor: pointer" v-model='hero' v-bind:readonly='isFindingAvatar' tabindex="1"/>
+            <input type="text"  style="cursor: pointer" v-model='heroModel' v-bind:readonly='isFindingAvatar' tabindex="1"/>
           </div>
         </md-layout>
         <md-layout md-align='center'>
-          <button type="button"  style="cursor: pointer" class="battle-button" v-on:click='find' v-bind:disabled='isFindingAvatar || !hero || !enemy' tabindex="3">
+          <button type="button"  style="cursor: pointer" class="battle-button" v-on:click='find' v-bind:disabled='isFindingAvatar || !heroModel || !enemy' tabindex="3">
             {{ !isFindingAvatar ? 'Start Battle' : 'Battle in progress'}}
           </button>
-          <button type="button"  style="cursor: pointer" class="button" v-on:click='findFriends' v-bind:disabled='isFindingAvatar || !hero' tabindex="4">
+          <button type="button"  style="cursor: pointer" class="button" v-on:click='findFriends' v-bind:disabled='isFindingAvatar || !heroModel' tabindex="4">
             Find friends
           </button>
         </md-layout>
@@ -37,7 +37,7 @@
       <div class="loading" v-if="showSpinner">Loading&#8230;</div>
       <div class="phaser-overlay">
         <div class="status hero" v-if="heroAvatar">
-          <h1>{{hero}}</h1>
+          <h1>{{heroModel}}</h1>
           <div class="hp" v-bind:style="{width: heroAvatar.HP/heroAvatar.TOTAL_HP * 331 + 'px'}">
             <div class="hp-background">
               <div class="hp-begin"></div>
@@ -164,15 +164,15 @@
       findFriends () {
         this.showSpinner = true
 
-        axios.get(`/api/friends?username=${this.hero}`).then(res => {
+        axios.get(`/api/friends?username=${this.heroModel}`).then(res => {
           this.showSpinner = false
           this.friends = res.data.map(data => {
             return {login: data.login, image: data.avatar_url}
           })
           window.scrollBy(0, window.innerHeight)
         }).catch(e => {
-          this.showInformation(this.hero)
-          this.hero = null
+          this.showInformation(this.heroModel)
+          this.heroModel = null
           this.showSpinner = false
         })
       },
@@ -459,11 +459,11 @@
 
         this.isFindingAvatar = true
 
-        const getHeroRepository = axios.get(`/api/repository/format?username=${this.hero}`).then(res => {
+        const getHeroRepository = axios.get(`/api/repository/format?username=${this.heroModel}`).then(res => {
           return res.data
         }).catch(e => {
-          this.showInformation(this.hero)
-          this.hero = null
+          this.showInformation(this.heroModel)
+          this.heroModel = null
         })
 
         const getEnemyRepository = axios.get(`/api/repository/format?username=${this.enemy}`).then(res => {
@@ -473,11 +473,11 @@
           this.enemy = null
         })
 
-        const getHeroInformation = axios.get(`/api/user/full?username=${this.hero}`).then(res => {
+        const getHeroInformation = axios.get(`/api/user/full?username=${this.heroModel}`).then(res => {
           return res.data
         }).catch(e => {
-          this.showInformation(this.hero)
-          this.hero = null
+          this.showInformation(this.heroModel)
+          this.heroModel = null
         })
 
         const getEnemyInformation = axios.get(`/api/user/full?username=${this.enemy}`).then(res => {
@@ -487,11 +487,11 @@
           this.enemy = null
         })
 
-        const getHeroCurrentStreak = axios.get(`/api/streak/full?username=${this.hero}`).then(res => {
+        const getHeroCurrentStreak = axios.get(`/api/streak/full?username=${this.heroModel}`).then(res => {
           return this.dealingWithLocale(res.data)
         }).catch(e => {
-          this.showInformation(this.hero)
-          this.hero = null
+          this.showInformation(this.heroModel)
+          this.heroModel = null
         })
 
         const getEnemyCurrentStreak = axios.get(`/api/streak/full?username=${this.enemy}`).then(res => {
@@ -547,7 +547,7 @@
         enemyNameLabel: null,
         heroAvatar: null,
         enemyAvatar: null,
-        hero: '',
+        heroModel: '',
         enemy: '',
         heroText: null,
         enemyText: null,
