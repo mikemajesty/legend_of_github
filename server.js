@@ -4,9 +4,7 @@ const app = express();
 const bodyParser = require('body-parser');
 
 app.use('/', express.static(__dirname + '/'));
-
 app.use(favicon(__dirname + '/public/img/favicon.ico'));
-
 app.use(bodyParser.json());
 
 const PORT = process.env.PORT || 3000;
