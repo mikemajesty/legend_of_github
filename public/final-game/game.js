@@ -1,45 +1,28 @@
-var game = new Phaser.Game(800, 600, Phaser.CANVAS, 'phaser-example', { preload: preload, create: create, update: update, render: render });
+var game = new Phaser.Game(800, 600, Phaser.CANVAS, 'phaser-example', { preload: preload, create: create });
 
 function preload() {
-    game.load.atlasJSONHash('bot', 'public/final-game/char.png', 'assets/sprites/running_bot.json');
+    game.load.spritesheet('mummy', 'public/final-game/char.png', 218, 123, 18);
 }
 
-var s;
+var text;
 
 function create() {
 
-    s = game.add.sprite(game.world.centerX, game.world.centerY, 'bot');
-    s.anchor.setTo(0.5, 0.5);
-    s.scale.setTo(2, 2);
+    var mummy = game.add.sprite(300, 200, 'mummy');
 
-    s.animations.add('run');
-    s.animations.play('run', 10, true);
+    var walk = mummy.animations.add('walk');
 
-}
+    walk.enableUpdate = true;
+    walk.onUpdate.add(onUpdate, this);
 
-function update() {
+    mummy.animations.play('walk', 5, true);
 
-    if (game.input.keyboard.isDown(Phaser.Keyboard.LEFT))
-    {
-        s.x -= 4;
-    }
-    else if (game.input.keyboard.isDown(Phaser.Keyboard.RIGHT))
-    {
-        s.x += 4;
-    }
-
-    if (game.input.keyboard.isDown(Phaser.Keyboard.UP))
-    {
-        s.y -= 4;
-    }
-    else if (game.input.keyboard.isDown(Phaser.Keyboard.DOWN))
-    {
-        s.y += 4;
-    }
+    text = game.add.text(300, 264, "Frame 1", { font: "28px Arial", fill: "#ff0044" });
 
 }
 
-function render() {
-    game.debug.spriteInfo(s, 20, 32);
+function onUpdate(anim, frame) {
+
+    text.text = 'Frame ' + frame.index;
 
 }
