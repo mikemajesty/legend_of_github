@@ -9,7 +9,7 @@
           </div>
         </md-layout>
         <md-layout md-align='center'>
-          <button type="button"  style="cursor: pointer" class="battle-button" v-on:click='find' v-bind:disabled='isFindingAvatar || !heroModel || !enemy' tabindex="3">
+          <button type="button"  style="cursor: pointer" class="battle-button" v-on:click='find' v-bind:disabled='isFindingAvatar || !heroModel || !enemyModel' tabindex="3">
             {{ !isFindingAvatar ? 'Start Battle' : 'Battle in progress'}}
           </button>
           <button type="button"  style="cursor: pointer" class="button" v-on:click='findFriends' v-bind:disabled='isFindingAvatar || !heroModel' tabindex="4">
@@ -19,7 +19,7 @@
         <md-layout flex='100'>
           <div class="input-container" style="margin-top:20px">
             <label>CHALLENGER</label>
-            <input type="text" style="cursor: pointer" v-model='enemy' v-bind:readonly='isFindingAvatar' tabindex="2"/>
+            <input type="text" style="cursor: pointer" v-model='enemyModel' v-bind:readonly='isFindingAvatar' tabindex="2"/>
           </div>
         </md-layout>
       </md-layout>
@@ -67,7 +67,7 @@
         </div>
 
         <div class="status challenger" v-if="enemyAvatar">
-          <h1>{{enemy}}</h1>
+          <h1>{{enemyModel}}</h1>
           <div class="hp" v-bind:style="{width: enemyAvatar.HP/enemyAvatar.TOTAL_HP * 331 + 'px'}">
             <div class="hp-background">
               <div class="hp-begin"></div>
@@ -100,7 +100,7 @@
     <div style="width: 900px; display: inline-flex;">
       <div v-if='!isFindingAvatar' id="scroll">
         <a onclick="window.scrollTo(0, 0)" v-for='item in friends' :key='item.login' style='padding-left: 2%;'>
-          <img v-bind:src='item.image' v-on:click='enemy = item.login' :name="item.login" alt='item.login'  style='border-radius: 50%; width: 10%; padding-bottom: 1%; margin-top:1%; cursor: pointer' v-bind:title='item.login'>
+          <img v-bind:src='item.image' v-on:click='enemyModel = item.login' :name="item.login" alt='item.login'  style='border-radius: 50%; width: 10%; padding-bottom: 1%; margin-top:1%; cursor: pointer' v-bind:title='item.login'>
         </a>
       </div>
     </div>
@@ -466,11 +466,11 @@
           this.heroModel = null
         })
 
-        const getEnemyRepository = axios.get(`/api/repository/format?username=${this.enemy}`).then(res => {
+        const getEnemyRepository = axios.get(`/api/repository/format?username=${this.enemyModel}`).then(res => {
           return res.data
         }).catch(e => {
-          this.showInformation(this.enemy)
-          this.enemy = null
+          this.showInformation(this.enemyModel)
+          this.enemyModel = null
         })
 
         const getHeroInformation = axios.get(`/api/user/full?username=${this.heroModel}`).then(res => {
@@ -480,11 +480,11 @@
           this.heroModel = null
         })
 
-        const getEnemyInformation = axios.get(`/api/user/full?username=${this.enemy}`).then(res => {
+        const getEnemyInformation = axios.get(`/api/user/full?username=${this.enemyModel}`).then(res => {
           return res.data
         }).catch(e => {
-          this.showInformation(this.enemy)
-          this.enemy = null
+          this.showInformation(this.enemyModel)
+          this.enemyModelModel = null
         })
 
         const getHeroCurrentStreak = axios.get(`/api/streak/full?username=${this.heroModel}`).then(res => {
@@ -494,11 +494,11 @@
           this.heroModel = null
         })
 
-        const getEnemyCurrentStreak = axios.get(`/api/streak/full?username=${this.enemy}`).then(res => {
+        const getEnemyCurrentStreak = axios.get(`/api/streak/full?username=${this.enemyModel}`).then(res => {
           return this.dealingWithLocale(res.data)
         }).catch(e => {
-          this.showInformation(this.enemy)
-          this.enemy = null
+          this.showInformation(this.enemyModel)
+          this.enemyModel = null
         })
 
         Promise.all([
@@ -548,7 +548,7 @@
         heroAvatar: null,
         enemyAvatar: null,
         heroModel: '',
-        enemy: '',
+        enemyModel: '',
         heroText: null,
         enemyText: null,
         isBattle: false,
