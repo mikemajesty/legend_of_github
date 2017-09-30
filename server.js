@@ -14,7 +14,7 @@ app.get('/', function(req, res) {
 });
 
 app.listen(PORT, function() {
-  console.log('Server Running on ' + PORT);
+  console.log(`Server Running on ${PORT}`);
 });
 
 app.use('/', require('./server/api'));
