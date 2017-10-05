@@ -4,12 +4,10 @@ const bodyParser = require('body-parser');
 
 app.use(bodyParser.json());
 
-app.get('/api', (req, res) => {
-  res.json({message: 'Welcome to the Server'})
-})
+const port = process.env.PORT || 8081;
 
-app.listen(8081, () => {
-  console.log('API listening on port 8081')
+app.listen(port, () => {
+  console.log('API listening on port ' + port);
 })
 
 app.use((req, res, next) => {
