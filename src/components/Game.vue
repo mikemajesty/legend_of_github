@@ -69,7 +69,7 @@
       MP: parseInt(mp),
       P_ATCK: parseInt(pAtack),
       P_DEF: parseInt(pDef),
-      Cast_Speed: parseInt(castSpeed),
+      CAST_SPEED: parseInt(castSpeed),
       CRITICAL: parseInt(criticalChance),
       ACCURACY: parseInt(accuracy),
       STAMINA: parseInt(stamina)
