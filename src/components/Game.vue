@@ -132,7 +132,7 @@
       }
     },
     created () {
-      const getRepository = axios.post(`http://localhost:8081/repository`, {
+      const getRepository = axios.post(`/repository`, {
         username: 'mikemajesty'
       }).then(res => {
         const sumStarAndFork = _.max(_.map(res.data, (value) => {
@@ -157,7 +157,7 @@
         console.log(e)
       })
 
-      const getInformation = axios.post(`http://localhost:8081/user`, {
+      const getInformation = axios.post(`/user`, {
         username: 'mikemajesty'
       }).then(res => {
         return res.data
@@ -165,7 +165,7 @@
         console.log(e)
       })
 
-      const getCurrentStreak = axios.post(`http://localhost:8081/streak`, {
+      const getCurrentStreak = axios.post(`/streak`, {
         username: 'mikemajesty'
       }).then(res => {
         let currentStreak = []
