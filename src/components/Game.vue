@@ -206,6 +206,7 @@
           currentStreak: getUserCurrentStreak
         }
         console.log(calculate(avatar))
+        console.log(avatar)
       })
     }
   }
