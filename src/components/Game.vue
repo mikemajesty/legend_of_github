@@ -27,7 +27,7 @@
       return ((information.commits + streak) * information.commitsAverage)
     }
     function calculatePAtack () {
-      return ((getRepositoryForks() + getRepositoryStar() + repositories.repositories.full.length + information.commits) * getRepositoriesRelevants())
+      return ((getRepositoryForks() + getRepositoryStar() + repositories.repositories.full.length + information.commits) * getRepositoriesRelevants()) + (information.commits * 2)
     }
     function calculatePDef () {
       return ((getRepositoryForks() + information.followers + getFollowingInformation() + getRepositoryStar() + repositories.repositories.full.length) * getRepositoriesRelevants()) +
@@ -40,7 +40,7 @@
       return (information.commits + streak + information.followers + getFollowingInformation()) * getInformationOrganization()
     }
     function calculateAccuracy () {
-      return ((information.followers + getFollowingInformation() + streak) * (getInformationOrganization() + information.commitsAverage + getRepositoriesRelevants()))
+      return ((information.followers + getFollowingInformation() + streak) * (getInformationOrganization() + information.commitsAverage + getRepositoriesRelevants())) + information.commits
     }
     function calculateStamina () {
       return (information.commits * information.commitsAverage)
@@ -143,14 +143,13 @@
         console.log(e)
       })
 
-      const getCurrentStreak = axios.post(`https://legend-of-github-api.herokuapp.com/streak/full?username=mikemajesty`).then(res => {
+      const getCurrentStreak = axios.get(`https://legend-of-github-api.herokuapp.com/streak/full?username=mikemajesty`).then(res => {
         let currentStreak = []
         let lastCommit = 0
         res.data.forEach(function (data, index) {
           const date = data.date
           const currentCommit = data.commit
           if (new Date(data.date.replace('-', '/')).getTime() <= new Date().getTime()) {
-            console.log(currentCommit > 0 && (lastCommit > 0 || currentStreak.length === 0))
             if (currentCommit > 0 && (lastCommit > 0 || currentStreak.length === 0)) {
               currentStreak.push({
                 date: date,
@@ -181,6 +180,7 @@
           information: getUserInformation,
           currentStreak: getUserCurrentStreak
         }
+        console.log(avatar)
         console.log(calculate(avatar))
       })
     }
