@@ -115,12 +115,14 @@
         walkEnemy.enableUpdate = true
         enemy.animations.play('walk', 5, true)
         this.text = this.game.add.text(300, 264, 'Frame 1', { font: '28px Arial', fill: '#ff0044' })
+        this.sera = this.game.add.text(400, 400, 'Frame 1', { font: '28px Arial', fill: '#ff0044' })
       },
       update (phaser) {
       },
       onUpdate (anim, frame) {
         console.log(JSON.stringify(this.userInformation))
         this.text.text = 'Frame ' + frame.index
+        this.sera.text = 'Frame ' + frame.index
       },
       find () {
         const getRepository = axios.get(`https://legend-of-github-api.herokuapp.com/repository/format?username=mikemajesty`).then(res => {
@@ -182,7 +184,8 @@
       return {
         game: null,
         userInformation: null,
-        text: null
+        text: null,
+        sera: null
       }
     },
     watch: {
