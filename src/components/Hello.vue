@@ -5,9 +5,7 @@
 </template>
 
 <script>
-/* eslint-disable no-unused-vars */
 import Game from './Game.vue'
-/* eslint-enable no-unused-vars */
 
 export default {
   name: 'hello',
@@ -16,13 +14,11 @@ export default {
   },
   data () {
     return {
-      msg: 'Welcome to Your Vue.js App'
     }
   }
 }
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 h1, h2 {
   font-weight: normal;
