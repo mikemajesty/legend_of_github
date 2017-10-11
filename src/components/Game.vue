@@ -1,5 +1,7 @@
 <template>
-  <div id='gameScreen'></div>
+  <div id='gameScreen'>
+    <button v-on:click="find">find</button>
+  </div>
 </template>
 <script>
   import 'pixi'
@@ -107,12 +109,69 @@
         const walk = mummy.animations.add('walk')
         walk.enableUpdate = true
         mummy.animations.play('walk', 5, true)
+        walk.onUpdate.add(this.onUpdate, this)
         const enemy = this.game.add.sprite(130, 30, 'enemy')
         const walkEnemy = enemy.animations.add('walk')
         walkEnemy.enableUpdate = true
         enemy.animations.play('walk', 5, true)
+        this.game.add.text(300, 264, 'Frame 1', { font: '28px Arial', fill: '#ff0044' })
       },
       update (phaser) {
+      },
+      onUpdate (anim, frame) {
+        console.log('Frame ' + JSON.stringify(this.userInformation))
+      },
+      find () {
+        const getRepository = axios.get(`https://legend-of-github-api.herokuapp.com/repository/format?username=mikemajesty`).then(res => {
+          return res.data
+        }).catch(e => {
+          console.log(e)
+        })
+        const getInformation = axios.get(`https://legend-of-github-api.herokuapp.com/user/full?username=mikemajesty`).then(res => {
+          return res.data
+        }).catch(e => {
+          console.log(e)
+        })
+        const getCurrentStreak = axios.get(`https://legend-of-github-api.herokuapp.com/streak/full?username=mikemajesty`).then(res => {
+          let currentStreak = []
+          let lastCommit = 0
+          res.data.forEach(function (data, index) {
+            const date = data.date
+            const currentCommit = data.commit
+            if (new Date(data.date.replace('-', '/')).getTime() <= new Date().getTime()) {
+              if (currentCommit > 0 && (lastCommit > 0 || currentStreak.length === 0)) {
+                currentStreak.push({
+                  date: date,
+                  commit: currentCommit
+                })
+              } else {
+                currentStreak = []
+              }
+            }
+            lastCommit = data.commit
+          })
+          return currentStreak.length
+        }).catch(e => {
+          console.log(e)
+        })
+        Promise.all([
+          getRepository,
+          getInformation,
+          getCurrentStreak
+        ]).then((data) => {
+          const getUserRepository = data[0]
+          const getUserInformation = data[1]
+          const getUserCurrentStreak = data[2]
+
+          const avatar = {
+            repository: getUserRepository,
+            information: getUserInformation,
+            currentStreak: getUserCurrentStreak
+          }
+          console.log(avatar)
+          this.userInformation = calculate(avatar)
+          console.log(calculate(avatar))
+        })
       }
     },
     destroyed () {
@@ -120,7 +179,8 @@
     },
     data () {
       return {
-        game: null
+        game: null,
+        userInformation: null
       }
     },
     watch: {
@@ -131,58 +191,6 @@
       }
     },
     created () {
-      const getRepository = axios.get(`https://legend-of-github-api.herokuapp.com/repository/format?username=mikemajesty`).then(res => {
-        return res.data
-      }).catch(e => {
-        console.log(e)
-      })
-
-      const getInformation = axios.get(`https://legend-of-github-api.herokuapp.com/user/full?username=mikemajesty`).then(res => {
-        return res.data
-      }).catch(e => {
-        console.log(e)
-      })
-
-      const getCurrentStreak = axios.get(`https://legend-of-github-api.herokuapp.com/streak/full?username=mikemajesty`).then(res => {
-        let currentStreak = []
-        let lastCommit = 0
-        res.data.forEach(function (data, index) {
-          const date = data.date
-          const currentCommit = data.commit
-          if (new Date(data.date.replace('-', '/')).getTime() <= new Date().getTime()) {
-            if (currentCommit > 0 && (lastCommit > 0 || currentStreak.length === 0)) {
-              currentStreak.push({
-                date: date,
-                commit: currentCommit
-              })
-            } else {
-              currentStreak = []
-            }
-          }
-          lastCommit = data.commit
-        })
-        return currentStreak.length
-      }).catch(e => {
-        console.log(e)
-      })
-
-      Promise.all([
-        getRepository,
-        getInformation,
-        getCurrentStreak
-      ]).then(function (data) {
-        const getUserRepository = data[0]
-        const getUserInformation = data[1]
-        const getUserCurrentStreak = data[2]
-
-        const avatar = {
-          repository: getUserRepository,
-          information: getUserInformation,
-          currentStreak: getUserCurrentStreak
-        }
-        console.log(avatar)
-        console.log(calculate(avatar))
-      })
     }
   }
 </script>
