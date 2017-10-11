@@ -6,7 +6,6 @@
   import 'p2'
   import Phaser from 'phaser'
   import axios from 'axios'
-  import _ from 'lodash'
 
   const calculate = function (avatar) {
     const repositories = avatar.repository
@@ -22,29 +21,29 @@
     const stamina = calculateStamina()
 
     function calculateHP () {
-      return ((information.commits + streak) * information.commitsAvarage) + (information.fallowers + getFallowingInformation() + getStartInformation())
+      return ((information.commits + streak) * information.commitsAverage) + (information.followers + getFollowingInformation() + getStartInformation())
     }
     function calculateMP () {
-      return ((information.commits + streak) * information.commitsAvarage)
+      return ((information.commits + streak) * information.commitsAverage)
     }
     function calculatePAtack () {
       return ((getRepositoryForks() + getRepositoryStar() + repositories.repositories.full.length + information.commits) * getRepositoriesRelevants())
     }
     function calculatePDef () {
-      return ((getRepositoryForks() + information.fallowers + getFallowingInformation() + getRepositoryStar() + repositories.repositories.full.length) * getRepositoriesRelevants()) +
-          (information.commits * information.commitsAvarage)
+      return ((getRepositoryForks() + information.followers + getFollowingInformation() + getRepositoryStar() + repositories.repositories.full.length) * getRepositoriesRelevants()) +
+          (information.commits * information.commitsAverage)
     }
     function calculateCastSpeed () {
       return (information.commits + streak) * getInformationOrganization()
     }
     function calculateCriticalChance () {
-      return (information.commits + streak + information.fallowers + getFallowingInformation()) * getInformationOrganization()
+      return (information.commits + streak + information.followers + getFollowingInformation()) * getInformationOrganization()
     }
     function calculateAccuracy () {
-      return ((information.fallowers + getFallowingInformation() + streak) * (getInformationOrganization() + information.commitsAvarage + getRepositoriesRelevants()))
+      return ((information.followers + getFollowingInformation() + streak) * (getInformationOrganization() + information.commitsAverage + getRepositoriesRelevants()))
     }
     function calculateStamina () {
-      return (information.commits * information.commitsAvarage)
+      return (information.commits * information.commitsAverage)
     }
     function getInformationOrganization () {
       return information.organizations === 0 ? 1 : information.organizations
@@ -52,8 +51,8 @@
     function getStartInformation () {
       return information.stars > 1000 ? 1000 : information.stars
     }
-    function getFallowingInformation () {
-      return information.fallowing > 1000 ? 1000 : information.fallowing
+    function getFollowingInformation () {
+      return information.following > 1000 ? 1000 : information.following
     }
     function getRepositoryStar () {
       return repositories.stars >= 4 ? (repositories.stars / 2) : 1
@@ -132,49 +131,26 @@
       }
     },
     created () {
-      const getRepository = axios.post(`/repository`, {
-        username: 'mikemajesty'
-      }).then(res => {
-        const sumStarAndFork = _.max(_.map(res.data, (value) => {
-          return (parseInt(value.stars) + parseInt(value.forks))
-        }))
-        const groupRepository = _.groupBy(res.data, function (value) { return value.language })
-        const stars = _.sumBy(res.data, (value) => { return parseInt(value.stars) })
-        const language = _.orderBy(groupRepository, 'length', 'desc')[0]
-        const bestRepositoty = _.find(res.data, (value) => { return (parseInt(value.stars) + parseInt(value.forks)) === sumStarAndFork })
-        const relevantsRepositories = _.filter(res.data, (value) => { return value.stars > 5 && value.forks > 0 })
-        const forks = _.sumBy(res.data, (value) => { return parseInt(value.forks) })
-
-        const data = {
-          stars,
-          forks,
-          repositories: { full: res.data, relevants: relevantsRepositories },
-          bestRepositoty: bestRepositoty || 'noob',
-          language: language ? language[0].language : 'noob'
-        }
-        return data
-      }).catch(e => {
-        console.log(e)
-      })
-
-      const getInformation = axios.post(`/user`, {
-        username: 'mikemajesty'
-      }).then(res => {
+      const getRepository = axios.get(`https://legend-of-github-api.herokuapp.com/repository/format?username=mikemajesty`).then(res => {
         return res.data
       }).catch(e => {
         console.log(e)
       })
 
-      const getCurrentStreak = axios.post(`/streak`, {
-        username: 'mikemajesty'
-      }).then(res => {
+      const getInformation = axios.get(`https://legend-of-github-api.herokuapp.com/user/full?username=mikemajesty`).then(res => {
+        return res.data
+      }).catch(e => {
+        console.log(e)
+      })
+
+      const getCurrentStreak = axios.post(`https://legend-of-github-api.herokuapp.com/streak/full?username=mikemajesty`).then(res => {
         let currentStreak = []
         let lastCommit = 0
         res.data.forEach(function (data, index) {
           const date = data.date
           const currentCommit = data.commit
-
           if (new Date(data.date.replace('-', '/')).getTime() <= new Date().getTime()) {
+            console.log(currentCommit > 0 && (lastCommit > 0 || currentStreak.length === 0))
             if (currentCommit > 0 && (lastCommit > 0 || currentStreak.length === 0)) {
               currentStreak.push({
                 date: date,
@@ -206,7 +182,6 @@
           currentStreak: getUserCurrentStreak
         }
         console.log(calculate(avatar))
-        console.log(avatar)
       })
     }
   }
