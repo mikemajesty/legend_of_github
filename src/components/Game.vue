@@ -46,7 +46,7 @@
       return (information.commits + streak + information.followers + getFollowingInformation()) * getInformationOrganization()
     }
     function calculateAccuracy () {
-      return ((information.followers + getFollowingInformation() + streak) * (getInformationOrganization() + information.commitsAverage + getRepositoriesRelevants())) + information.commits
+      return ((information.followers * 2) + getFollowingInformation()) * ((getInformationOrganization() * information.commitsAverage) * getRepositoriesRelevants()) + information.commits + streak
     }
     function calculateStamina () {
       return (information.commits * information.commitsAverage)
@@ -121,12 +121,12 @@
         const hero = this.game.add.sprite(this.width - 500, 350, 'hero')
         const walk = hero.animations.add('walk')
         walk.enableUpdate = true
-        hero.animations.play('walk', 5, true)
+        hero.animations.play('walk', 2, true)
         walk.onUpdate.add(this.onUpdate, this)
         const enemy = this.game.add.sprite(300, 135, 'enemy')
         const walkEnemy = enemy.animations.add('walk')
         walkEnemy.enableUpdate = true
-        enemy.animations.play('walk', 5, true)
+        enemy.animations.play('walk', 2, true)
         this.heroName = this.game.add.text(200, 32, 'heroName', { font: '28px Arial', fill: '#6B9800' })
         this.enemyName = this.game.add.text(this.width - 350, 32, 'enemyName', { font: '28px Arial', fill: '#6B9800' })
       },
@@ -137,9 +137,28 @@
         this.enemyName.text = this.enemy
         if (this.heroAvatar) {
           if (this.heroAvatar.HP) {
-            this.heroAvatar.HP--
+            this.createBattle()
             this.updateAvatarBar()
           }
+        }
+      },
+      createBattle () {
+        if (!this.stopBattle) {
+          let punchHero = Math.floor(this.heroAvatar.P_DEF / 100)
+          let punchEnemy = Math.floor(this.enemyAvatar.P_DEF / 100)
+          this.enemyAvatar.HP -= Math.floor(this.heroAvatar.P_ATCK / 100) + punchHero
+          this.heroAvatar.HP -= Math.floor(this.enemyAvatar.P_ATCK / 100) + punchEnemy
+        }
+        this.verifyWinner()
+      },
+      verifyWinner () {
+        if (this.enemyAvatar.HP <= 0) {
+          this.stopBattle = true
+          this.enemyAvatar.HP = 0
+        }
+        if (this.heroAvatar.HP <= 0) {
+          this.stopBattle = true
+          this.heroAvatar.HP = 0
         }
       },
       updateAvatarBar () {
@@ -266,7 +285,8 @@
         hero: 'mikemajesty',
         enemy: 'celso-wo',
         heroText: null,
-        enemyText: null
+        enemyText: null,
+        stopBattle: false
       }
     },
     watch: {
