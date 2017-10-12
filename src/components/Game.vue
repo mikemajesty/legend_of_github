@@ -111,28 +111,27 @@
     },
     methods: {
       preload () {
-        this.game.load.spritesheet('mummy', 'static/game/img/char.png', 161, 106, 18)
+        this.game.load.spritesheet('hero', 'static/game/img/char.png', 161, 106, 18)
         this.game.load.spritesheet('enemy', 'static/game/img/enemy.png', 385, 318, 18)
-        this.game.load.bitmapFont('shortStack', 'static/game/fonts/shortStack.png', 'static/game/fonts/shortStack.fnt')
       },
       create (phaser) {
-        const mummy = this.game.add.sprite(450, 245, 'mummy')
-        const walk = mummy.animations.add('walk')
+        const hero = this.game.add.sprite(this.width - 500, 350, 'hero')
+        const walk = hero.animations.add('walk')
         walk.enableUpdate = true
-        mummy.animations.play('walk', 5, true)
+        hero.animations.play('walk', 5, true)
         walk.onUpdate.add(this.onUpdate, this)
-        const enemy = this.game.add.sprite(130, 30, 'enemy')
+        const enemy = this.game.add.sprite(300, 135, 'enemy')
         const walkEnemy = enemy.animations.add('walk')
         walkEnemy.enableUpdate = true
         enemy.animations.play('walk', 5, true)
-        this.textHero = this.game.add.text(200, 32, 'hero', { font: '28px Arial', fill: '#6B9800' })
-        this.textEnemy = this.game.add.text(this.width - 350, 32, 'enemy', { font: '28px Arial', fill: '#6B9800' })
+        this.heroName = this.game.add.text(200, 32, 'heroName', { font: '28px Arial', fill: '#6B9800' })
+        this.enemyName = this.game.add.text(this.width - 350, 32, 'enemyName', { font: '28px Arial', fill: '#6B9800' })
       },
       update (phaser) {
       },
       onUpdate (anim, frame) {
-        this.textHero.text = this.hero
-        this.textEnemy.text = this.enemy
+        this.heroName.text = this.hero
+        this.enemyName.text = this.enemy
       },
       find () {
         const getHeroRepository = axios.get(`https://legend-of-github-api.herokuapp.com/repository/format?username=${this.hero}`).then(res => {
@@ -230,11 +229,10 @@
 
           this.heroAvatar = calculate(heroAvatar)
           this.enemyAvatar = calculate(enemyAvatar)
-          console.log(this.heroAvatar.HP)
-          console.log(this.enemyAvatar.HP)
-          this.heroText = this.game.add.bitmapText(32, 32, 'shortStack', `HERO: ${this.hero}`, 18)
-          this.enemyText = this.game.add.bitmapText(this.width - 400, 32, 'shortStack', `ENEMY: ${this.enemy}`, 18)
-          this.enemyText.text = ''
+          this.heroText = this.game.add.text(32, 100, 'heroAvatar', { font: '28px Arial', fill: '#6B9800' })
+          this.heroText.text = `HP: ${this.heroAvatar.HP}\nMP: ${this.heroAvatar.MP}\nP. ATCK: ${this.heroAvatar.P_ATCK}\nP. DEF: ${this.heroAvatar.P_DEF}\nCAST SPEED: ${this.heroAvatar.CAST_SPEED}\nCRITICAL: ${this.heroAvatar.CRITICAL}\nACCURACY: ${this.heroAvatar.ACCURACY}\nSTAMINA: ${this.heroAvatar.STAMINA}`
+          this.enemyText = this.game.add.text(980, 100, 'enemyAvatar', { font: '28px Arial', fill: '#6B9800' })
+          this.enemyText.text = `HP: ${this.enemyAvatar.HP}\nMP: ${this.enemyAvatar.MP}\nP. ATCK: ${this.enemyAvatar.P_ATCK}\nP. DEF: ${this.enemyAvatar.P_DEF}\nCAST SPEED: ${this.enemyAvatar.CAST_SPEED}\nCRITICAL: ${this.enemyAvatar.CRITICAL}\nACCURACY: ${this.enemyAvatar.ACCURACY}\nSTAMINA: ${this.enemyAvatar.STAMINA}`
         })
       }
     },
@@ -244,8 +242,8 @@
     data () {
       return {
         game: null,
-        textHero: null,
-        textEnemy: null,
+        heroName: null,
+        enemyName: null,
         heroAvatar: null,
         enemyAvatar: null,
         hero: 'mikemajesty',
