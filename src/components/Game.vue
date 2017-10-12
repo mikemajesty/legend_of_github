@@ -1,9 +1,9 @@
 <template>
   <div id='gameScreen'>
     <label for="Hero">Hero</label>
-    <input type="text" v-model="hero" required>
+    <input type="text" v-model="hero" @change="cleanText" required>
     <label for="Hero">Enemy</label>
-    <input type="text" v-model="enemy" required>
+    <input type="text" v-model="enemy" @change="cleanText" required>
     <button v-on:click="find">find</button>
   </div>
 </template>
@@ -110,6 +110,12 @@
       }
     },
     methods: {
+      cleanText () {
+        if (this.heroAvatar) {
+          this.heroText.destroy()
+          this.enemyText.destroy()
+        }
+      },
       preload () {
         this.game.load.spritesheet('hero', 'static/game/img/char.png', 161, 106, 18)
         this.game.load.spritesheet('enemy', 'static/game/img/enemy.png', 385, 318, 18)
@@ -134,6 +140,10 @@
         this.enemyName.text = this.enemy
       },
       find () {
+        if (this.heroAvatar) {
+          this.heroText.destroy()
+          this.enemyText.destroy()
+        }
         const getHeroRepository = axios.get(`https://legend-of-github-api.herokuapp.com/repository/format?username=${this.hero}`).then(res => {
           return res.data
         }).catch(e => {
@@ -226,7 +236,6 @@
             information: getEnemyUserInformation,
             currentStreak: getEnemyUserCurrentStreak
           }
-
           this.heroAvatar = calculate(heroAvatar)
           this.enemyAvatar = calculate(enemyAvatar)
           this.heroText = this.game.add.text(32, 100, 'heroAvatar', { font: '28px Arial', fill: '#6B9800' })
@@ -247,7 +256,9 @@
         heroAvatar: null,
         enemyAvatar: null,
         hero: 'mikemajesty',
-        enemy: 'celso-wo'
+        enemy: 'celso-wo',
+        heroText: null,
+        enemyText: null
       }
     },
     watch: {
