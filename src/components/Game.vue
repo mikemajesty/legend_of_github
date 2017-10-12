@@ -1,5 +1,9 @@
 <template>
   <div id='gameScreen'>
+    <label for="Hero">Hero</label>
+    <input type="text" v-model="hero" required>
+    <label for="Hero">Enemy</label>
+    <input type="text" v-model="enemy" required>
     <button v-on:click="find">find</button>
   </div>
 </template>
@@ -80,8 +84,14 @@
   export default {
     name: 'game',
     props: {
-      width: Number,
-      height: Number
+      width: {
+        default: (window.innerWidth - 50),
+        type: Number
+      },
+      height: {
+        default: (window.innerHeight),
+        type: Number
+      }
     },
     mounted () {
       let self = this
@@ -103,6 +113,7 @@
       preload () {
         this.game.load.spritesheet('mummy', 'static/game/img/char.png', 161, 106, 18)
         this.game.load.spritesheet('enemy', 'static/game/img/enemy.png', 385, 318, 18)
+        this.game.load.bitmapFont('shortStack', 'static/game/fonts/shortStack.png', 'static/game/fonts/shortStack.fnt')
       },
       create (phaser) {
         const mummy = this.game.add.sprite(450, 245, 'mummy')
@@ -114,28 +125,37 @@
         const walkEnemy = enemy.animations.add('walk')
         walkEnemy.enableUpdate = true
         enemy.animations.play('walk', 5, true)
-        this.text = this.game.add.text(300, 264, 'Frame 1', { font: '28px Arial', fill: '#ff0044' })
-        this.sera = this.game.add.text(400, 400, 'Frame 1', { font: '28px Arial', fill: '#ff0044' })
+        this.textHero = this.game.add.text(200, 32, 'hero', { font: '28px Arial', fill: '#6B9800' })
+        this.textEnemy = this.game.add.text(this.width - 350, 32, 'enemy', { font: '28px Arial', fill: '#6B9800' })
       },
       update (phaser) {
       },
       onUpdate (anim, frame) {
-        console.log(JSON.stringify(this.userInformation))
-        this.text.text = 'Frame ' + frame.index
-        this.sera.text = 'Frame ' + frame.index
+        this.textHero.text = this.hero
+        this.textEnemy.text = this.enemy
       },
       find () {
-        const getRepository = axios.get(`https://legend-of-github-api.herokuapp.com/repository/format?username=mikemajesty`).then(res => {
+        const getHeroRepository = axios.get(`https://legend-of-github-api.herokuapp.com/repository/format?username=${this.hero}`).then(res => {
           return res.data
         }).catch(e => {
           console.log(e)
         })
-        const getInformation = axios.get(`https://legend-of-github-api.herokuapp.com/user/full?username=mikemajesty`).then(res => {
+        const getEnemyRepository = axios.get(`https://legend-of-github-api.herokuapp.com/repository/format?username=${this.enemy}`).then(res => {
           return res.data
         }).catch(e => {
           console.log(e)
         })
-        const getCurrentStreak = axios.get(`https://legend-of-github-api.herokuapp.com/streak/full?username=mikemajesty`).then(res => {
+        const getHeroInformation = axios.get(`https://legend-of-github-api.herokuapp.com/user/full?username=${this.hero}`).then(res => {
+          return res.data
+        }).catch(e => {
+          console.log(e)
+        })
+        const getEnemyInformation = axios.get(`https://legend-of-github-api.herokuapp.com/user/full?username=${this.enemy}`).then(res => {
+          return res.data
+        }).catch(e => {
+          console.log(e)
+        })
+        const getHeroCurrentStreak = axios.get(`https://legend-of-github-api.herokuapp.com/streak/full?username=${this.hero}`).then(res => {
           let currentStreak = []
           let lastCommit = 0
           res.data.forEach(function (data, index) {
@@ -157,23 +177,64 @@
         }).catch(e => {
           console.log(e)
         })
-        Promise.all([
-          getRepository,
-          getInformation,
-          getCurrentStreak
-        ]).then((data) => {
-          const getUserRepository = data[0]
-          const getUserInformation = data[1]
-          const getUserCurrentStreak = data[2]
+        const getEnemyCurrentStreak = axios.get(`https://legend-of-github-api.herokuapp.com/streak/full?username=${this.enemy}`).then(res => {
+          let currentStreak = []
+          let lastCommit = 0
+          res.data.forEach(function (data, index) {
+            const date = data.date
+            const currentCommit = data.commit
+            if (new Date(data.date.replace('-', '/')).getTime() <= new Date().getTime()) {
+              if (currentCommit > 0 && (lastCommit > 0 || currentStreak.length === 0)) {
+                currentStreak.push({
+                  date: date,
+                  commit: currentCommit
+                })
+              } else {
+                currentStreak = []
+              }
+            }
+            lastCommit = data.commit
+          })
+          return currentStreak.length
+        }).catch(e => {
+          console.log(e)
+        })
 
-          const avatar = {
-            repository: getUserRepository,
-            information: getUserInformation,
-            currentStreak: getUserCurrentStreak
+        Promise.all([
+          getHeroRepository,
+          getHeroInformation,
+          getHeroCurrentStreak,
+          getEnemyRepository,
+          getEnemyInformation,
+          getEnemyCurrentStreak
+        ]).then((data) => {
+          const getHeroRepository = data[0]
+          const getHeroUserInformation = data[1]
+          const getHeroUserCurrentStreak = data[2]
+
+          const heroAvatar = {
+            repository: getHeroRepository,
+            information: getHeroUserInformation,
+            currentStreak: getHeroUserCurrentStreak
           }
-          console.log(avatar)
-          this.userInformation = calculate(avatar)
-          console.log(calculate(avatar))
+
+          const getEnemyRepository = data[3]
+          const getEnemyUserInformation = data[4]
+          const getEnemyUserCurrentStreak = data[5]
+
+          const enemyAvatar = {
+            repository: getEnemyRepository,
+            information: getEnemyUserInformation,
+            currentStreak: getEnemyUserCurrentStreak
+          }
+
+          this.heroAvatar = calculate(heroAvatar)
+          this.enemyAvatar = calculate(enemyAvatar)
+          console.log(this.heroAvatar.HP)
+          console.log(this.enemyAvatar.HP)
+          this.heroText = this.game.add.bitmapText(32, 32, 'shortStack', `HERO: ${this.hero}`, 18)
+          this.enemyText = this.game.add.bitmapText(this.width - 400, 32, 'shortStack', `ENEMY: ${this.enemy}`, 18)
+          this.enemyText.text = ''
         })
       }
     },
@@ -183,9 +244,12 @@
     data () {
       return {
         game: null,
-        userInformation: null,
-        text: null,
-        sera: null
+        textHero: null,
+        textEnemy: null,
+        heroAvatar: null,
+        enemyAvatar: null,
+        hero: 'mikemajesty',
+        enemy: 'celso-wo'
       }
     },
     watch: {
