@@ -77,7 +77,8 @@
       CAST_SPEED: parseInt(castSpeed),
       CRITICAL: parseInt(criticalChance),
       ACCURACY: parseInt(accuracy),
-      STAMINA: parseInt(stamina)
+      STAMINA: parseInt(stamina),
+      BATTLE: 1000
     }
   }
 
@@ -111,10 +112,6 @@
     },
     methods: {
       cleanText () {
-        if (this.heroAvatar) {
-          this.heroText.destroy()
-          this.enemyText.destroy()
-        }
       },
       preload () {
         this.game.load.spritesheet('hero', 'static/game/img/char.png', 161, 106, 18)
@@ -138,12 +135,26 @@
       onUpdate (anim, frame) {
         this.heroName.text = this.hero
         this.enemyName.text = this.enemy
-      },
-      find () {
         if (this.heroAvatar) {
+          if (this.heroAvatar.HP) {
+            this.heroAvatar.HP--
+            this.updateAvatarBar()
+          }
+        }
+      },
+      updateAvatarBar () {
+        if (this.heroText) {
           this.heroText.destroy()
+        }
+        if (this.enemyText) {
           this.enemyText.destroy()
         }
+        this.heroText = this.game.add.text(32, 100, 'heroAvatar', { font: '28px Arial', fill: '#6B9800' })
+        this.heroText.text = `HP: ${this.heroAvatar.HP}\nMP: ${this.heroAvatar.MP}\nP. ATCK: ${this.heroAvatar.P_ATCK}\nP. DEF: ${this.heroAvatar.P_DEF}\nCAST SPEED: ${this.heroAvatar.CAST_SPEED}\nCRITICAL: ${this.heroAvatar.CRITICAL}\nACCURACY: ${this.heroAvatar.ACCURACY}\nSTAMINA: ${this.heroAvatar.STAMINA}`
+        this.enemyText = this.game.add.text(980, 100, 'enemyAvatar', { font: '28px Arial', fill: '#6B9800' })
+        this.enemyText.text = `HP: ${this.enemyAvatar.HP}\nMP: ${this.enemyAvatar.MP}\nP. ATCK: ${this.enemyAvatar.P_ATCK}\nP. DEF: ${this.enemyAvatar.P_DEF}\nCAST SPEED: ${this.enemyAvatar.CAST_SPEED}\nCRITICAL: ${this.enemyAvatar.CRITICAL}\nACCURACY: ${this.enemyAvatar.ACCURACY}\nSTAMINA: ${this.enemyAvatar.STAMINA}`
+      },
+      find () {
         const getHeroRepository = axios.get(`https://legend-of-github-api.herokuapp.com/repository/format?username=${this.hero}`).then(res => {
           return res.data
         }).catch(e => {
@@ -238,10 +249,7 @@
           }
           this.heroAvatar = calculate(heroAvatar)
           this.enemyAvatar = calculate(enemyAvatar)
-          this.heroText = this.game.add.text(32, 100, 'heroAvatar', { font: '28px Arial', fill: '#6B9800' })
-          this.heroText.text = `HP: ${this.heroAvatar.HP}\nMP: ${this.heroAvatar.MP}\nP. ATCK: ${this.heroAvatar.P_ATCK}\nP. DEF: ${this.heroAvatar.P_DEF}\nCAST SPEED: ${this.heroAvatar.CAST_SPEED}\nCRITICAL: ${this.heroAvatar.CRITICAL}\nACCURACY: ${this.heroAvatar.ACCURACY}\nSTAMINA: ${this.heroAvatar.STAMINA}`
-          this.enemyText = this.game.add.text(980, 100, 'enemyAvatar', { font: '28px Arial', fill: '#6B9800' })
-          this.enemyText.text = `HP: ${this.enemyAvatar.HP}\nMP: ${this.enemyAvatar.MP}\nP. ATCK: ${this.enemyAvatar.P_ATCK}\nP. DEF: ${this.enemyAvatar.P_DEF}\nCAST SPEED: ${this.enemyAvatar.CAST_SPEED}\nCRITICAL: ${this.enemyAvatar.CRITICAL}\nACCURACY: ${this.enemyAvatar.ACCURACY}\nSTAMINA: ${this.enemyAvatar.STAMINA}`
+          this.updateAvatarBar()
         })
       }
     },
@@ -267,8 +275,6 @@
           this.game.update()
         })
       }
-    },
-    created () {
     }
   }
 </script>
