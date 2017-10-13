@@ -1,10 +1,24 @@
 <template>
   <div id='gameScreen'>
-    <label for="Hero">Hero</label>
-    <input type="text" v-model="hero" @change="cleanText" required>
-    <label for="Hero">Enemy</label>
-    <input type="text" v-model="enemy" @change="cleanText" required>
-    <button v-on:click="find">find</button>
+    <md-layout flex="100" style="padding: 2%; padding-top: 0px;">
+      <md-layout flex="100">
+        <md-input-container>
+          <label>HERO</label>
+          <md-input v-model="hero" v-bind:readonly="isFindingAvatar"></md-input>
+        </md-input-container>
+      </md-layout>
+      <md-layout md-align="center">
+        <md-button class="md-raised md-primary large-button" v-on:click.native="find" v-bind:disabled="isFindingAvatar">
+          {{ !isFindingAvatar ? 'Start Battle' : 'Battle in progress'}}
+        </md-button>
+      </md-layout>
+      <md-layout>
+        <md-input-container flex="100">
+          <label>ENEMY</label>
+          <md-input v-model="enemy" v-bind:readonly="isFindingAvatar"></md-input>
+        </md-input-container>
+      </md-layout>
+    </md-layout>
   </div>
 </template>
 <script>
@@ -12,6 +26,10 @@
   import 'p2'
   import Phaser from 'phaser'
   import axios from 'axios'
+  import Vue from 'vue'
+  import VueMaterial from 'vue-material'
+
+  Vue.use(VueMaterial)
 
   const calculate = function (avatar) {
     const repositories = avatar.repository
@@ -111,7 +129,11 @@
       }
     },
     methods: {
+      isTrueBattle () {
+        return (this.heroAvatar || false) && (this.heroAvatar.HP || false) && this.isBattle
+      },
       cleanText () {
+        this.cleanBar()
       },
       preload () {
         this.game.load.spritesheet('hero', 'static/game/img/char.png', 161, 106, 18)
@@ -135,45 +157,55 @@
       onUpdate (anim, frame) {
         this.heroName.text = this.hero
         this.enemyName.text = this.enemy
-        if (this.heroAvatar) {
-          if (this.heroAvatar.HP) {
-            this.createBattle()
-            this.updateAvatarBar()
-          }
+        if (this.isTrueBattle()) {
+          this.createBattle()
+          this.updateAvatarBar()
         }
       },
       createBattle () {
-        if (!this.stopBattle) {
-          let punchHero = Math.floor(this.heroAvatar.P_DEF / 100)
-          let punchEnemy = Math.floor(this.enemyAvatar.P_DEF / 100)
-          this.enemyAvatar.HP -= Math.floor(this.heroAvatar.P_ATCK / 100) + punchHero
-          this.heroAvatar.HP -= Math.floor(this.enemyAvatar.P_ATCK / 100) + punchEnemy
-        }
+        let punchHero = Math.floor(this.heroAvatar.P_DEF / 100)
+        let punchEnemy = Math.floor(this.enemyAvatar.P_DEF / 100)
+        this.enemyAvatar.HP -= Math.floor(this.heroAvatar.P_ATCK / 100) + punchHero
+        this.heroAvatar.HP -= Math.floor(this.enemyAvatar.P_ATCK / 100) + punchEnemy
         this.verifyWinner()
       },
       verifyWinner () {
-        if (this.enemyAvatar.HP <= 0) {
-          this.stopBattle = true
+        if (this.enemyAvatar.HP <= 0 && this.isBattle) {
+          this.isBattle = false
           this.enemyAvatar.HP = 0
-        }
-        if (this.heroAvatar.HP <= 0) {
-          this.stopBattle = true
+          this.isFindingAvatar = false
+          if (this.heroAvatar.HP <= 0) {
+            this.heroAvatar.HP = 0
+          }
+        } else if (this.heroAvatar.HP <= 0 && this.isBattle) {
+          this.isBattle = false
           this.heroAvatar.HP = 0
+          this.isFindingAvatar = false
+          if (this.enemyAvatar.HP <= 0) {
+            this.enemyAvatar.HP = 0
+          }
+        } else {
+          this.isBattle = true
         }
       },
-      updateAvatarBar () {
+      cleanBar () {
         if (this.heroText) {
           this.heroText.destroy()
         }
         if (this.enemyText) {
           this.enemyText.destroy()
         }
+      },
+      updateAvatarBar () {
+        this.cleanBar()
         this.heroText = this.game.add.text(32, 100, 'heroAvatar', { font: '28px Arial', fill: '#6B9800' })
         this.heroText.text = `HP: ${this.heroAvatar.HP}\nMP: ${this.heroAvatar.MP}\nP. ATCK: ${this.heroAvatar.P_ATCK}\nP. DEF: ${this.heroAvatar.P_DEF}\nCAST SPEED: ${this.heroAvatar.CAST_SPEED}\nCRITICAL: ${this.heroAvatar.CRITICAL}\nACCURACY: ${this.heroAvatar.ACCURACY}\nSTAMINA: ${this.heroAvatar.STAMINA}`
         this.enemyText = this.game.add.text(980, 100, 'enemyAvatar', { font: '28px Arial', fill: '#6B9800' })
         this.enemyText.text = `HP: ${this.enemyAvatar.HP}\nMP: ${this.enemyAvatar.MP}\nP. ATCK: ${this.enemyAvatar.P_ATCK}\nP. DEF: ${this.enemyAvatar.P_DEF}\nCAST SPEED: ${this.enemyAvatar.CAST_SPEED}\nCRITICAL: ${this.enemyAvatar.CRITICAL}\nACCURACY: ${this.enemyAvatar.ACCURACY}\nSTAMINA: ${this.enemyAvatar.STAMINA}`
       },
       find () {
+        this.isFindingAvatar = true
+        this.cleanText()
         const getHeroRepository = axios.get(`https://legend-of-github-api.herokuapp.com/repository/format?username=${this.hero}`).then(res => {
           return res.data
         }).catch(e => {
@@ -268,6 +300,7 @@
           }
           this.heroAvatar = calculate(heroAvatar)
           this.enemyAvatar = calculate(enemyAvatar)
+          this.isBattle = true
           this.updateAvatarBar()
         })
       }
@@ -286,7 +319,8 @@
         enemy: 'celso-wo',
         heroText: null,
         enemyText: null,
-        stopBattle: false
+        isBattle: false,
+        isFindingAvatar: false
       }
     },
     watch: {
@@ -303,6 +337,10 @@
     margin: 0 auto;
   }
   
+  .large-button {
+    width: 90% !Important;
+  }
+
   #gameScreen canvas {
     display: block;
     margin: 0 auto;
