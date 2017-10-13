@@ -1,1 +1,3 @@
-dist/** linguist-vendored
+dist/* linguist-vendored
+server.js linguist-vendored
+config/* linguist-vendored
