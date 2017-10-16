@@ -140,6 +140,14 @@
         this.enemyText.text = `HP: ${this.enemyAvatar.HP}\nMP: ${this.enemyAvatar.MP}\nP. ATCK: ${this.enemyAvatar.P_ATCK}\nP. DEF: ${this.enemyAvatar.P_DEF}\nCAST SPEED: ${this.enemyAvatar.CAST_SPEED}\nCRITICAL: ${this.enemyAvatar.CRITICAL}\nACCURACY: ${this.enemyAvatar.ACCURACY}\nSTAMINA: ${this.enemyAvatar.STAMINA}`
       },
       find () {
+        if (this.heroName != null) {
+          this.heroName.destroy()
+        }
+        if (this.enemyName != null) {
+          this.enemyName.destroy()
+        }
+        this.heroName = this.game.add.text(200, 32, null, { font: '28px Arial', fill: '#6B9800' })
+        this.enemyName = this.game.add.text(this.width - 350, 32, null, { font: '28px Arial', fill: '#6B9800' })
         this.isFindingAvatar = true
         this.cleanText()
         const getHeroRepository = axios.get(`https://legend-of-github-api.herokuapp.com/repository/format?username=${this.hero}`).then(res => {
@@ -249,8 +257,6 @@
           walkEnemy.enableUpdate = true
           this.enemyChar.animations.play('walk', enemyCast > heroCast ? 3 : 2, true)
           walkEnemy.onUpdate.add(this.onEnemyUpdate, this)
-          this.heroName = this.game.add.text(200, 32, 'heroName', { font: '28px Arial', fill: '#6B9800' })
-          this.enemyName = this.game.add.text(this.width - 350, 32, 'enemyName', { font: '28px Arial', fill: '#6B9800' })
           this.isBattle = true
           this.updateAvatarBar()
         })
