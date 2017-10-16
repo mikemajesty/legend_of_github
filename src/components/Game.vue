@@ -68,36 +68,36 @@
         this.cleanBar()
       },
       preload () {
-        this.game.load.spritesheet('hero', 'static/game/img/char.png', 161, 106, 18)
-        this.game.load.spritesheet('enemy', 'static/game/img/enemy.png', 385, 318, 18)
+        this.game.load.spritesheet('hero', 'static/game/img/char.png', 385, 318, 18)
+        this.game.load.spritesheet('enemy', 'static/game/img/enemy.png', 161, 106, 18)
       },
       create (phaser) {
-        const hero = this.game.add.sprite(this.width - 500, 350, 'hero')
-        const walk = hero.animations.add('walk')
-        walk.enableUpdate = true
-        hero.animations.play('walk', 2, true)
-        walk.onUpdate.add(this.onUpdate, this)
-        const enemy = this.game.add.sprite(300, 135, 'enemy')
-        const walkEnemy = enemy.animations.add('walk')
-        walkEnemy.enableUpdate = true
-        enemy.animations.play('walk', 2, true)
-        this.heroName = this.game.add.text(200, 32, 'heroName', { font: '28px Arial', fill: '#6B9800' })
-        this.enemyName = this.game.add.text(this.width - 350, 32, 'enemyName', { font: '28px Arial', fill: '#6B9800' })
       },
       update (phaser) {
       },
-      onUpdate (anim, frame) {
+      onHeroUpdate (anim, frame) {
         this.heroName.text = this.hero
         this.enemyName.text = this.enemy
         if (this.isTrueBattle()) {
-          this.createBattle()
+          this.createHeroBattle()
           this.updateAvatarBar()
         }
       },
-      createBattle () {
+      onEnemyUpdate (anim, frame) {
+        this.heroName.text = this.hero
+        this.enemyName.text = this.enemy
+        if (this.isTrueBattle()) {
+          this.createEnemyBattle()
+          this.updateAvatarBar()
+        }
+      },
+      createHeroBattle () {
         let punchHero = Math.floor(this.heroAvatar.P_DEF / 100)
-        let punchEnemy = Math.floor(this.enemyAvatar.P_DEF / 100)
         this.enemyAvatar.HP -= Math.floor(this.heroAvatar.P_ATCK / 100) + punchHero
+        this.verifyWinner()
+      },
+      createEnemyBattle () {
+        let punchEnemy = Math.floor(this.enemyAvatar.P_DEF / 100)
         this.heroAvatar.HP -= Math.floor(this.enemyAvatar.P_ATCK / 100) + punchEnemy
         this.verifyWinner()
       },
@@ -109,6 +109,8 @@
           if (this.heroAvatar.HP <= 0) {
             this.heroAvatar.HP = 0
           }
+          this.heroChar.animations.paused = true
+          this.enemyChar.animations.paused = true
         } else if (this.heroAvatar.HP <= 0 && this.isBattle) {
           this.isBattle = false
           this.heroAvatar.HP = 0
@@ -116,6 +118,8 @@
           if (this.enemyAvatar.HP <= 0) {
             this.enemyAvatar.HP = 0
           }
+          this.heroChar.animations.paused = true
+          this.enemyChar.animations.paused = true
         } else {
           this.isBattle = true
         }
@@ -132,7 +136,7 @@
         this.cleanBar()
         this.heroText = this.game.add.text(32, 100, 'heroAvatar', { font: '28px Arial', fill: '#6B9800' })
         this.heroText.text = `HP: ${this.heroAvatar.HP}\nMP: ${this.heroAvatar.MP}\nP. ATCK: ${this.heroAvatar.P_ATCK}\nP. DEF: ${this.heroAvatar.P_DEF}\nCAST SPEED: ${this.heroAvatar.CAST_SPEED}\nCRITICAL: ${this.heroAvatar.CRITICAL}\nACCURACY: ${this.heroAvatar.ACCURACY}\nSTAMINA: ${this.heroAvatar.STAMINA}`
-        this.enemyText = this.game.add.text(980, 100, 'enemyAvatar', { font: '28px Arial', fill: '#6B9800' })
+        this.enemyText = this.game.add.text(this.width - 300, 100, 'enemyAvatar', { font: '28px Arial', fill: '#6B9800' })
         this.enemyText.text = `HP: ${this.enemyAvatar.HP}\nMP: ${this.enemyAvatar.MP}\nP. ATCK: ${this.enemyAvatar.P_ATCK}\nP. DEF: ${this.enemyAvatar.P_DEF}\nCAST SPEED: ${this.enemyAvatar.CAST_SPEED}\nCRITICAL: ${this.enemyAvatar.CRITICAL}\nACCURACY: ${this.enemyAvatar.ACCURACY}\nSTAMINA: ${this.enemyAvatar.STAMINA}`
       },
       find () {
@@ -232,6 +236,21 @@
           }
           this.heroAvatar = Status.calculate(heroAvatar)
           this.enemyAvatar = Status.calculate(enemyAvatar)
+          this.heroChar = this.game.add.sprite(this.width - 450, 350, 'enemy')
+          const walk = this.heroChar.animations.add('walk')
+          walk.enableUpdate = true
+          const heroCast = this.heroAvatar.CAST_SPEED
+          const enemyCast = this.enemyAvatar.CAST_SPEED
+
+          this.heroChar.animations.play('walk', heroCast > enemyCast ? 3 : 2, true)
+          walk.onUpdate.add(this.onHeroUpdate, this)
+          this.enemyChar = this.game.add.sprite(250, 135, 'hero')
+          const walkEnemy = this.enemyChar.animations.add('walk')
+          walkEnemy.enableUpdate = true
+          this.enemyChar.animations.play('walk', enemyCast > heroCast ? 3 : 2, true)
+          walkEnemy.onUpdate.add(this.onEnemyUpdate, this)
+          this.heroName = this.game.add.text(200, 32, 'heroName', { font: '28px Arial', fill: '#6B9800' })
+          this.enemyName = this.game.add.text(this.width - 350, 32, 'enemyName', { font: '28px Arial', fill: '#6B9800' })
           this.isBattle = true
           this.updateAvatarBar()
         })
@@ -252,7 +271,9 @@
         heroText: null,
         enemyText: null,
         isBattle: false,
-        isFindingAvatar: false
+        isFindingAvatar: false,
+        heroChar: null,
+        enemyChar: null
       }
     },
     watch: {
