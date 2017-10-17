@@ -1,5 +1,5 @@
 <template>
-  <div id='gameScreen'>
+  <div id='gameScreen' style='margin-bottom: 5%;'>
     <md-layout flex="100" style="padding: 2%; padding-top: 0px;">
       <md-layout flex="100">
         <md-input-container>
@@ -40,7 +40,7 @@
         type: Number
       },
       height: {
-        default: (window.innerHeight),
+        default: (window.innerHeight - 150),
         type: Number
       }
     },
@@ -70,8 +70,10 @@
       preload () {
         this.game.load.spritesheet('hero', 'static/game/img/char.png', 385, 318, 18)
         this.game.load.spritesheet('enemy', 'static/game/img/enemy.png', 161, 106, 18)
+        this.game.load.image('background', 'static/game/img/background.v1.png')
       },
       create (phaser) {
+        this.game.add.tileSprite(5, 5, 1000, 1000, 'background').setScale(0)
       },
       update (phaser) {
       },
@@ -140,9 +142,9 @@
       },
       updateAvatarBar () {
         this.cleanBar()
-        this.heroText = this.game.add.text(32, 100, 'heroAvatar', { font: '28px Arial', fill: '#6B9800' })
+        this.heroText = this.game.add.text(32, 100, 'heroAvatar', { font: '28px Arial', fill: '#FFE848' })
         this.heroText.text = `HP: ${this.heroAvatar.HP}\nMP: ${this.heroAvatar.MP}\nP. ATCK: ${this.heroAvatar.P_ATCK}\nP. DEF: ${this.heroAvatar.P_DEF}\nCAST SPEED: ${this.heroAvatar.CAST_SPEED}\nCRITICAL: ${this.heroAvatar.CRITICAL}\nACCURACY: ${this.heroAvatar.ACCURACY}\nSTAMINA: ${this.heroAvatar.STAMINA}`
-        this.enemyText = this.game.add.text(this.width - 300, 100, 'enemyAvatar', { font: '28px Arial', fill: '#6B9800' })
+        this.enemyText = this.game.add.text(this.width - 300, 100, 'enemyAvatar', { font: '28px Arial', fill: '#FFE848' })
         this.enemyText.text = `HP: ${this.enemyAvatar.HP}\nMP: ${this.enemyAvatar.MP}\nP. ATCK: ${this.enemyAvatar.P_ATCK}\nP. DEF: ${this.enemyAvatar.P_DEF}\nCAST SPEED: ${this.enemyAvatar.CAST_SPEED}\nCRITICAL: ${this.enemyAvatar.CRITICAL}\nACCURACY: ${this.enemyAvatar.ACCURACY}\nSTAMINA: ${this.enemyAvatar.STAMINA}`
       },
       find () {
@@ -158,8 +160,8 @@
         if (this.enemyName != null) {
           this.enemyName.destroy()
         }
-        this.heroName = this.game.add.text(200, 32, null, { font: '28px Arial', fill: '#6B9800' })
-        this.enemyName = this.game.add.text(this.width - 350, 32, null, { font: '28px Arial', fill: '#6B9800' })
+        this.heroName = this.game.add.text(200, 32, null, { font: '28px Arial', fill: '#FFE848' })
+        this.enemyName = this.game.add.text(this.width - 350, 32, null, { font: '28px Arial', fill: '#FFE848' })
         this.isFindingAvatar = true
         this.cleanText()
         const getHeroRepository = axios.get(`https://legend-of-github-api.herokuapp.com/repository/format?username=${this.hero}`).then(res => {
@@ -284,8 +286,8 @@
         enemyName: null,
         heroAvatar: null,
         enemyAvatar: null,
-        hero: 'mikemajesty',
-        enemy: 'celso-wo',
+        hero: '',
+        enemy: '',
         heroText: null,
         enemyText: null,
         isBattle: false,
