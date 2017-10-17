@@ -258,19 +258,23 @@
           }
           this.heroAvatar = Status.calculate(heroAvatar)
           this.enemyAvatar = Status.calculate(enemyAvatar)
-          this.heroChar = this.game.add.sprite(this.width - 450, 350, 'enemy')
+
+          this.heroChar = this.game.add.sprite(450, 350, 'enemy')
+          this.heroChar.scale.x *= -1
           const walk = this.heroChar.animations.add('walk')
           walk.enableUpdate = true
           const heroCast = this.heroAvatar.CAST_SPEED
           const enemyCast = this.enemyAvatar.CAST_SPEED
-
           this.heroChar.animations.play('walk', heroCast > enemyCast ? 3 : 2, true)
           walk.onUpdate.add(this.onHeroUpdate, this)
+
           this.enemyChar = this.game.add.sprite(250, 135, 'hero')
+          this.enemyChar.scale.x *= -1
           const walkEnemy = this.enemyChar.animations.add('walk')
           walkEnemy.enableUpdate = true
           this.enemyChar.animations.play('walk', enemyCast > heroCast ? 3 : 2, true)
           walkEnemy.onUpdate.add(this.onEnemyUpdate, this)
+
           this.isBattle = true
           this.updateAvatarBar()
         })
@@ -286,8 +290,8 @@
         enemyName: null,
         heroAvatar: null,
         enemyAvatar: null,
-        hero: '',
-        enemy: '',
+        hero: 'celso-wo',
+        enemy: 'mikemajesty',
         heroText: null,
         enemyText: null,
         isBattle: false,
