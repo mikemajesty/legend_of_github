@@ -73,7 +73,7 @@
         this.game.load.image('background', 'static/game/img/background.v1.png')
       },
       create (phaser) {
-        this.game.add.tileSprite(5, 5, 1000, 1000, 'background').setScale(0)
+        this.game.add.tileSprite(5, 5, 1300, 700, 'background')
       },
       update (phaser) {
       },
