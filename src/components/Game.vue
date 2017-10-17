@@ -92,13 +92,19 @@
         }
       },
       createHeroBattle () {
-        let punchHero = Math.floor(this.heroAvatar.P_DEF / 100)
-        this.enemyAvatar.HP -= Math.floor(this.heroAvatar.P_ATCK / 100) + punchHero
+        const punchHero = Math.floor(this.heroAvatar.P_DEF / 100)
+        const accuracy = Math.round(this.heroAvatar.ACCURACY / 100)
+        const stamina = Math.round(this.heroAvatar.STAMINA / 100)
+        const critical = (Math.floor(Math.random() * 100001) < this.heroAvatar.CRITICAL ? 2 : 1)
+        this.enemyAvatar.HP -= (Math.floor(this.heroAvatar.P_ATCK / 100) + punchHero + Math.round(accuracy + stamina / 2)) * critical
         this.verifyWinner()
       },
       createEnemyBattle () {
         let punchEnemy = Math.floor(this.enemyAvatar.P_DEF / 100)
-        this.heroAvatar.HP -= Math.floor(this.enemyAvatar.P_ATCK / 100) + punchEnemy
+        const accuracy = Math.round(this.enemyAvatar.ACCURACY / 100)
+        const stamina = Math.round(this.enemyAvatar.STAMINA / 100)
+        const critical = (Math.floor(Math.random() * 100001) < this.enemyAvatar.CRITICAL ? 2 : 1)
+        this.heroAvatar.HP -= (Math.floor(this.enemyAvatar.P_ATCK / 100) + punchEnemy + Math.round(accuracy + stamina / 2)) * critical
         this.verifyWinner()
       },
       verifyWinner () {

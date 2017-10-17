@@ -37,7 +37,7 @@ exports.calculate = function (avatar) {
   }
 
   function calculateAccuracy () {
-    return ((information.followers * 2) + getFollowingInformation()) * ((getInformationOrganization() * information.commitsAverage) * getRepositoriesRelevants()) + information.commits + streak
+    return ((information.followers) + getFollowingInformation()) * ((getInformationOrganization() * information.commitsAverage) * getRepositoriesRelevants()) + information.commits + streak
   }
 
   function calculateStamina () {
@@ -45,7 +45,7 @@ exports.calculate = function (avatar) {
   }
 
   function getInformationOrganization () {
-    return information.organizations === 0 ? 1 : information.organizations
+    return information.organizations === 0 ? 1 : information.organizations >= 5 ? 5 : information.organizations
   }
 
   function getStartInformation () {
@@ -76,7 +76,6 @@ exports.calculate = function (avatar) {
     CAST_SPEED: parseInt(castSpeed),
     CRITICAL: parseInt(criticalChance),
     ACCURACY: parseInt(accuracy),
-    STAMINA: parseInt(stamina),
-    BATTLE: 1000
+    STAMINA: parseInt(stamina)
   }
 }
