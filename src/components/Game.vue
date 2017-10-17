@@ -146,6 +146,12 @@
         this.enemyText.text = `HP: ${this.enemyAvatar.HP}\nMP: ${this.enemyAvatar.MP}\nP. ATCK: ${this.enemyAvatar.P_ATCK}\nP. DEF: ${this.enemyAvatar.P_DEF}\nCAST SPEED: ${this.enemyAvatar.CAST_SPEED}\nCRITICAL: ${this.enemyAvatar.CRITICAL}\nACCURACY: ${this.enemyAvatar.ACCURACY}\nSTAMINA: ${this.enemyAvatar.STAMINA}`
       },
       find () {
+        if (this.enemyChar != null) {
+          this.enemyChar.destroy()
+        }
+        if (this.heroChar != null) {
+          this.heroChar.destroy()
+        }
         if (this.heroName != null) {
           this.heroName.destroy()
         }
