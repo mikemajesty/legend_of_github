@@ -31,7 +31,7 @@
   import Status from '../service/status-service'
 
   Vue.use(VueMaterial)
-  
+
   export default {
     name: 'game',
     props: {
@@ -40,7 +40,7 @@
         type: Number
       },
       height: {
-        default: 650,
+        default: 710,
         type: Number
       }
     },
@@ -120,21 +120,21 @@
         if (this.heroApiResult.repository.language.toLocaleLowerCase() === 'java') {
           return frame.index === 10 || frame.index === 24
         } else if (this.heroApiResult.repository.language.toLocaleLowerCase() === 'c#') {
-          return frame.index === 19 || frame.index === 35
+          return frame.index === 15 || frame.index === 37
         } else if (this.heroApiResult.repository.language.toLocaleLowerCase() === 'javascript') {
           return frame.index === 39 || frame.index === 40
         }
-        return frame.index === 12 || frame.index === 28
+        return frame.index === 12 || frame.index === 26
       },
       punchEnemyFrame (frame) {
         if (this.enemyApiResult.repository.language.toLocaleLowerCase() === 'java') {
           return frame.index === 10 || frame.index === 24
         } else if (this.enemyApiResult.repository.language.toLocaleLowerCase() === 'c#') {
-          return frame.index === 19 || frame.index === 35
+          return frame.index === 15 || frame.index === 37
         } else if (this.enemyApiResult.repository.language.toLocaleLowerCase() === 'javascript') {
           return frame.index === 39 || frame.index === 40
         }
-        return frame.index === 12 || frame.index === 28
+        return frame.index === 12 || frame.index === 26
       },
       isTrueBattle () {
         return (this.heroAvatar || false) && (this.heroAvatar.HP || false) && this.isBattle
@@ -389,7 +389,7 @@
   #gameScreen {
     margin: 0 auto;
   }
-  
+
   .large-button {
     width: 90% !Important;
   }
