@@ -143,7 +143,7 @@
         if (this.heroApiResult.repository.language.toLocaleLowerCase() === 'java') {
           return frame.index === 10 || frame.index === 24
         } else if (this.heroApiResult.repository.language.toLocaleLowerCase() === 'c#') {
-          return frame.index === 14 || frame.index === 37
+          return frame.index === 15 || frame.index === 37
         } else if (this.heroApiResult.repository.language.toLocaleLowerCase() === 'javascript') {
           return frame.index === 39 || frame.index === 40
         }
@@ -153,7 +153,7 @@
         if (this.enemyApiResult.repository.language.toLocaleLowerCase() === 'java') {
           return frame.index === 10 || frame.index === 24
         } else if (this.enemyApiResult.repository.language.toLocaleLowerCase() === 'c#') {
-          return frame.index === 14 || frame.index === 37
+          return frame.index === 15 || frame.index === 37
         } else if (this.enemyApiResult.repository.language.toLocaleLowerCase() === 'javascript') {
           return frame.index === 39 || frame.index === 40
         }
