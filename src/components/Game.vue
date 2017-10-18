@@ -36,11 +36,11 @@
     name: 'game',
     props: {
       width: {
-        default: (window.innerWidth - 50),
+        default: 900,
         type: Number
       },
       height: {
-        default: (window.innerHeight - 150),
+        default: 650,
         type: Number
       }
     },
@@ -61,6 +61,27 @@
       }
     },
     methods: {
+      getEnemyCharByLanguage (language) {
+        if (language.toLocaleLowerCase() === 'javascript') {
+          this.enemyChar = this.game.add.sprite(this.width - 150, this.height - 400, 'hero-tanker-java')
+          this.enemyChar.scale.x *= -1
+        }
+      },
+      getHeroCharByLanguage (language) {
+        if (language.toLocaleLowerCase() === 'javascript') {
+          this.heroChar = this.game.add.sprite(this.width - 750, this.height - 400, 'enemy-tanker-java')
+        }
+      },
+      punchHeroFrame () {
+        if (this.heroApiResult.getHeroRepository.language === 'javascript') {
+
+        }
+      },
+      punchEnemyFrame () {
+        if (this.enemyApiResult.getEnemyRepository.language === 'javascript') {
+
+        }
+      },
       isTrueBattle () {
         return (this.heroAvatar || false) && (this.heroAvatar.HP || false) && this.isBattle
       },
@@ -68,8 +89,8 @@
         this.cleanBar()
       },
       preload () {
-        this.game.load.spritesheet('hero', 'static/game/img/char.png', 385, 318, 18)
-        this.game.load.spritesheet('enemy', 'static/game/img/enemy.png', 161, 106, 18)
+        this.game.load.spritesheet('hero-tanker-java', 'static/game/char/tanker-385x318.png', 385, 318, 28, 5)
+        this.game.load.spritesheet('enemy-tanker-java', 'static/game/char/tanker-385x318.png', 385, 318, 28, 5)
         this.game.load.image('background', 'static/game/img/background.v1.png')
       },
       create (phaser) {
@@ -80,7 +101,8 @@
       onHeroUpdate (anim, frame) {
         this.heroName.text = this.hero
         this.enemyName.text = this.enemy
-        if (this.isTrueBattle()) {
+        if (this.isTrueBattle() && frame.index % 14 === 0) {
+          console.log('hero', frame.index)
           this.createHeroBattle()
           this.updateAvatarBar()
         }
@@ -88,7 +110,8 @@
       onEnemyUpdate (anim, frame) {
         this.heroName.text = this.hero
         this.enemyName.text = this.enemy
-        if (this.isTrueBattle()) {
+        if (this.isTrueBattle() && frame.index % 14 === 0) {
+          console.log('enemy', frame.index)
           this.createEnemyBattle()
           this.updateAvatarBar()
         }
@@ -142,9 +165,9 @@
       },
       updateAvatarBar () {
         this.cleanBar()
-        this.heroText = this.game.add.text(32, 100, 'heroAvatar', { font: '28px Arial', fill: '#FFE848' })
+        this.heroText = this.game.add.text(32, 100, 'heroAvatar', { font: '20px Arial', fill: '#FFE848' })
         this.heroText.text = `HP: ${this.heroAvatar.HP}\nMP: ${this.heroAvatar.MP}\nP. ATCK: ${this.heroAvatar.P_ATCK}\nP. DEF: ${this.heroAvatar.P_DEF}\nCAST SPEED: ${this.heroAvatar.CAST_SPEED}\nCRITICAL: ${this.heroAvatar.CRITICAL}\nACCURACY: ${this.heroAvatar.ACCURACY}\nSTAMINA: ${this.heroAvatar.STAMINA}`
-        this.enemyText = this.game.add.text(this.width - 300, 100, 'enemyAvatar', { font: '28px Arial', fill: '#FFE848' })
+        this.enemyText = this.game.add.text(this.width - 210, 100, 'enemyAvatar', { font: '20px Arial', fill: '#FFE848' })
         this.enemyText.text = `HP: ${this.enemyAvatar.HP}\nMP: ${this.enemyAvatar.MP}\nP. ATCK: ${this.enemyAvatar.P_ATCK}\nP. DEF: ${this.enemyAvatar.P_DEF}\nCAST SPEED: ${this.enemyAvatar.CAST_SPEED}\nCRITICAL: ${this.enemyAvatar.CRITICAL}\nACCURACY: ${this.enemyAvatar.ACCURACY}\nSTAMINA: ${this.enemyAvatar.STAMINA}`
       },
       find () {
@@ -160,8 +183,8 @@
         if (this.enemyName != null) {
           this.enemyName.destroy()
         }
-        this.heroName = this.game.add.text(200, 32, null, { font: '28px Arial', fill: '#FFE848' })
-        this.enemyName = this.game.add.text(this.width - 350, 32, null, { font: '28px Arial', fill: '#FFE848' })
+        this.heroName = this.game.add.text(200, 32, null, { font: '32px Arial', fill: '#FFE848' })
+        this.enemyName = this.game.add.text(this.width - 400, 32, null, { font: '32px Arial', fill: '#FFE848' })
         this.isFindingAvatar = true
         this.cleanText()
         const getHeroRepository = axios.get(`https://legend-of-github-api.herokuapp.com/repository/format?username=${this.hero}`).then(res => {
@@ -246,7 +269,7 @@
             information: getHeroUserInformation,
             currentStreak: getHeroUserCurrentStreak
           }
-
+          this.heroApiResult = heroAvatar
           const getEnemyRepository = data[3]
           const getEnemyUserInformation = data[4]
           const getEnemyUserCurrentStreak = data[5]
@@ -256,23 +279,25 @@
             information: getEnemyUserInformation,
             currentStreak: getEnemyUserCurrentStreak
           }
+          this.enemyApiResult = enemyAvatar
+
           this.heroAvatar = Status.calculate(heroAvatar)
           this.enemyAvatar = Status.calculate(enemyAvatar)
 
-          this.heroChar = this.game.add.sprite(450, 350, 'enemy')
-          this.heroChar.scale.x *= -1
+          this.getHeroCharByLanguage(getHeroRepository.language)
+
           const walk = this.heroChar.animations.add('walk')
           walk.enableUpdate = true
           const heroCast = this.heroAvatar.CAST_SPEED
           const enemyCast = this.enemyAvatar.CAST_SPEED
-          this.heroChar.animations.play('walk', heroCast > enemyCast ? 3 : 2, true)
+          this.heroChar.animations.play('walk', heroCast > enemyCast ? 5 : 4, true)
           walk.onUpdate.add(this.onHeroUpdate, this)
 
-          this.enemyChar = this.game.add.sprite(250, 135, 'hero')
-          this.enemyChar.scale.x *= -1
+          this.getEnemyCharByLanguage(getEnemyRepository.language)
+
           const walkEnemy = this.enemyChar.animations.add('walk')
           walkEnemy.enableUpdate = true
-          this.enemyChar.animations.play('walk', enemyCast > heroCast ? 3 : 2, true)
+          this.enemyChar.animations.play('walk', enemyCast > heroCast ? 5 : 4, true)
           walkEnemy.onUpdate.add(this.onEnemyUpdate, this)
 
           this.isBattle = true
@@ -297,7 +322,9 @@
         isBattle: false,
         isFindingAvatar: false,
         heroChar: null,
-        enemyChar: null
+        enemyChar: null,
+        heroApiResult: null,
+        enemyApiResult: null
       }
     },
     watch: {
