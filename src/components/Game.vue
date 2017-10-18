@@ -61,82 +61,59 @@
       }
     },
     methods: {
-      getEnemyCharByLanguage (language) {
-        if (language.toLocaleLowerCase() === 'java') {
-          this.enemyChar = this.game.add.sprite(this.width - 150, this.height - 400, 'hero-tanker-java')
-          this.enemyChar.scale.x *= -1
-          const heroCast = this.heroAvatar.CAST_SPEED
-          const enemyCast = this.enemyAvatar.CAST_SPEED
-          const walkEnemy = this.enemyChar.animations.add('walk', [4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27], 10, true)
-          walkEnemy.enableUpdate = true
-          walkEnemy.onUpdate.add(this.onEnemyUpdate, this)
-          this.enemyChar.animations.play('walk', enemyCast > heroCast ? 5 : 4, true)
-        } else if (language.toLocaleLowerCase() === 'c#') {
-          this.enemyChar = this.game.add.sprite(this.width - 530, this.height - 180, 'hero-atacker-c#')
-          const heroCast = this.heroAvatar.CAST_SPEED
-          const enemyCast = this.enemyAvatar.CAST_SPEED
-          const walkEnemy = this.enemyChar.animations.add('walk', [2, 8, 11, 12, 13, 15, 16, 17, 18, 19, 23, 24, 25, 26, 27, 28, 29, 30, 31, 35, 36, 37, 38], 10, true)
-          walkEnemy.enableUpdate = true
-          walkEnemy.onUpdate.add(this.onEnemyUpdate, this)
-          this.enemyChar.animations.play('walk', enemyCast > heroCast ? 5 : 4, true)
-        } else if (language.toLocaleLowerCase() === 'javascript') {
-          this.enemyChar = this.game.add.sprite(this.width - 460, this.height - 255, 'enemy-archer-javascript')
-          const heroCast = this.heroAvatar.CAST_SPEED
-          const enemyCast = this.enemyAvatar.CAST_SPEED
-          const walkEnemy = this.enemyChar.animations.add('walk', [16, 17, 18, 19, 20, 29, 30, 29, 30, 31, 21, 22, 23, 24, 25, 26, 27, 36, 37, 38, 39, 40, 41], 10, true)
-          walkEnemy.enableUpdate = true
-          walkEnemy.onUpdate.add(this.onEnemyUpdate, this)
-          this.enemyChar.animations.play('walk', enemyCast > heroCast ? 5 : 4, true)
-        } else {
-          this.enemyChar = this.game.add.sprite(this.width - 460, this.height - 178, 'enemy-other')
-          const heroCast = this.heroAvatar.CAST_SPEED
-          const enemyCast = this.enemyAvatar.CAST_SPEED
-          const walkEnemy = this.enemyChar.animations.add('walk', [7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29], 10, true)
-          walkEnemy.enableUpdate = true
-          walkEnemy.onUpdate.add(this.onEnemyUpdate, this)
-          this.enemyChar.animations.play('walk', enemyCast > heroCast ? 5 : 4, true)
-        }
+      animateBaseHero (sprite) {
+        const heroCast = this.heroAvatar.CAST_SPEED
+        const enemyCast = this.enemyAvatar.CAST_SPEED
+        const fight = this.heroChar.animations.add('walk', sprite, 10, true)
+        fight.enableUpdate = true
+        fight.onUpdate.add(this.onHeroUpdate, this)
+        this.heroChar.animations.play('walk', heroCast > enemyCast ? 5 : 4, true)
+      },
+      animateBaseEnemy (sprite) {
+        const heroCast = this.heroAvatar.CAST_SPEED
+        const enemyCast = this.enemyAvatar.CAST_SPEED
+        const fight = this.enemyChar.animations.add('walk', sprite, 10, true)
+        fight.enableUpdate = true
+        fight.onUpdate.add(this.onEnemyUpdate, this)
+        this.enemyChar.animations.play('walk', enemyCast > heroCast ? 5 : 4, true)
       },
       getHeroCharByLanguage (language) {
         if (language.toLocaleLowerCase() === 'java') {
           this.heroChar = this.game.add.sprite(this.width - 750, this.height - 400, 'enemy-tanker-java')
-          const heroCast = this.heroAvatar.CAST_SPEED
-          const enemyCast = this.enemyAvatar.CAST_SPEED
-          const walk = this.heroChar.animations.add('walk', [4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27], 10, true)
-          walk.enableUpdate = true
-          walk.onUpdate.add(this.onHeroUpdate, this)
-          this.heroChar.frame = 5
-          this.heroChar.animations.play('walk', heroCast > enemyCast ? 5 : 4, true)
+          this.animateBaseHero([4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27])
         } else if (language.toLocaleLowerCase() === 'c#') {
           this.heroChar = this.game.add.sprite(this.width - 370, this.height - 180, 'enemy-atacker-c#')
           this.heroChar.scale.x *= -1
-          const heroCast = this.heroAvatar.CAST_SPEED
-          const enemyCast = this.enemyAvatar.CAST_SPEED
-          const walk = this.heroChar.animations.add('walk', [2, 8, 11, 12, 13, 15, 16, 17, 18, 19, 23, 24, 25, 26, 27, 28, 29, 30, 31, 35, 36, 37, 38], 10, true)
-          walk.enableUpdate = true
-          walk.onUpdate.add(this.onHeroUpdate, this)
-          this.heroChar.frame = 5
-          this.heroChar.animations.play('walk', heroCast > enemyCast ? 5 : 4, true)
+          this.animateBaseHero([2, 8, 11, 12, 13, 15, 16, 17, 18, 19, 23, 24, 25, 26, 27, 28, 29, 30, 31, 35, 36, 37, 38])
         } else if (language.toLocaleLowerCase() === 'javascript') {
           this.heroChar = this.game.add.sprite(this.width - 460, this.height - 255, 'hero-archer-javascript')
           this.heroChar.scale.x *= -1
-          const heroCast = this.heroAvatar.CAST_SPEED
-          const enemyCast = this.enemyAvatar.CAST_SPEED
-          const walk = this.heroChar.animations.add('walk', [16, 17, 18, 19, 20, 29, 30, 29, 30, 31, 21, 22, 23, 24, 25, 26, 27, 36, 37, 38, 39, 40, 41], 10, true)
-          walk.enableUpdate = true
-          walk.onUpdate.add(this.onHeroUpdate, this)
-          this.heroChar.frame = 5
-          this.heroChar.animations.play('walk', heroCast > enemyCast ? 5 : 4, true)
+          this.animateBaseHero([16, 17, 18, 19, 20, 29, 30, 29, 30, 31, 21, 22, 23, 24, 25, 26, 27, 36, 37, 38, 39, 40, 41])
         } else {
           this.heroChar = this.game.add.sprite(this.width - 460, this.height - 178, 'hero-other')
           this.heroChar.scale.x *= -1
           const heroCast = this.heroAvatar.CAST_SPEED
           const enemyCast = this.enemyAvatar.CAST_SPEED
-          const walk = this.heroChar.animations.add('walk', [7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29], 10, true)
+          const walk = this.heroChar.animations.add('fight', [7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29], 10, true)
           walk.enableUpdate = true
           walk.onUpdate.add(this.onHeroUpdate, this)
-          this.heroChar.frame = 5
-          this.heroChar.animations.play('walk', heroCast > enemyCast ? 5 : 4, true)
+          this.heroChar.animations.play('fight', heroCast > enemyCast ? 5 : 4, true)
+        }
+      },
+      getEnemyCharByLanguage (language) {
+        if (language.toLocaleLowerCase() === 'java') {
+          this.enemyChar = this.game.add.sprite(this.width - 150, this.height - 400, 'hero-tanker-java')
+          this.enemyChar.scale.x *= -1
+          this.animateBaseEnemy([4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27])
+        } else if (language.toLocaleLowerCase() === 'c#') {
+          this.enemyChar = this.game.add.sprite(this.width - 530, this.height - 180, 'hero-atacker-c#')
+          this.animateBaseEnemy([2, 8, 11, 12, 13, 15, 16, 17, 18, 19, 23, 24, 25, 26, 27, 28, 29, 30, 31, 35, 36, 37, 38])
+        } else if (language.toLocaleLowerCase() === 'javascript') {
+          this.enemyChar = this.game.add.sprite(this.width - 460, this.height - 255, 'enemy-archer-javascript')
+          this.animateBaseEnemy([16, 17, 18, 19, 20, 29, 30, 29, 30, 31, 21, 22, 23, 24, 25, 26, 27, 36, 37, 38, 39, 40, 41])
+        } else {
+          this.enemyChar = this.game.add.sprite(this.width - 460, this.height - 178, 'enemy-other')
+          this.animateBaseEnemy([7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29])
         }
       },
       punchHeroFrame (frame) {
@@ -387,8 +364,8 @@
         enemyName: null,
         heroAvatar: null,
         enemyAvatar: null,
-        hero: '',
-        enemy: '',
+        hero: 'mikemajesty',
+        enemy: 'celso-wo',
         heroText: null,
         enemyText: null,
         isBattle: false,
