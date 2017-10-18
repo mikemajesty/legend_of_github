@@ -40,7 +40,7 @@
         type: Number
       },
       height: {
-        default: 650,
+        default: 710,
         type: Number
       }
     },
