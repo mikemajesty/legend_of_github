@@ -71,8 +71,7 @@
           walkEnemy.enableUpdate = true
           walkEnemy.onUpdate.add(this.onEnemyUpdate, this)
           this.enemyChar.animations.play('walk', enemyCast > heroCast ? 5 : 4, true)
-        }
-        if (language.toLocaleLowerCase() === 'c#') {
+        } else if (language.toLocaleLowerCase() === 'c#') {
           this.enemyChar = this.game.add.sprite(this.width - 530, this.height - 180, 'hero-atacker-c#')
           const heroCast = this.heroAvatar.CAST_SPEED
           const enemyCast = this.enemyAvatar.CAST_SPEED
@@ -80,12 +79,19 @@
           walkEnemy.enableUpdate = true
           walkEnemy.onUpdate.add(this.onEnemyUpdate, this)
           this.enemyChar.animations.play('walk', enemyCast > heroCast ? 5 : 4, true)
-        }
-        if (language.toLocaleLowerCase() === 'javascript') {
+        } else if (language.toLocaleLowerCase() === 'javascript') {
           this.enemyChar = this.game.add.sprite(this.width - 460, this.height - 255, 'enemy-archer-javascript')
           const heroCast = this.heroAvatar.CAST_SPEED
           const enemyCast = this.enemyAvatar.CAST_SPEED
           const walkEnemy = this.enemyChar.animations.add('walk', [16, 17, 18, 19, 20, 29, 30, 29, 30, 31, 21, 22, 23, 24, 25, 26, 27, 36, 37, 38, 39, 40, 41], 10, true)
+          walkEnemy.enableUpdate = true
+          walkEnemy.onUpdate.add(this.onEnemyUpdate, this)
+          this.enemyChar.animations.play('walk', enemyCast > heroCast ? 5 : 4, true)
+        } else {
+          this.enemyChar = this.game.add.sprite(this.width - 460, this.height - 178, 'enemy-other')
+          const heroCast = this.heroAvatar.CAST_SPEED
+          const enemyCast = this.enemyAvatar.CAST_SPEED
+          const walkEnemy = this.enemyChar.animations.add('walk', [7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29], 10, true)
           walkEnemy.enableUpdate = true
           walkEnemy.onUpdate.add(this.onEnemyUpdate, this)
           this.enemyChar.animations.play('walk', enemyCast > heroCast ? 5 : 4, true)
@@ -101,8 +107,7 @@
           walk.onUpdate.add(this.onHeroUpdate, this)
           this.heroChar.frame = 5
           this.heroChar.animations.play('walk', heroCast > enemyCast ? 5 : 4, true)
-        }
-        if (language.toLocaleLowerCase() === 'c#') {
+        } else if (language.toLocaleLowerCase() === 'c#') {
           this.heroChar = this.game.add.sprite(this.width - 370, this.height - 180, 'enemy-atacker-c#')
           this.heroChar.scale.x *= -1
           const heroCast = this.heroAvatar.CAST_SPEED
@@ -112,8 +117,7 @@
           walk.onUpdate.add(this.onHeroUpdate, this)
           this.heroChar.frame = 5
           this.heroChar.animations.play('walk', heroCast > enemyCast ? 5 : 4, true)
-        }
-        if (language.toLocaleLowerCase() === 'javascript') {
+        } else if (language.toLocaleLowerCase() === 'javascript') {
           this.heroChar = this.game.add.sprite(this.width - 460, this.height - 255, 'hero-archer-javascript')
           this.heroChar.scale.x *= -1
           const heroCast = this.heroAvatar.CAST_SPEED
@@ -123,29 +127,37 @@
           walk.onUpdate.add(this.onHeroUpdate, this)
           this.heroChar.frame = 5
           this.heroChar.animations.play('walk', heroCast > enemyCast ? 5 : 4, true)
+        } else {
+          this.heroChar = this.game.add.sprite(this.width - 460, this.height - 178, 'hero-other')
+          this.heroChar.scale.x *= -1
+          const heroCast = this.heroAvatar.CAST_SPEED
+          const enemyCast = this.enemyAvatar.CAST_SPEED
+          const walk = this.heroChar.animations.add('walk', [7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29], 10, true)
+          walk.enableUpdate = true
+          walk.onUpdate.add(this.onHeroUpdate, this)
+          this.heroChar.frame = 5
+          this.heroChar.animations.play('walk', heroCast > enemyCast ? 5 : 4, true)
         }
       },
       punchHeroFrame (frame) {
         if (this.heroApiResult.repository.language.toLocaleLowerCase() === 'java') {
           return frame.index === 10 || frame.index === 24
-        }
-        if (this.heroApiResult.repository.language.toLocaleLowerCase() === 'c#') {
+        } else if (this.heroApiResult.repository.language.toLocaleLowerCase() === 'c#') {
           return frame.index === 19 || frame.index === 35
-        }
-        if (this.heroApiResult.repository.language.toLocaleLowerCase() === 'javascript') {
+        } else if (this.heroApiResult.repository.language.toLocaleLowerCase() === 'javascript') {
           return frame.index === 39 || frame.index === 40
         }
+        return frame.index === 12 || frame.index === 28
       },
       punchEnemyFrame (frame) {
         if (this.enemyApiResult.repository.language.toLocaleLowerCase() === 'java') {
           return frame.index === 10 || frame.index === 24
-        }
-        if (this.enemyApiResult.repository.language.toLocaleLowerCase() === 'c#') {
+        } else if (this.enemyApiResult.repository.language.toLocaleLowerCase() === 'c#') {
           return frame.index === 19 || frame.index === 35
-        }
-        if (this.enemyApiResult.repository.language.toLocaleLowerCase() === 'javascript') {
+        } else if (this.enemyApiResult.repository.language.toLocaleLowerCase() === 'javascript') {
           return frame.index === 39 || frame.index === 40
         }
+        return frame.index === 12 || frame.index === 28
       },
       isTrueBattle () {
         return (this.heroAvatar || false) && (this.heroAvatar.HP || false) && this.isBattle
@@ -160,6 +172,9 @@
         this.game.load.spritesheet('enemy-atacker-c#', 'static/game/char/paladin-249x100.png', 249, 100, 39)
         this.game.load.spritesheet('hero-archer-javascript', 'static/game/char/archer-158x173.png', 158, 173, 46)
         this.game.load.spritesheet('enemy-archer-javascript', 'static/game/char/archer-158x173.png', 158, 173, 46)
+        this.game.load.spritesheet('enemy-other', 'static/game/char/wizard-161x106.png', 161, 106, 36)
+        this.game.load.spritesheet('hero-other', 'static/game/char/wizard-161x106.png', 161, 106, 36)
+
         this.game.load.image('background', 'static/game/img/background.v1.png')
       },
       create (phaser) {
@@ -372,8 +387,8 @@
         enemyName: null,
         heroAvatar: null,
         enemyAvatar: null,
-        hero: 'celso-wo',
-        enemy: 'celso-wo',
+        hero: 'ThiagoPrestes',
+        enemy: 'ThiagoPrestes',
         heroText: null,
         enemyText: null,
         isBattle: false,
