@@ -8,7 +8,7 @@ const other = w => {
 const languages = {
   java: w => {
     w.heroChar = w.game.add.sprite(w.width - 750, w.height - 400, 'enemy-tanker-java')
-    w.animateBaseHero([4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27])
+   w .animateBaseHero([4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27])
   },
   'c#': w => {
     w.heroChar = w.game.add.sprite(w.width - 370, w.height - 180, 'enemy-atacker-c#')

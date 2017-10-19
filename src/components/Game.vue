@@ -230,9 +230,9 @@
       updateAvatarBar () {
         this.cleanBar()
         this.heroText = this.game.add.text(32, 100, 'heroAvatar', { font: '20px Arial', fill: '#FFE848' })
-        this.heroText.text = `HP: ${this.heroAvatar.HP}\nMP: ${this.heroAvatar.MP}\nP. ATCK: ${this.heroAvatar.P_ATCK}\nP. DEF: ${this.heroAvatar.P_DEF}\n SPEED: ${this.heroAvatar.SPEED}\nCRITICAL: ${this.heroAvatar.CRITICAL}\nACCURACY: ${this.heroAvatar.ACCURACY}\nSTAMINA: ${this.heroAvatar.STAMINA}`
+        this.heroText.text = `HP: ${this.heroAvatar.HP}\nMP: ${this.heroAvatar.MP}\nP. ATCK: ${this.heroAvatar.P_ATCK}\nP. DEF: ${this.heroAvatar.P_DEF}\nSPEED: ${this.heroAvatar.SPEED}\nCRITICAL: ${this.heroAvatar.CRITICAL}\nACCURACY: ${this.heroAvatar.ACCURACY}\nSTAMINA: ${this.heroAvatar.STAMINA}`
         this.enemyText = this.game.add.text(this.width - 210, 100, 'enemyAvatar', { font: '20px Arial', fill: '#FFE848' })
-        this.enemyText.text = `HP: ${this.enemyAvatar.HP}\nMP: ${this.enemyAvatar.MP}\nP. ATCK: ${this.enemyAvatar.P_ATCK}\nP. DEF: ${this.enemyAvatar.P_DEF}\n SPEED: ${this.enemyAvatar.SPEED}\nCRITICAL: ${this.enemyAvatar.CRITICAL}\nACCURACY: ${this.enemyAvatar.ACCURACY}\nSTAMINA: ${this.enemyAvatar.STAMINA}`
+        this.enemyText.text = `HP: ${this.enemyAvatar.HP}\nMP: ${this.enemyAvatar.MP}\nP. ATCK: ${this.enemyAvatar.P_ATCK}\nP. DEF: ${this.enemyAvatar.P_DEF}\nSPEED: ${this.enemyAvatar.SPEED}\nCRITICAL: ${this.enemyAvatar.CRITICAL}\nACCURACY: ${this.enemyAvatar.ACCURACY}\nSTAMINA: ${this.enemyAvatar.STAMINA}`
       },
       find () {
         this.cleanBattle()
@@ -259,7 +259,7 @@
         }).catch(e => {
           console.log(e)
         })
-        const getHeroCurrentStreak = axios.get(`https://legend-of-github-api.herokuapp.com/streak/full?username=${this.hero}`).then(res => {
+        const getHeroCurrentStreak = axios.get(`/api/streak/full?username=${this.hero}`).then(res => {
           let currentStreak = []
           let lastCommit = 0
           res.data.forEach(function (data, index) {
@@ -281,7 +281,7 @@
         }).catch(e => {
           console.log(e)
         })
-        const getEnemyCurrentStreak = axios.get(`https://legend-of-github-api.herokuapp.com/streak/full?username=${this.enemy}`).then(res => {
+        const getEnemyCurrentStreak = axios.get(`/api/streak/full?username=${this.enemy}`).then(res => {
           let currentStreak = []
           let lastCommit = 0
           res.data.forEach(function (data, index) {
