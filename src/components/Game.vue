@@ -112,21 +112,17 @@
         }
       },
       punchHeroFrame (frame) {
-        if (this.heroApiResult.repository.language.toLocaleLowerCase() === 'java') {
-          return frame.index === 10 || frame.index === 24
-        } else if (this.heroApiResult.repository.language.toLocaleLowerCase() === 'c#') {
-          return frame.index === 15 || frame.index === 37
-        } else if (this.heroApiResult.repository.language.toLocaleLowerCase() === 'javascript') {
-          return frame.index === 39 || frame.index === 40
-        }
-        return frame.index === 12 || frame.index === 26
+        return this.frameMovement(this.heroApiResult, frame)
       },
       punchEnemyFrame (frame) {
-        if (this.enemyApiResult.repository.language.toLocaleLowerCase() === 'java') {
+        return this.frameMovement(this.enemyApiResult, frame)
+      },
+      frameMovement (user, frame) {
+        if (user.repository.language.toLocaleLowerCase() === 'java') {
           return frame.index === 10 || frame.index === 24
-        } else if (this.enemyApiResult.repository.language.toLocaleLowerCase() === 'c#') {
+        } else if (user.repository.language.toLocaleLowerCase() === 'c#') {
           return frame.index === 15 || frame.index === 37
-        } else if (this.enemyApiResult.repository.language.toLocaleLowerCase() === 'javascript') {
+        } else if (user.repository.language.toLocaleLowerCase() === 'javascript') {
           return frame.index === 39 || frame.index === 40
         }
         return frame.index === 12 || frame.index === 26
@@ -315,21 +311,13 @@
           getEnemyRepository,
           getEnemyInformation,
           getEnemyCurrentStreak
-        ]).then((data) => {
-          const getHeroRepository = data[0]
-          const getHeroUserInformation = data[1]
-          const getHeroUserCurrentStreak = data[2]
-
+        ]).then(([getHeroRepository, getHeroUserInformation, getHeroUserCurrentStreak, getEnemyRepository, getEnemyUserInformation, getEnemyUserCurrentStreak]) => {
           const heroAvatar = {
             repository: getHeroRepository,
             information: getHeroUserInformation,
             currentStreak: getHeroUserCurrentStreak
           }
           this.heroApiResult = heroAvatar
-          const getEnemyRepository = data[3]
-          const getEnemyUserInformation = data[4]
-          const getEnemyUserCurrentStreak = data[5]
-
           const enemyAvatar = {
             repository: getEnemyRepository,
             information: getEnemyUserInformation,
