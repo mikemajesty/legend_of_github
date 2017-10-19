@@ -243,22 +243,22 @@
         this.heroName = this.game.add.text(200, 32, null, { font: '32px Arial', fill: '#FFE848' })
         this.enemyName = this.game.add.text(this.width - 400, 32, null, { font: '32px Arial', fill: '#FFE848' })
         this.isFindingAvatar = true
-        const getHeroRepository = axios.get(`https://legend-of-github-api.herokuapp.com/repository/format?username=${this.hero}`).then(res => {
+        const getHeroRepository = axios.get(`/api/repository/format?username=${this.hero}`).then(res => {
           return res.data
         }).catch(e => {
           console.log(e)
         })
-        const getEnemyRepository = axios.get(`https://legend-of-github-api.herokuapp.com/repository/format?username=${this.enemy}`).then(res => {
+        const getEnemyRepository = axios.get(`/api/repository/format?username=${this.enemy}`).then(res => {
           return res.data
         }).catch(e => {
           console.log(e)
         })
-        const getHeroInformation = axios.get(`https://legend-of-github-api.herokuapp.com/user/full?username=${this.hero}`).then(res => {
+        const getHeroInformation = axios.get(`/api/user/full?username=${this.hero}`).then(res => {
           return res.data
         }).catch(e => {
           console.log(e)
         })
-        const getEnemyInformation = axios.get(`https://legend-of-github-api.herokuapp.com/user/full?username=${this.enemy}`).then(res => {
+        const getEnemyInformation = axios.get(`/api/user/full?username=${this.enemy}`).then(res => {
           return res.data
         }).catch(e => {
           console.log(e)
