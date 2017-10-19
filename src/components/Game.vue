@@ -62,20 +62,20 @@
     },
     methods: {
       animateBaseHero (sprite) {
-        const heroCast = this.heroAvatar.CAST_SPEED
-        const enemyCast = this.enemyAvatar.CAST_SPEED
+        const heroSpeed = this.heroAvatar.SPEED
+        const enemySpeed = this.enemyAvatar.SPEED
         const fight = this.heroChar.animations.add('walk', sprite, 10, true)
         fight.enableUpdate = true
         fight.onUpdate.add(this.onHeroUpdate, this)
-        this.heroChar.animations.play('walk', heroCast > enemyCast ? 5 : 4, true)
+        this.heroChar.animations.play('walk', heroSpeed > enemySpeed ? 5 : 4, true)
       },
       animateBaseEnemy (sprite) {
-        const heroCast = this.heroAvatar.CAST_SPEED
-        const enemyCast = this.enemyAvatar.CAST_SPEED
+        const heroSpeed = this.heroAvatar.SPEED
+        const enemySpeed = this.enemyAvatar.SPEED
         const fight = this.enemyChar.animations.add('walk', sprite, 10, true)
         fight.enableUpdate = true
         fight.onUpdate.add(this.onEnemyUpdate, this)
-        this.enemyChar.animations.play('walk', enemyCast > heroCast ? 5 : 4, true)
+        this.enemyChar.animations.play('walk', enemySpeed > heroSpeed ? 5 : 4, true)
       },
       getHeroCharByLanguage (language) {
         if (language.toLocaleLowerCase() === 'java') {
@@ -92,12 +92,7 @@
         } else {
           this.heroChar = this.game.add.sprite(this.width - 460, this.height - 178, 'hero-other')
           this.heroChar.scale.x *= -1
-          const heroCast = this.heroAvatar.CAST_SPEED
-          const enemyCast = this.enemyAvatar.CAST_SPEED
-          const walk = this.heroChar.animations.add('fight', [7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29], 10, true)
-          walk.enableUpdate = true
-          walk.onUpdate.add(this.onHeroUpdate, this)
-          this.heroChar.animations.play('fight', heroCast > enemyCast ? 5 : 4, true)
+          this.animateBaseHero([7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29])
         }
       },
       getEnemyCharByLanguage (language) {
@@ -139,8 +134,20 @@
       isTrueBattle () {
         return (this.heroAvatar || false) && (this.heroAvatar.HP || false) && this.isBattle
       },
-      cleanText () {
+      cleanBattle () {
         this.cleanBar()
+        if (this.enemyChar) {
+          this.enemyChar.destroy()
+        }
+        if (this.heroChar) {
+          this.heroChar.destroy()
+        }
+        if (this.heroName) {
+          this.heroName.destroy()
+        }
+        if (this.enemyName) {
+          this.enemyName.destroy()
+        }
       },
       preload () {
         this.game.load.spritesheet('hero-tanker-java', 'static/game/char/tanker-385x318.png', 385, 318, 27)
@@ -227,27 +234,15 @@
       updateAvatarBar () {
         this.cleanBar()
         this.heroText = this.game.add.text(32, 100, 'heroAvatar', { font: '20px Arial', fill: '#FFE848' })
-        this.heroText.text = `HP: ${this.heroAvatar.HP}\nMP: ${this.heroAvatar.MP}\nP. ATCK: ${this.heroAvatar.P_ATCK}\nP. DEF: ${this.heroAvatar.P_DEF}\nCAST SPEED: ${this.heroAvatar.CAST_SPEED}\nCRITICAL: ${this.heroAvatar.CRITICAL}\nACCURACY: ${this.heroAvatar.ACCURACY}\nSTAMINA: ${this.heroAvatar.STAMINA}`
+        this.heroText.text = `HP: ${this.heroAvatar.HP}\nMP: ${this.heroAvatar.MP}\nP. ATCK: ${this.heroAvatar.P_ATCK}\nP. DEF: ${this.heroAvatar.P_DEF}\n SPEED: ${this.heroAvatar.SPEED}\nCRITICAL: ${this.heroAvatar.CRITICAL}\nACCURACY: ${this.heroAvatar.ACCURACY}\nSTAMINA: ${this.heroAvatar.STAMINA}`
         this.enemyText = this.game.add.text(this.width - 210, 100, 'enemyAvatar', { font: '20px Arial', fill: '#FFE848' })
-        this.enemyText.text = `HP: ${this.enemyAvatar.HP}\nMP: ${this.enemyAvatar.MP}\nP. ATCK: ${this.enemyAvatar.P_ATCK}\nP. DEF: ${this.enemyAvatar.P_DEF}\nCAST SPEED: ${this.enemyAvatar.CAST_SPEED}\nCRITICAL: ${this.enemyAvatar.CRITICAL}\nACCURACY: ${this.enemyAvatar.ACCURACY}\nSTAMINA: ${this.enemyAvatar.STAMINA}`
+        this.enemyText.text = `HP: ${this.enemyAvatar.HP}\nMP: ${this.enemyAvatar.MP}\nP. ATCK: ${this.enemyAvatar.P_ATCK}\nP. DEF: ${this.enemyAvatar.P_DEF}\n SPEED: ${this.enemyAvatar.SPEED}\nCRITICAL: ${this.enemyAvatar.CRITICAL}\nACCURACY: ${this.enemyAvatar.ACCURACY}\nSTAMINA: ${this.enemyAvatar.STAMINA}`
       },
       find () {
-        if (this.enemyChar != null) {
-          this.enemyChar.destroy()
-        }
-        if (this.heroChar != null) {
-          this.heroChar.destroy()
-        }
-        if (this.heroName != null) {
-          this.heroName.destroy()
-        }
-        if (this.enemyName != null) {
-          this.enemyName.destroy()
-        }
+        this.cleanBattle()
         this.heroName = this.game.add.text(200, 32, null, { font: '32px Arial', fill: '#FFE848' })
         this.enemyName = this.game.add.text(this.width - 400, 32, null, { font: '32px Arial', fill: '#FFE848' })
         this.isFindingAvatar = true
-        this.cleanText()
         const getHeroRepository = axios.get(`https://legend-of-github-api.herokuapp.com/repository/format?username=${this.hero}`).then(res => {
           return res.data
         }).catch(e => {

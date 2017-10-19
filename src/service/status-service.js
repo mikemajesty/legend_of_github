@@ -12,7 +12,7 @@ exports.calculate = function (avatar) {
   const stamina = calculateStamina()
 
   function calculateHP () {
-    return ((information.commits + streak) * information.commitsAverage) + (information.followers + getFollowingInformation() + getStartInformation())
+    return ((information.commits + streak) * information.commitsAverage) + (information.followers + getFollowingInformation() + getStarInformation())
   }
 
   function calculateMP () {
@@ -48,7 +48,7 @@ exports.calculate = function (avatar) {
     return information.organizations === 0 ? 1 : information.organizations >= 5 ? 5 : information.organizations
   }
 
-  function getStartInformation () {
+  function getStarInformation () {
     return information.stars > 1000 ? 1000 : information.stars
   }
 
@@ -73,7 +73,7 @@ exports.calculate = function (avatar) {
     MP: parseInt(mp),
     P_ATCK: parseInt(pAtack),
     P_DEF: parseInt(pDef),
-    CAST_SPEED: parseInt(castSpeed),
+    SPEED: parseInt(castSpeed),
     CRITICAL: parseInt(criticalChance),
     ACCURACY: parseInt(accuracy),
     STAMINA: parseInt(stamina)
