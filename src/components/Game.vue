@@ -82,21 +82,21 @@
         const frames = {
           java: () => {
             this.createHeroAnimatioBase({scale: 1, width: this.width - 750, height: this.height - 400, frameImage: 'enemy-tanker-java'})
-            this.animateBaseHero([4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27])
+            this.animateBaseHero(this.getJavaFrame())
           },
           'c#': () => {
             this.createHeroAnimatioBase({scale: -1, width: this.width - 370, height: this.height - 180, frameImage: 'enemy-atacker-c#'})
-            this.animateBaseHero([2, 8, 11, 12, 13, 15, 16, 17, 18, 19, 23, 24, 25, 26, 27, 28, 29, 30, 31, 35, 36, 37, 38])
+            this.animateBaseHero(this.getCSharpFrame())
           },
           javascript: () => {
             this.createHeroAnimatioBase({scale: -1, width: this.width - 460, height: this.height - 255, frameImage: 'hero-archer-javascript'})
-            this.animateBaseHero([16, 17, 18, 19, 20, 29, 30, 29, 30, 31, 21, 22, 23, 24, 25, 26, 27, 36, 37, 38, 39, 40, 41])
+            this.animateBaseHero(this.getJavaScriptFrame())
           }
         }
 
         const other = () => {
           this.createHeroAnimatioBase({scale: -1, width: this.width - 460, height: this.height - 178, frameImage: 'hero-other'})
-          this.animateBaseHero([7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29])
+          this.animateBaseHero(this.getOtherFrame())
         }
 
         return (frames[language.toLocaleLowerCase()] || other)()
@@ -106,24 +106,36 @@
         const frames = {
           java: () => {
             this.createEnemyAnimatioBase({scale: -1, width: this.width - 150, height: this.height - 400, frameImage: 'enemy-tanker-java'})
-            this.animateBaseEnemy([4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27])
+            this.animateBaseEnemy(this.getJavaFrame())
           },
           'c#': () => {
             this.createEnemyAnimatioBase({scale: 1, width: this.width - 530, height: this.height - 180, frameImage: 'enemy-atacker-c#'})
-            this.animateBaseEnemy([2, 8, 11, 12, 13, 15, 16, 17, 18, 19, 23, 24, 25, 26, 27, 28, 29, 30, 31, 35, 36, 37, 38])
+            this.animateBaseEnemy(this.getCSharpFrame())
           },
           javascript: () => {
             this.createEnemyAnimatioBase({scale: 1, width: this.width - 460, height: this.height - 255, frameImage: 'hero-archer-javascript'})
-            this.animateBaseEnemy([16, 17, 18, 19, 20, 29, 30, 29, 30, 31, 21, 22, 23, 24, 25, 26, 27, 36, 37, 38, 39, 40, 41])
+            this.animateBaseEnemy(this.getJavaScriptFrame())
           }
         }
 
         const other = () => {
           this.createEnemyAnimatioBase({scale: 1, width: this.width - 460, height: this.height - 178, frameImage: 'hero-other'})
-          this.animateBaseEnemy([7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29])
+          this.animateBaseEnemy(this.getOtherFrame())
         }
 
         return (frames[language.toLocaleLowerCase()] || other)()
+      },
+      getJavaFrame () {
+        return [4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27]
+      },
+      getCSharpFrame () {
+        return [2, 8, 11, 12, 13, 15, 16, 17, 18, 19, 23, 24, 25, 26, 27, 28, 29, 30, 31, 35, 36, 37, 38]
+      },
+      getJavaScriptFrame () {
+        return [16, 17, 18, 19, 20, 29, 30, 29, 30, 31, 21, 22, 23, 24, 25, 26, 27, 36, 37, 38, 39, 40, 41]
+      },
+      getOtherFrame () {
+        return [7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29]
       },
       createHeroAnimatioBase (animation) {
         console.log('frame image hero', animation.frameImage)
