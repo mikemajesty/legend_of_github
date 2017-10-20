@@ -118,14 +118,25 @@
         return this.frameMovement(this.enemyApiResult, frame)
       },
       frameMovement (user, frame) {
-        if (user.repository.language.toLocaleLowerCase() === 'java') {
-          return frame.index === 10 || frame.index === 24
-        } else if (user.repository.language.toLocaleLowerCase() === 'c#') {
-          return frame.index === 15 || frame.index === 37
-        } else if (user.repository.language.toLocaleLowerCase() === 'javascript') {
-          return frame.index === 39 || frame.index === 40
+        const frames = {
+          java: () => {
+            return frame.index === 10 || frame.index === 24
+          },
+          'c#': () => {
+            return frame.index === 15 || frame.index === 37
+          },
+          javascript: () => {
+            return frame.index === 39 || frame.index === 40
+          }
         }
-        return frame.index === 12 || frame.index === 26
+
+        const other = {
+          other: () => {
+            return frame.index === 12 || frame.index === 26
+          }
+        }
+
+        return (frames[user.repository.language.toLocaleLowerCase()] || other)()
       },
       isTrueBattle () {
         return (this.heroAvatar || false) && (this.heroAvatar.HP || false) && this.isBattle
@@ -166,7 +177,7 @@
         this.heroName.text = this.hero
         this.enemyName.text = this.enemy
         if (this.isTrueBattle() && this.punchHeroFrame(frame)) {
-          console.log('hero', frame.index)
+          console.log('hero punch', frame.index)
           this.createHeroBattle()
           this.updateAvatarBar()
         }
@@ -175,7 +186,7 @@
         this.heroName.text = this.hero
         this.enemyName.text = this.enemy
         if (this.isTrueBattle() && this.punchEnemyFrame(frame)) {
-          console.log('enemy', frame.index)
+          console.log('enemy punch', frame.index)
           this.createEnemyBattle()
           this.updateAvatarBar()
         }
