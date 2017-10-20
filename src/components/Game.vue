@@ -78,38 +78,62 @@
         this.enemyChar.animations.play('walk', enemySpeed > heroSpeed ? 5 : 4, true)
       },
       getHeroCharByLanguage (language) {
-        if (language.toLocaleLowerCase() === 'java') {
-          this.heroChar = this.game.add.sprite(this.width - 750, this.height - 400, 'enemy-tanker-java')
-          this.animateBaseHero([4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27])
-        } else if (language.toLocaleLowerCase() === 'c#') {
-          this.heroChar = this.game.add.sprite(this.width - 370, this.height - 180, 'enemy-atacker-c#')
-          this.heroChar.scale.x *= -1
-          this.animateBaseHero([2, 8, 11, 12, 13, 15, 16, 17, 18, 19, 23, 24, 25, 26, 27, 28, 29, 30, 31, 35, 36, 37, 38])
-        } else if (language.toLocaleLowerCase() === 'javascript') {
-          this.heroChar = this.game.add.sprite(this.width - 460, this.height - 255, 'hero-archer-javascript')
-          this.heroChar.scale.x *= -1
-          this.animateBaseHero([16, 17, 18, 19, 20, 29, 30, 29, 30, 31, 21, 22, 23, 24, 25, 26, 27, 36, 37, 38, 39, 40, 41])
-        } else {
-          this.heroChar = this.game.add.sprite(this.width - 460, this.height - 178, 'hero-other')
-          this.heroChar.scale.x *= -1
+        console.log('Hero', language)
+        const frames = {
+          java: () => {
+            this.createHeroAnimatioBase({scale: 1, width: this.width - 750, height: this.height - 400, frameImage: 'enemy-tanker-java'})
+            this.animateBaseHero([4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27])
+          },
+          'c#': () => {
+            this.createHeroAnimatioBase({scale: -1, width: this.width - 370, height: this.height - 180, frameImage: 'enemy-atacker-c#'})
+            this.animateBaseHero([2, 8, 11, 12, 13, 15, 16, 17, 18, 19, 23, 24, 25, 26, 27, 28, 29, 30, 31, 35, 36, 37, 38])
+          },
+          javascript: () => {
+            this.createHeroAnimatioBase({scale: -1, width: this.width - 460, height: this.height - 255, frameImage: 'hero-archer-javascript'})
+            this.animateBaseHero([16, 17, 18, 19, 20, 29, 30, 29, 30, 31, 21, 22, 23, 24, 25, 26, 27, 36, 37, 38, 39, 40, 41])
+          }
+        }
+
+        const other = () => {
+          this.createHeroAnimatioBase({scale: -1, width: this.width - 460, height: this.height - 178, frameImage: 'hero-other'})
           this.animateBaseHero([7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29])
         }
+
+        return (frames[language.toLocaleLowerCase()] || other)()
       },
       getEnemyCharByLanguage (language) {
-        if (language.toLocaleLowerCase() === 'java') {
-          this.enemyChar = this.game.add.sprite(this.width - 150, this.height - 400, 'hero-tanker-java')
-          this.enemyChar.scale.x *= -1
-          this.animateBaseEnemy([4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27])
-        } else if (language.toLocaleLowerCase() === 'c#') {
-          this.enemyChar = this.game.add.sprite(this.width - 530, this.height - 180, 'hero-atacker-c#')
-          this.animateBaseEnemy([2, 8, 11, 12, 13, 15, 16, 17, 18, 19, 23, 24, 25, 26, 27, 28, 29, 30, 31, 35, 36, 37, 38])
-        } else if (language.toLocaleLowerCase() === 'javascript') {
-          this.enemyChar = this.game.add.sprite(this.width - 460, this.height - 255, 'enemy-archer-javascript')
-          this.animateBaseEnemy([16, 17, 18, 19, 20, 29, 30, 29, 30, 31, 21, 22, 23, 24, 25, 26, 27, 36, 37, 38, 39, 40, 41])
-        } else {
-          this.enemyChar = this.game.add.sprite(this.width - 460, this.height - 178, 'enemy-other')
+        console.log('Enemy', language)
+        const frames = {
+          java: () => {
+            this.createEnemyAnimatioBase({scale: -1, width: this.width - 150, height: this.height - 400, frameImage: 'enemy-tanker-java'})
+            this.animateBaseEnemy([4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27])
+          },
+          'c#': () => {
+            this.createEnemyAnimatioBase({scale: 1, width: this.width - 530, height: this.height - 180, frameImage: 'enemy-atacker-c#'})
+            this.animateBaseEnemy([2, 8, 11, 12, 13, 15, 16, 17, 18, 19, 23, 24, 25, 26, 27, 28, 29, 30, 31, 35, 36, 37, 38])
+          },
+          javascript: () => {
+            this.createEnemyAnimatioBase({scale: 1, width: this.width - 460, height: this.height - 255, frameImage: 'hero-archer-javascript'})
+            this.animateBaseEnemy([16, 17, 18, 19, 20, 29, 30, 29, 30, 31, 21, 22, 23, 24, 25, 26, 27, 36, 37, 38, 39, 40, 41])
+          }
+        }
+
+        const other = () => {
+          this.createEnemyAnimatioBase({scale: 1, width: this.width - 460, height: this.height - 178, frameImage: 'hero-other'})
           this.animateBaseEnemy([7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29])
         }
+
+        return (frames[language.toLocaleLowerCase()] || other)()
+      },
+      createHeroAnimatioBase (animation) {
+        console.log('frame image hero', animation.frameImage)
+        this.heroChar = this.game.add.sprite(animation.width, animation.height, animation.frameImage)
+        this.heroChar.scale.x *= animation.scale
+      },
+      createEnemyAnimatioBase (animation) {
+        console.log('frame image enemy', animation.frameImage)
+        this.enemyChar = this.game.add.sprite(animation.width, animation.height, animation.frameImage)
+        this.enemyChar.scale.x *= animation.scale
       },
       punchHeroFrame (frame) {
         return this.frameMovement(this.heroApiResult, frame)
@@ -130,10 +154,8 @@
           }
         }
 
-        const other = {
-          other: () => {
-            return frame.index === 12 || frame.index === 26
-          }
+        const other = () => {
+          return frame.index === 12 || frame.index === 26
         }
 
         return (frames[user.repository.language.toLocaleLowerCase()] || other)()
