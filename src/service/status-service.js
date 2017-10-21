@@ -73,7 +73,7 @@ exports.calculate = function (avatar) {
     TOTAL_HP: parseInt(hp) <= 0 ? 1 : parseInt(hp),
     MP: parseInt(mp) <= 0 ? 1 : parseInt(mp),
     P_ATCK: parseInt(pAtack) <= 0 ? 1 : parseInt(pAtack),
-    P_DEF: parseInt(pDef),
+    P_DEF: parseInt(pDef) <= 0 ? 1 : parseInt(pDef),
     SPEED: parseInt(castSpeed),
     CRITICAL: parseInt(criticalChance),
     ACCURACY: parseInt(accuracy),
