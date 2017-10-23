@@ -11,6 +11,9 @@
         <md-button class="md-raised md-primary large-button" v-on:click.native="find" v-bind:disabled="isFindingAvatar">
           {{ !isFindingAvatar ? 'Start Battle' : 'Battle in progress'}}
         </md-button>
+         <md-button class="md-raised md-primary large-button" v-on:click.native="findFriends">
+          Find friends
+        </md-button>
       </md-layout>
       <md-layout>
         <md-input-container flex="100">
@@ -29,6 +32,7 @@
   import Vue from 'vue'
   import VueMaterial from 'vue-material'
   import Status from '../service/status-service'
+  import API_URL from '../util/github-api'
 
   Vue.use(VueMaterial)
 
@@ -61,6 +65,19 @@
       }
     },
     methods: {
+      findFriends () {
+        const following = axios.get(API_URL.api(this.hero)).then(res => {
+          return res.data
+        }).catch(e => {
+          console.log(e)
+        })
+
+        following.then(f => {
+          this.friends = f.map(data => {
+            return {avatar: data.avatar_url, login: data.login}
+          })
+        })
+      },
       animateBaseHero (sprite) {
         const heroSpeed = this.heroAvatar.SPEED
         const enemySpeed = this.enemyAvatar.SPEED
@@ -401,7 +418,8 @@
         heroChar: null,
         enemyChar: null,
         heroApiResult: null,
-        enemyApiResult: null
+        enemyApiResult: null,
+        friends
       }
     },
     watch: {
