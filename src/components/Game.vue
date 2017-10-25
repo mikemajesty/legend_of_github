@@ -79,20 +79,24 @@
         })
       },
       animateBaseHero (sprite) {
-        const heroSpeed = this.heroAvatar.SPEED
-        const enemySpeed = this.enemyAvatar.SPEED
         const fight = this.heroChar.animations.add('walk', sprite, 10, true)
         fight.enableUpdate = true
         fight.onUpdate.add(this.onHeroUpdate, this)
-        this.heroChar.animations.play('walk', heroSpeed > enemySpeed ? 5 : 4, true)
+        this.heroChar.animations.play('walk', this.calculateSpeed().hero, true)
       },
       animateBaseEnemy (sprite) {
-        const heroSpeed = this.heroAvatar.SPEED
-        const enemySpeed = this.enemyAvatar.SPEED
         const fight = this.enemyChar.animations.add('walk', sprite, 10, true)
         fight.enableUpdate = true
         fight.onUpdate.add(this.onEnemyUpdate, this)
-        this.enemyChar.animations.play('walk', enemySpeed > heroSpeed ? 5 : 4, true)
+        this.enemyChar.animations.play('walk', this.calculateSpeed().enemy, true)
+      },
+      calculateSpeed () {
+        const heroSpeed = this.heroAvatar.SPEED
+        const enemySpeed = this.enemyAvatar.SPEED
+        return {
+          hero: heroSpeed > enemySpeed ? 5 : 4,
+          enemy: enemySpeed > heroSpeed ? 5 : 4
+        }
       },
       getHeroCharByLanguage (language) {
         console.log('Hero', language)
@@ -243,20 +247,19 @@
         }
       },
       createHeroBattle () {
-        const punchHero = Math.floor(this.heroAvatar.P_DEF / 100)
-        const accuracy = Math.round(this.heroAvatar.ACCURACY / 100)
-        const stamina = Math.round(this.heroAvatar.STAMINA / 100)
-        const critical = (Math.floor(Math.random() * 100001) < this.heroAvatar.CRITICAL ? 2 : 1)
-        this.enemyAvatar.HP -= (Math.floor(this.heroAvatar.P_ATCK / 100) + punchHero + Math.round(accuracy + stamina / 2)) * critical
+        this.enemyAvatar.HP -= this.createBattleSystem(this.heroAvatar)
         this.verifyWinner()
       },
       createEnemyBattle () {
-        let punchEnemy = Math.floor(this.enemyAvatar.P_DEF / 100)
-        const accuracy = Math.round(this.enemyAvatar.ACCURACY / 100)
-        const stamina = Math.round(this.enemyAvatar.STAMINA / 100)
-        const critical = (Math.floor(Math.random() * 100001) < this.enemyAvatar.CRITICAL ? 2 : 1)
-        this.heroAvatar.HP -= (Math.floor(this.enemyAvatar.P_ATCK / 100) + punchEnemy + Math.round(accuracy + stamina / 2)) * critical
+        this.heroAvatar.HP -= this.createBattleSystem(this.enemyAvatar)
         this.verifyWinner()
+      },
+      createBattleSystem (avatar) {
+        let punchEnemy = Math.floor(avatar.P_DEF / 100)
+        const accuracy = Math.round(avatar.ACCURACY / 100)
+        const stamina = Math.round(avatar.STAMINA / 100)
+        const critical = (Math.floor(Math.random() * 100001) < avatar.CRITICAL ? 2 : 1)
+        return (Math.floor(avatar.P_ATCK / 100) + punchEnemy + Math.round(accuracy + stamina / 2)) * critical
       },
       verifyWinner () {
         if (this.enemyAvatar.HP <= 0 && this.isBattle) {
@@ -266,8 +269,7 @@
           if (this.heroAvatar.HP <= 0) {
             this.heroAvatar.HP = 0
           }
-          this.heroChar.animations.paused = true
-          this.enemyChar.animations.paused = true
+          this.pauseBattle()
         } else if (this.heroAvatar.HP <= 0 && this.isBattle) {
           this.isBattle = false
           this.heroAvatar.HP = 0
@@ -275,11 +277,14 @@
           if (this.enemyAvatar.HP <= 0) {
             this.enemyAvatar.HP = 0
           }
-          this.heroChar.animations.paused = true
-          this.enemyChar.animations.paused = true
+          this.pauseBattle()
         } else {
           this.isBattle = true
         }
+      },
+      pauseBattle () {
+        this.heroChar.animations.paused = true
+        this.enemyChar.animations.paused = true
       },
       cleanBar () {
         if (this.heroText) {
@@ -295,6 +300,26 @@
         this.heroText.text = `HP: ${this.heroAvatar.HP}\nMP: ${this.heroAvatar.MP}\nP. ATCK: ${this.heroAvatar.P_ATCK}\nP. DEF: ${this.heroAvatar.P_DEF}\nSPEED: ${this.heroAvatar.SPEED}\nCRITICAL: ${this.heroAvatar.CRITICAL}\nACCURACY: ${this.heroAvatar.ACCURACY}\nSTAMINA: ${this.heroAvatar.STAMINA}`
         this.enemyText = this.game.add.text(this.width - 210, 100, 'enemyAvatar', { font: '20px Arial', fill: '#FFE848' })
         this.enemyText.text = `HP: ${this.enemyAvatar.HP}\nMP: ${this.enemyAvatar.MP}\nP. ATCK: ${this.enemyAvatar.P_ATCK}\nP. DEF: ${this.enemyAvatar.P_DEF}\nSPEED: ${this.enemyAvatar.SPEED}\nCRITICAL: ${this.enemyAvatar.CRITICAL}\nACCURACY: ${this.enemyAvatar.ACCURACY}\nSTAMINA: ${this.enemyAvatar.STAMINA}`
+      },
+      dealingWithLocale (data) {
+        let currentStreak = []
+        let lastCommit = 0
+        data.forEach(function (data, index) {
+          const date = data.date
+          const currentCommit = data.commit
+          if (new Date(data.date.replace('-', '/')).getTime() <= new Date().getTime()) {
+            if (currentCommit > 0 && (lastCommit > 0 || currentStreak.length === 0)) {
+              currentStreak.push({
+                date: date,
+                commit: currentCommit
+              })
+            } else {
+              currentStreak = []
+            }
+          }
+          lastCommit = data.commit
+        })
+        return currentStreak.length
       },
       find () {
         this.cleanBattle()
@@ -322,46 +347,12 @@
           console.log(e)
         })
         const getHeroCurrentStreak = axios.get(`/api/streak/full?username=${this.hero}`).then(res => {
-          let currentStreak = []
-          let lastCommit = 0
-          res.data.forEach(function (data, index) {
-            const date = data.date
-            const currentCommit = data.commit
-            if (new Date(data.date.replace('-', '/')).getTime() <= new Date().getTime()) {
-              if (currentCommit > 0 && (lastCommit > 0 || currentStreak.length === 0)) {
-                currentStreak.push({
-                  date: date,
-                  commit: currentCommit
-                })
-              } else {
-                currentStreak = []
-              }
-            }
-            lastCommit = data.commit
-          })
-          return currentStreak.length
+          return this.dealingWithLocale(res.data)
         }).catch(e => {
           console.log(e)
         })
         const getEnemyCurrentStreak = axios.get(`/api/streak/full?username=${this.enemy}`).then(res => {
-          let currentStreak = []
-          let lastCommit = 0
-          res.data.forEach(function (data, index) {
-            const date = data.date
-            const currentCommit = data.commit
-            if (new Date(data.date.replace('-', '/')).getTime() <= new Date().getTime()) {
-              if (currentCommit > 0 && (lastCommit > 0 || currentStreak.length === 0)) {
-                currentStreak.push({
-                  date: date,
-                  commit: currentCommit
-                })
-              } else {
-                currentStreak = []
-              }
-            }
-            lastCommit = data.commit
-          })
-          return currentStreak.length
+          return this.dealingWithLocale(res.data)
         }).catch(e => {
           console.log(e)
         })
@@ -418,8 +409,7 @@
         heroChar: null,
         enemyChar: null,
         heroApiResult: null,
-        enemyApiResult: null,
-        friends
+        enemyApiResult: null
       }
     },
     watch: {
