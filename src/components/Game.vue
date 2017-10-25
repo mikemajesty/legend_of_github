@@ -22,6 +22,11 @@
         </md-input-container>
       </md-layout>
     </md-layout>
+    <carousel>
+      <slide v-for="item in friends" :key="item.login" style="padding-left: 2%">
+        <img v-bind:src="item.image"  v-on:click="enemy = item.login" alt="item.login"  style="border-radius: 50%; width: 15%" v-bind:title="item.login">
+      </slide>
+    </carousel>
   </div>
 </template>
 <script>
@@ -32,6 +37,9 @@
   import Vue from 'vue'
   import VueMaterial from 'vue-material'
   import Status from '../service/status-service'
+  import VueCarousel from 'vue-carousel'
+
+  Vue.use(VueCarousel)
 
   Vue.use(VueMaterial)
 
@@ -65,7 +73,13 @@
     },
     methods: {
       findFriends () {
-
+        axios.get(`/api/friends?username=${this.hero}`).then(res => {
+          this.friends = res.data.map(data => {
+            return {login: data.login, image: data.avatar_url}
+          })
+        }).catch(e => {
+          console.log(e)
+        })
       },
       animateBaseHero (sprite) {
         const fight = this.heroChar.animations.add('walk', sprite, 10, true)
@@ -88,7 +102,6 @@
         }
       },
       getHeroCharByLanguage (language) {
-        console.log('Hero', language)
         const frames = {
           java: () => {
             this.createHeroAnimatioBase({scale: 1, width: this.width - 750, height: this.height - 400, frameImage: 'enemy-tanker-java'})
@@ -112,7 +125,6 @@
         return (frames[language.toLocaleLowerCase()] || other)()
       },
       getEnemyCharByLanguage (language) {
-        console.log('Enemy', language)
         const frames = {
           java: () => {
             this.createEnemyAnimatioBase({scale: -1, width: this.width - 150, height: this.height - 400, frameImage: 'enemy-tanker-java'})
@@ -398,7 +410,8 @@
         heroChar: null,
         enemyChar: null,
         heroApiResult: null,
-        enemyApiResult: null
+        enemyApiResult: null,
+        friends: null
       }
     },
     watch: {
