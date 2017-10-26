@@ -1,32 +1,39 @@
 <template>
   <div id='gameScreen' style='margin-bottom: 5%;'>
-    <md-layout flex="100" style="padding: 2%; padding-top: 0px;">
-      <md-layout flex="100">
+    <md-layout flex='100' style='padding: 2%; padding-top: 0px;'>
+      <md-layout flex='100'>
         <md-input-container>
           <label>HERO</label>
-          <md-input v-model="hero" v-bind:readonly="isFindingAvatar"></md-input>
+          <md-input v-model='hero' v-bind:readonly='isFindingAvatar'></md-input>
         </md-input-container>
       </md-layout>
-      <md-layout md-align="center">
-        <md-button class="md-raised md-primary large-button" v-on:click.native="find" v-bind:disabled="isFindingAvatar">
+      <md-layout md-align='center'>
+        <md-button class='md-raised md-primary large-button' v-on:click.native='find' v-bind:disabled='isFindingAvatar || !hero || !enemy'>
           {{ !isFindingAvatar ? 'Start Battle' : 'Battle in progress'}}
         </md-button>
-         <md-button class="md-raised md-primary large-button" v-on:click.native="findFriends">
+         <md-button class='md-raised md-primary large-button' v-on:click.native='findFriends' v-bind:disabled='isFindingAvatar || !hero'>
           Find friends
         </md-button>
       </md-layout>
       <md-layout>
-        <md-input-container flex="100">
+        <md-input-container flex='100'>
           <label>ENEMY</label>
-          <md-input v-model="enemy" v-bind:readonly="isFindingAvatar"></md-input>
+          <md-input v-model='enemy' v-bind:readonly='isFindingAvatar'></md-input>
         </md-input-container>
       </md-layout>
     </md-layout>
-    <carousel>
-      <slide v-for="item in friends" :key="item.login" style="padding-left: 2%">
-        <img v-bind:src="item.image"  v-on:click="enemy = item.login" alt="item.login"  style="border-radius: 50%; width: 15%" v-bind:title="item.login">
+    <carousel v-if='!isFindingAvatar'>
+      <slide v-for='item in friends' :key='item.login' style='padding-left: 2%'>
+        <img v-bind:src='item.image'  v-on:click='enemy = item.login' alt='item.login'  style='border-radius: 50%; width: 15%' v-bind:title='item.login'>
       </slide>
     </carousel>
+    <md-dialog-alert
+      :md-content="alert.content"
+      :md-ok-text="alert.ok"
+      @open="onOpen"
+      @close="onClose"
+      ref="dialogUserNotFound">
+    </md-dialog-alert>
   </div>
 </template>
 <script>
@@ -72,6 +79,18 @@
       }
     },
     methods: {
+      openDialog (ref) {
+        this.$refs[ref].open()
+      },
+      closeDialog (ref) {
+        this.$refs[ref].close()
+      },
+      onOpen () {
+        console.log('Opened')
+      },
+      onClose (type) {
+        console.log('Closed', type)
+      },
       findFriends () {
         axios.get(`/api/friends?username=${this.hero}`).then(res => {
           this.friends = res.data.map(data => {
@@ -330,32 +349,47 @@
         const getHeroRepository = axios.get(`/api/repository/format?username=${this.hero}`).then(res => {
           return res.data
         }).catch(e => {
-          console.log(e)
+          this.alert.content = `Hero "${this.hero}" not found.`
+          this.openDialog('dialogUserNotFound')
+          this.isFindingAvatar = false
+          this.hero = null
         })
         const getEnemyRepository = axios.get(`/api/repository/format?username=${this.enemy}`).then(res => {
           return res.data
         }).catch(e => {
-          console.log(e)
+          this.alert.content = `Enemy "${this.enemy}" not found.`
+          this.openDialog('dialogUserNotFound')
+          this.isFindingAvatar = false
         })
         const getHeroInformation = axios.get(`/api/user/full?username=${this.hero}`).then(res => {
           return res.data
         }).catch(e => {
-          console.log(e)
+          this.alert.content = `Hero "${this.hero}" not found.`
+          this.openDialog('dialogUserNotFound')
+          this.isFindingAvatar = false
+          this.hero = null
         })
         const getEnemyInformation = axios.get(`/api/user/full?username=${this.enemy}`).then(res => {
           return res.data
         }).catch(e => {
-          console.log(e)
+          this.alert.content = `Enemy "${this.enemy}" not found.`
+          this.openDialog('dialogUserNotFound')
+          this.isFindingAvatar = false
         })
         const getHeroCurrentStreak = axios.get(`/api/streak/full?username=${this.hero}`).then(res => {
           return this.dealingWithLocale(res.data)
         }).catch(e => {
-          console.log(e)
+          this.alert.content = `Hero "${this.hero}" not found.`
+          this.openDialog('dialogUserNotFound')
+          this.isFindingAvatar = false
+          this.hero = null
         })
         const getEnemyCurrentStreak = axios.get(`/api/streak/full?username=${this.enemy}`).then(res => {
           return this.dealingWithLocale(res.data)
         }).catch(e => {
-          console.log(e)
+          this.alert.content = `Enemy "${this.enemy}" not found.`
+          this.openDialog('dialogUserNotFound')
+          this.isFindingAvatar = false
         })
 
         Promise.all([
@@ -411,7 +445,11 @@
         enemyChar: null,
         heroApiResult: null,
         enemyApiResult: null,
-        friends: null
+        friends: null,
+        alert: {
+          content: 'inital',
+          ok: 'Close'
+        }
       }
     },
     watch: {
