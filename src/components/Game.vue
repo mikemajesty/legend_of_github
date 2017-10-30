@@ -120,24 +120,31 @@
           enemy: enemySpeed > heroSpeed ? 5 : 4
         }
       },
+      getEnemyPetByPower () {
+
+      },
       getHeroCharByLanguage (language) {
         const frames = {
           java: () => {
-            this.createHeroAnimatioBase({scale: 1, width: this.width - 750, height: this.height - 400, frameImage: 'enemy-tanker-java'})
+            this.createHeroAnimatioBase({scale: 1, width: this.width - 750, height: this.height - 500, frameImage: 'tanker-java'})
             this.animateBaseHero(this.getJavaFrame())
           },
           'c#': () => {
-            this.createHeroAnimatioBase({scale: -1, width: this.width - 370, height: this.height - 180, frameImage: 'enemy-atacker-c#'})
+            this.createHeroAnimatioBase({scale: -1, width: this.width - 370, height: this.height - 280, frameImage: 'atacker-c#'})
             this.animateBaseHero(this.getCSharpFrame())
           },
           javascript: () => {
-            this.createHeroAnimatioBase({scale: -1, width: this.width - 460, height: this.height - 255, frameImage: 'hero-archer-javascript'})
+            this.createHeroAnimatioBase({scale: -1, width: this.width - 460, height: this.height - 355, frameImage: 'archer-javascript'})
             this.animateBaseHero(this.getJavaScriptFrame())
+          },
+          ruby: () => {
+            this.createHeroAnimatioBase({scale: 1, width: this.width - 620, height: this.height - 355, frameImage: 'bau'})
+            this.animateBaseHero(this.getRubyFrame())
           }
         }
 
         const other = () => {
-          this.createHeroAnimatioBase({scale: -1, width: this.width - 460, height: this.height - 178, frameImage: 'hero-other'})
+          this.createHeroAnimatioBase({scale: -1, width: this.width - 460, height: this.height - 278, frameImage: 'other'})
           this.animateBaseHero(this.getOtherFrame())
         }
 
@@ -146,21 +153,25 @@
       getEnemyCharByLanguage (language) {
         const frames = {
           java: () => {
-            this.createEnemyAnimatioBase({scale: -1, width: this.width - 150, height: this.height - 400, frameImage: 'enemy-tanker-java'})
+            this.createEnemyAnimatioBase({scale: -1, width: this.width - 150, height: this.height - 500, frameImage: 'tanker-java'})
             this.animateBaseEnemy(this.getJavaFrame())
           },
           'c#': () => {
-            this.createEnemyAnimatioBase({scale: 1, width: this.width - 530, height: this.height - 180, frameImage: 'enemy-atacker-c#'})
+            this.createEnemyAnimatioBase({scale: 1, width: this.width - 530, height: this.height - 280, frameImage: 'atacker-c#'})
             this.animateBaseEnemy(this.getCSharpFrame())
           },
           javascript: () => {
-            this.createEnemyAnimatioBase({scale: 1, width: this.width - 460, height: this.height - 255, frameImage: 'hero-archer-javascript'})
+            this.createEnemyAnimatioBase({scale: 1, width: this.width - 460, height: this.height - 355, frameImage: 'archer-javascript'})
             this.animateBaseEnemy(this.getJavaScriptFrame())
+          },
+          ruby: () => {
+            this.createEnemyAnimatioBase({scale: -1, width: this.width - 250, height: this.height - 355, frameImage: 'bau'})
+            this.animateBaseEnemy(this.getRubyFrame())
           }
         }
 
         const other = () => {
-          this.createEnemyAnimatioBase({scale: 1, width: this.width - 460, height: this.height - 178, frameImage: 'hero-other'})
+          this.createEnemyAnimatioBase({scale: 1, width: this.width - 460, height: this.height - 278, frameImage: 'other'})
           this.animateBaseEnemy(this.getOtherFrame())
         }
 
@@ -175,16 +186,17 @@
       getJavaScriptFrame () {
         return [16, 17, 18, 19, 20, 29, 30, 29, 30, 31, 21, 22, 23, 24, 25, 26, 27, 36, 37, 38, 39, 40, 41]
       },
+      getRubyFrame () {
+        return [2, 3, 4, 5, 6, 22, 7, 8, 17, 18, 9, 1, 2, 3, 4, 5, 6, 22, 7, 8, 17, 18, 9]
+      },
       getOtherFrame () {
         return [7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29]
       },
       createHeroAnimatioBase (animation) {
-        console.log('frame image hero', animation.frameImage)
         this.heroChar = this.game.add.sprite(animation.width, animation.height, animation.frameImage)
         this.heroChar.scale.x *= animation.scale
       },
       createEnemyAnimatioBase (animation) {
-        console.log('frame image enemy', animation.frameImage)
         this.enemyChar = this.game.add.sprite(animation.width, animation.height, animation.frameImage)
         this.enemyChar.scale.x *= animation.scale
       },
@@ -204,11 +216,14 @@
           },
           javascript: () => {
             return frame.index === 39 || frame.index === 40
+          },
+          ruby: () => {
+            return frame.index === 9
           }
         }
 
         const other = () => {
-          return frame.index === 12 || frame.index === 26
+          return frame.index === 12 || frame.index === 27
         }
 
         return (frames[user.repository.language.toLocaleLowerCase()] || other)()
@@ -232,14 +247,11 @@
         }
       },
       preload () {
-        this.game.load.spritesheet('hero-tanker-java', 'static/game/char/tanker-385x318.png', 385, 318, 27)
-        this.game.load.spritesheet('enemy-tanker-java', 'static/game/char/tanker-385x318.png', 385, 318, 27)
-        this.game.load.spritesheet('hero-atacker-c#', 'static/game/char/paladin-249x100.png', 249, 100, 39)
-        this.game.load.spritesheet('enemy-atacker-c#', 'static/game/char/paladin-249x100.png', 249, 100, 39)
-        this.game.load.spritesheet('hero-archer-javascript', 'static/game/char/archer-158x173.png', 158, 173, 46)
-        this.game.load.spritesheet('enemy-archer-javascript', 'static/game/char/archer-158x173.png', 158, 173, 46)
-        this.game.load.spritesheet('enemy-other', 'static/game/char/wizard-161x106.png', 161, 106, 36)
-        this.game.load.spritesheet('hero-other', 'static/game/char/wizard-161x106.png', 161, 106, 36)
+        this.game.load.spritesheet('tanker-java', 'static/game/char/tanker-385x318.png', 385, 318, 27)
+        this.game.load.spritesheet('atacker-c#', 'static/game/char/paladin-249x100.png', 249, 100, 39)
+        this.game.load.spritesheet('archer-javascript', 'static/game/char/archer-158x173.png', 158, 173, 46)
+        this.game.load.spritesheet('other', 'static/game/char/wizard-161x106.png', 161, 106, 36)
+        this.game.load.spritesheet('bau', 'static/game/pet/bau-231x172.png', 213, 172, 24)
 
         this.game.load.image('background', 'static/game/img/background.v1.png')
       },
@@ -417,7 +429,6 @@
           this.enemyAvatar = Status.calculate(enemyAvatar)
 
           this.getHeroCharByLanguage(getHeroRepository.language)
-
           this.getEnemyCharByLanguage(getEnemyRepository.language)
 
           this.isBattle = true
@@ -435,13 +446,15 @@
         enemyName: null,
         heroAvatar: null,
         enemyAvatar: null,
-        hero: '',
-        enemy: '',
+        hero: 'CaiqueMitsuoka',
+        enemy: 'CaiqueMitsuoka',
         heroText: null,
         enemyText: null,
         isBattle: false,
         isFindingAvatar: false,
         heroChar: null,
+        heroPetChar: null,
+        enemyPetChar: null,
         enemyChar: null,
         heroApiResult: null,
         enemyApiResult: null,
