@@ -223,25 +223,25 @@
       getHeroCharByLanguage (language) {
         const frames = {
           java: () => {
-            this.createHeroAnimatioBase({scale: 1, width: this.width - 750, height: this.height - 500, frameImage: 'tanker-java'})
+            this.createHeroAnimatioBase({scale: 1, width: this.width - 750, height: this.height - 400, frameImage: 'tanker-java'})
             this.animateBaseHero(this.getJavaFrame())
           },
           'c#': () => {
-            this.createHeroAnimatioBase({scale: -1, width: this.width - 370, height: this.height - 280, frameImage: 'atacker-c#'})
+            this.createHeroAnimatioBase({scale: -1, width: this.width - 370, height: this.height - 180, frameImage: 'atacker-c#'})
             this.animateBaseHero(this.getCSharpFrame())
           },
           javascript: () => {
-            this.createHeroAnimatioBase({scale: -1, width: this.width - 460, height: this.height - 355, frameImage: 'archer-javascript'})
+            this.createHeroAnimatioBase({scale: -1, width: this.width - 460, height: this.height - 255, frameImage: 'archer-javascript'})
             this.animateBaseHero(this.getJavaScriptFrame())
           },
           ruby: () => {
-            this.createHeroAnimatioBase({scale: 1, width: this.width - 620, height: this.height - 355, frameImage: 'bau'})
+            this.createHeroAnimatioBase({scale: 1, width: this.width - 620, height: this.height - 255, frameImage: 'bau'})
             this.animateBaseHero(this.getRubyFrame())
           }
         }
 
         const other = () => {
-          this.createHeroAnimatioBase({scale: -1, width: this.width - 460, height: this.height - 278, frameImage: 'other'})
+          this.createHeroAnimatioBase({scale: -1, width: this.width - 460, height: this.height - 178, frameImage: 'other'})
           this.animateBaseHero(this.getOtherFrame())
         }
 
@@ -250,25 +250,25 @@
       getEnemyCharByLanguage (language) {
         const frames = {
           java: () => {
-            this.createEnemyAnimatioBase({scale: -1, width: this.width - 150, height: this.height - 500, frameImage: 'tanker-java'})
+            this.createEnemyAnimatioBase({scale: -1, width: this.width - 150, height: this.height - 400, frameImage: 'tanker-java'})
             this.animateBaseEnemy(this.getJavaFrame())
           },
           'c#': () => {
-            this.createEnemyAnimatioBase({scale: 1, width: this.width - 530, height: this.height - 280, frameImage: 'atacker-c#'})
+            this.createEnemyAnimatioBase({scale: 1, width: this.width - 530, height: this.height - 180, frameImage: 'atacker-c#'})
             this.animateBaseEnemy(this.getCSharpFrame())
           },
           javascript: () => {
-            this.createEnemyAnimatioBase({scale: 1, width: this.width - 460, height: this.height - 355, frameImage: 'archer-javascript'})
+            this.createEnemyAnimatioBase({scale: 1, width: this.width - 460, height: this.height - 255, frameImage: 'archer-javascript'})
             this.animateBaseEnemy(this.getJavaScriptFrame())
           },
           ruby: () => {
-            this.createEnemyAnimatioBase({scale: -1, width: this.width - 250, height: this.height - 355, frameImage: 'bau'})
+            this.createEnemyAnimatioBase({scale: -1, width: this.width - 250, height: this.height - 255, frameImage: 'bau'})
             this.animateBaseEnemy(this.getRubyFrame())
           }
         }
 
         const other = () => {
-          this.createEnemyAnimatioBase({scale: 1, width: this.width - 460, height: this.height - 278, frameImage: 'other'})
+          this.createEnemyAnimatioBase({scale: 1, width: this.width - 460, height: this.height - 178, frameImage: 'other'})
           this.animateBaseEnemy(this.getOtherFrame())
         }
 
