@@ -1,27 +1,121 @@
+<style>
+  #gameScreen {
+    margin: 0 auto;
+  }
+
+  #gameScreen .top-bar {
+    margin: 0 auto;
+    padding: 14px;
+    width: 900px;
+    height: 126px;
+    background: url("/static/img/top-bar-background.svg")
+  }
+
+  #gameScreen .top-bar .button {
+    background: url("/static/img/button.svg");
+    width: 234px;
+    height: 48px;
+    border: 0;
+    border-radius: 2px;
+    font-size: 20px;
+    color: rgba(255,255,255,0.8);
+  }
+
+  #gameScreen .top-bar button:disabled {
+    color: #666;
+  }
+
+  #gameScreen .top-bar .battle-button {
+    background: url("/static/img/battle-button.svg");
+    width: 234px;
+    height: 48px;
+    border: 0;
+    border-radius: 2px;
+    margin-bottom: 6px;
+    font-size: 20px;
+    color: rgba(255,255,255,0.8);
+  }
+
+  #gameScreen .top-bar button:focus {
+    outline: none;
+  }
+
+  #gameScreen .input-container {
+    width: 100%;
+  }
+
+  #gameScreen .input-container label {
+    color: rgba(0,0,0,.54);
+    display: block;
+    font-weight: bold;
+    font-size: 16px;
+  }
+
+  #gameScreen .input-container input[type='text'] {
+    background: transparent;
+    border: none;
+    border-bottom: 2px solid rgba(0,0,0,0.34);
+    width: 100%;
+    height: 32px;
+    color: rgba(0,0,0,.54);
+    line-height: 32px;
+    font-size: 20px;
+  }
+
+  #gameScreen .input-container input[type='text']:focus {
+    outline: none;
+  }
+
+  #gameScreen #phaser {
+    margin: 10px auto 0;
+    padding: 6px;
+    width: 900px;
+    height: 668px;
+    background: url("/static/img/game-container-background.svg");
+  }
+
+  .large-button {
+    width: 90% !Important;
+  }
+
+  /* #gameScreen canvas {
+    display: block;
+    margin: 0 auto;
+  } */
+</style>
+
 <template>
-  <div id='gameScreen' style='margin-bottom: 5%;'>
-    <md-layout flex='100' style='padding: 2%; padding-top: 0px;'>
+  <div id='gameScreen' style='margin-bottom: 5%;text-align:center;'>
+    <div class="top-bar">
       <md-layout flex='100'>
-        <md-input-container>
-          <label>HERO</label>
-          <md-input v-model='hero' v-bind:readonly='isFindingAvatar'></md-input>
-        </md-input-container>
+        <md-layout flex='100'>
+          <div class="input-container" style="margin-top:20px">
+            <label>HERO</label>
+            <input type="text" v-model='hero' v-bind:readonly='isFindingAvatar' tabindex="1"/>
+          </div>
+        </md-layout>
+        <md-layout md-align='center'>
+          <!-- <md-button class='md-raised md-primary large-button' v-on:click.native='find' v-bind:disabled='isFindingAvatar || !hero || !enemy'>
+            {{ !isFindingAvatar ? 'Start Battle' : 'Battle in progress'}}
+          </md-button> -->
+          <button type="button" class="battle-button" v-on:click='find' v-bind:disabled='isFindingAvatar || !hero || !enemy' tabindex="3">
+            {{ !isFindingAvatar ? 'Start Battle' : 'Battle in progress'}}
+          </button>
+          <!-- <md-button class='md-raised md-primary large-button' v-on:click.native='findFriends' v-bind:disabled='isFindingAvatar || !hero'>
+            Find friends
+          </md-button> -->
+          <button type="button" class="button" v-on:click='findFriends' v-bind:disabled='isFindingAvatar || !hero' tabindex="4">
+            Find friends
+          </button>
+        </md-layout>
+        <md-layout flex='100'>
+          <div class="input-container" style="margin-top:20px">
+            <label>CHALLENGER</label>
+            <input type="text" v-model='enemy' v-bind:readonly='isFindingAvatar' tabindex="2"/>
+          </div>
+        </md-layout>
       </md-layout>
-      <md-layout md-align='center'>
-        <md-button class='md-raised md-primary large-button' v-on:click.native='find' v-bind:disabled='isFindingAvatar || !hero || !enemy'>
-          {{ !isFindingAvatar ? 'Start Battle' : 'Battle in progress'}}
-        </md-button>
-         <md-button class='md-raised md-primary large-button' v-on:click.native='findFriends' v-bind:disabled='isFindingAvatar || !hero'>
-          Find friends
-        </md-button>
-      </md-layout>
-      <md-layout>
-        <md-input-container flex='100'>
-          <label>ENEMY</label>
-          <md-input v-model='enemy' v-bind:readonly='isFindingAvatar'></md-input>
-        </md-input-container>
-      </md-layout>
-    </md-layout>
+    </div>
     <carousel v-if='!isFindingAvatar'>
       <slide v-for='item in friends' :key='item.login' style='padding-left: 2%'>
         <img v-bind:src='item.image'  v-on:click='enemy = item.login' alt='item.login'  style='border-radius: 50%; width: 15%' v-bind:title='item.login'>
@@ -34,6 +128,9 @@
       @close="onClose"
       ref="dialogUserNotFound">
     </md-dialog-alert>
+    <div id="phaser" ref="phaser">
+
+    </div>
   </div>
 </template>
 <script>
@@ -54,18 +151,18 @@
     name: 'game',
     props: {
       width: {
-        default: 900,
+        default: 888,
         type: Number
       },
       height: {
-        default: 710,
+        default: 656,
         type: Number
       }
     },
     mounted () {
       let self = this
       if (this.game === null) {
-        this.game = new Phaser.Game(this.width, this.height, Phaser.AUTO, this.$el, {
+        this.game = new Phaser.Game(this.width, this.height, Phaser.AUTO, this.$refs['phaser'], {
           preload: function preload () {
             self.preload(this)
           },
@@ -256,7 +353,7 @@
         this.game.load.image('background', 'static/game/img/background.v1.png')
       },
       create (phaser) {
-        this.game.add.tileSprite(5, 5, 1300, 700, 'background')
+        this.game.add.tileSprite(0, 0, 1300, 700, 'background')
       },
       update (phaser) {
       },
@@ -474,18 +571,3 @@
     }
   }
 </script>
-<style>
-  #gameScreen {
-    margin: 0 auto;
-  }
-
-  .large-button {
-    width: 90% !Important;
-  }
-
-  #gameScreen canvas {
-    display: block;
-    margin: 0 auto;
-  }
-
-</style>
