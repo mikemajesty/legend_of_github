@@ -116,11 +116,6 @@
         </md-layout>
       </md-layout>
     </div>
-    <carousel v-if='!isFindingAvatar'>
-      <slide v-for='item in friends' :key='item.login' style='padding-left: 2%'>
-        <img v-bind:src='item.image'  v-on:click='enemy = item.login' alt='item.login'  style='border-radius: 50%; width: 15%' v-bind:title='item.login'>
-      </slide>
-    </carousel>
     <md-dialog-alert
       :md-content="alert.content"
       :md-ok-text="alert.ok"
@@ -131,6 +126,11 @@
     <div id="phaser" ref="phaser">
 
     </div>
+      <carousel v-if='!isFindingAvatar'>
+      <slide v-for='item in friends' :key='item.login' style='padding-left: 2%'>
+        <img v-bind:src='item.image'  v-on:click='enemy = item.login' alt='item.login'  style='border-radius: 50%; width: 15%' v-bind:title='item.login'>
+      </slide>
+    </carousel>
   </div>
 </template>
 <script>
