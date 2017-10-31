@@ -78,10 +78,124 @@
     width: 90% !Important;
   }
 
-  /* #gameScreen canvas {
-    display: block;
-    margin: 0 auto;
-  } */
+  /* Absolute Center Spinner */
+.loading {
+  position: fixed;
+  z-index: 999;
+  height: 2em;
+  width: 2em;
+  overflow: show;
+  margin: auto;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+}
+
+/* Transparent Overlay */
+.loading:before {
+  content: '';
+  display: block;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0,0,0,0.3);
+}
+
+/* :not(:required) hides these rules from IE9 and below */
+.loading:not(:required) {
+  /* hide "loading..." text */
+  font: 0/0 a;
+  color: transparent;
+  text-shadow: none;
+  background-color: transparent;
+  border: 0;
+}
+
+.loading:not(:required):after {
+  content: '';
+  display: block;
+  font-size: 10px;
+  width: 1em;
+  height: 1em;
+  margin-top: -0.5em;
+  -webkit-animation: spinner 1500ms infinite linear;
+  -moz-animation: spinner 1500ms infinite linear;
+  -ms-animation: spinner 1500ms infinite linear;
+  -o-animation: spinner 1500ms infinite linear;
+  animation: spinner 1500ms infinite linear;
+  border-radius: 0.5em;
+  -webkit-box-shadow: rgba(0, 0, 0, 0.75) 1.5em 0 0 0, rgba(0, 0, 0, 0.75) 1.1em 1.1em 0 0, rgba(0, 0, 0, 0.75) 0 1.5em 0 0, rgba(0, 0, 0, 0.75) -1.1em 1.1em 0 0, rgba(0, 0, 0, 0.5) -1.5em 0 0 0, rgba(0, 0, 0, 0.5) -1.1em -1.1em 0 0, rgba(0, 0, 0, 0.75) 0 -1.5em 0 0, rgba(0, 0, 0, 0.75) 1.1em -1.1em 0 0;
+  box-shadow: rgba(0, 0, 0, 0.75) 1.5em 0 0 0, rgba(0, 0, 0, 0.75) 1.1em 1.1em 0 0, rgba(0, 0, 0, 0.75) 0 1.5em 0 0, rgba(0, 0, 0, 0.75) -1.1em 1.1em 0 0, rgba(0, 0, 0, 0.75) -1.5em 0 0 0, rgba(0, 0, 0, 0.75) -1.1em -1.1em 0 0, rgba(0, 0, 0, 0.75) 0 -1.5em 0 0, rgba(0, 0, 0, 0.75) 1.1em -1.1em 0 0;
+}
+
+@-webkit-keyframes spinner {
+  0% {
+    -webkit-transform: rotate(0deg);
+    -moz-transform: rotate(0deg);
+    -ms-transform: rotate(0deg);
+    -o-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+    -moz-transform: rotate(360deg);
+    -ms-transform: rotate(360deg);
+    -o-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+}
+@-moz-keyframes spinner {
+  0% {
+    -webkit-transform: rotate(0deg);
+    -moz-transform: rotate(0deg);
+    -ms-transform: rotate(0deg);
+    -o-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+    -moz-transform: rotate(360deg);
+    -ms-transform: rotate(360deg);
+    -o-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+}
+@-o-keyframes spinner {
+  0% {
+    -webkit-transform: rotate(0deg);
+    -moz-transform: rotate(0deg);
+    -ms-transform: rotate(0deg);
+    -o-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+    -moz-transform: rotate(360deg);
+    -ms-transform: rotate(360deg);
+    -o-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+}
+@keyframes spinner {
+  0% {
+    -webkit-transform: rotate(0deg);
+    -moz-transform: rotate(0deg);
+    -ms-transform: rotate(0deg);
+    -o-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+    -moz-transform: rotate(360deg);
+    -ms-transform: rotate(360deg);
+    -o-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+}
+
 </style>
 
 <template>
@@ -95,15 +209,9 @@
           </div>
         </md-layout>
         <md-layout md-align='center'>
-          <!-- <md-button class='md-raised md-primary large-button' v-on:click.native='find' v-bind:disabled='isFindingAvatar || !hero || !enemy'>
-            {{ !isFindingAvatar ? 'Start Battle' : 'Battle in progress'}}
-          </md-button> -->
           <button type="button" class="battle-button" v-on:click='find' v-bind:disabled='isFindingAvatar || !hero || !enemy' tabindex="3">
             {{ !isFindingAvatar ? 'Start Battle' : 'Battle in progress'}}
           </button>
-          <!-- <md-button class='md-raised md-primary large-button' v-on:click.native='findFriends' v-bind:disabled='isFindingAvatar || !hero'>
-            Find friends
-          </md-button> -->
           <button type="button" class="button" v-on:click='findFriends' v-bind:disabled='isFindingAvatar || !hero' tabindex="4">
             Find friends
           </button>
@@ -124,13 +232,15 @@
       ref="dialogUserNotFound">
     </md-dialog-alert>
     <div id="phaser" ref="phaser">
-
+      <div class="loading" v-if="showSpinner">Loading&#8230;</div>
     </div>
-      <carousel v-if='!isFindingAvatar'>
-      <slide v-for='item in friends' :key='item.login' style='padding-left: 2%'>
-        <img v-bind:src='item.image'  v-on:click='enemy = item.login' alt='item.login'  style='border-radius: 50%; width: 15%' v-bind:title='item.login'>
-      </slide>
-    </carousel>
+    <div style="width: 900px; display: inline-flex;">
+      <div v-if='!isFindingAvatar' id="scroll">
+        <a onclick="window.scrollTo(0, 0)" v-for='item in friends' :key='item.login' style='padding-left: 2%;'>
+          <img v-bind:src='item.image'  v-on:click='enemy = item.login' alt='item.login'  style='border-radius: 50%; width: 10%' v-bind:title='item.login'>
+        </a>
+      </div>
+    </div>
   </div>
 </template>
 <script>
@@ -141,9 +251,6 @@
   import Vue from 'vue'
   import VueMaterial from 'vue-material'
   import Status from '../service/status-service'
-  import VueCarousel from 'vue-carousel'
-
-  Vue.use(VueCarousel)
 
   Vue.use(VueMaterial)
 
@@ -160,6 +267,7 @@
       }
     },
     mounted () {
+      this.showSpinner = true
       let self = this
       if (this.game === null) {
         this.game = new Phaser.Game(this.width, this.height, Phaser.AUTO, this.$refs['phaser'], {
@@ -189,13 +297,17 @@
         console.log('Closed', type)
       },
       findFriends () {
+        this.showSpinner = true
         axios.get(`/api/friends?username=${this.hero}`).then(res => {
+          this.showSpinner = false
           this.friends = res.data.map(data => {
             return {login: data.login, image: data.avatar_url}
           })
+          window.scrollBy(0, window.innerHeight)
         }).catch(e => {
           this.showInformation(this.hero)
           this.hero = null
+          this.showSpinner = false
         })
       },
       animateBaseHero (sprite) {
@@ -218,9 +330,6 @@
           enemy: enemySpeed > heroSpeed ? 5 : 4
         }
       },
-      getEnemyPetByPower () {
-
-      },
       getHeroCharByLanguage (language) {
         const frames = {
           java: () => {
@@ -236,7 +345,7 @@
             this.animateBaseHero(this.getJavaScriptFrame())
           },
           ruby: () => {
-            this.createHeroAnimatioBase({scale: 1, width: this.width - 620, height: this.height - 255, frameImage: 'bau'})
+            this.createHeroAnimatioBase({scale: 1, width: this.width - 620, height: this.height - 255, frameImage: 'bau-ruby'})
             this.animateBaseHero(this.getRubyFrame())
           }
         }
@@ -263,7 +372,7 @@
             this.animateBaseEnemy(this.getJavaScriptFrame())
           },
           ruby: () => {
-            this.createEnemyAnimatioBase({scale: -1, width: this.width - 250, height: this.height - 255, frameImage: 'bau'})
+            this.createEnemyAnimatioBase({scale: -1, width: this.width - 250, height: this.height - 255, frameImage: 'bau-ruby'})
             this.animateBaseEnemy(this.getRubyFrame())
           }
         }
@@ -345,16 +454,18 @@
         }
       },
       preload () {
+        this.showSpinner = true
         this.game.load.spritesheet('tanker-java', 'static/game/char/tanker-385x318.png', 385, 318, 27)
         this.game.load.spritesheet('atacker-c#', 'static/game/char/paladin-249x100.png', 249, 100, 39)
         this.game.load.spritesheet('archer-javascript', 'static/game/char/archer-158x173.png', 158, 173, 46)
         this.game.load.spritesheet('other', 'static/game/char/wizard-161x106.png', 161, 106, 36)
-        this.game.load.spritesheet('bau', 'static/game/pet/bau-231x172.png', 213, 172, 24)
+        this.game.load.spritesheet('bau-ruby', 'static/game/pet/bau-231x172.png', 213, 172, 24)
 
         this.game.load.image('background', 'static/game/img/background.v1.png')
       },
       create (phaser) {
         this.game.add.tileSprite(0, 0, 1300, 700, 'background')
+        this.showSpinner = false
       },
       update (phaser) {
       },
@@ -452,11 +563,17 @@
         return currentStreak.length
       },
       showInformation (avatar) {
-        this.alert.content = `Enemy "${avatar}" not found.`
-        this.openDialog('dialogUserNotFound')
-        this.isFindingAvatar = false
+        if (avatar) {
+          this.alert.content = `Enemy "${avatar}" not found.`
+          this.openDialog('dialogUserNotFound')
+          this.isFindingAvatar = false
+          this.showSpinner = false
+          this.isFindingAvatar = false
+          this.friends = []
+        }
       },
       find () {
+        this.showSpinner = true
         this.cleanBattle()
         this.heroName = this.game.add.text(200, 32, null, { font: '32px Arial', fill: '#FFE848' })
         this.enemyName = this.game.add.text(this.width - 400, 32, null, { font: '32px Arial', fill: '#FFE848' })
@@ -527,6 +644,7 @@
 
           this.isBattle = true
           this.updateAvatarBar()
+          this.showSpinner = false
         })
       }
     },
@@ -553,6 +671,7 @@
         heroApiResult: null,
         enemyApiResult: null,
         friends: null,
+        showSpinner: false,
         alert: {
           content: 'inital',
           ok: 'Close'
