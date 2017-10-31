@@ -97,7 +97,8 @@
             return {login: data.login, image: data.avatar_url}
           })
         }).catch(e => {
-          console.log(e)
+          this.showInformation(this.hero)
+          this.hero = null
         })
       },
       animateBaseHero (sprite) {
@@ -353,6 +354,11 @@
         })
         return currentStreak.length
       },
+      showInformation (avatar) {
+        this.alert.content = `Enemy "${avatar}" not found.`
+        this.openDialog('dialogUserNotFound')
+        this.isFindingAvatar = false
+      },
       find () {
         this.cleanBattle()
         this.heroName = this.game.add.text(200, 32, null, { font: '32px Arial', fill: '#FFE848' })
@@ -361,47 +367,38 @@
         const getHeroRepository = axios.get(`/api/repository/format?username=${this.hero}`).then(res => {
           return res.data
         }).catch(e => {
-          this.alert.content = `Hero "${this.hero}" not found.`
-          this.openDialog('dialogUserNotFound')
-          this.isFindingAvatar = false
+          this.showInformation(this.hero)
           this.hero = null
         })
         const getEnemyRepository = axios.get(`/api/repository/format?username=${this.enemy}`).then(res => {
           return res.data
         }).catch(e => {
-          this.alert.content = `Enemy "${this.enemy}" not found.`
-          this.openDialog('dialogUserNotFound')
-          this.isFindingAvatar = false
+          this.showInformation(this.enemy)
+          this.enemy = null
         })
         const getHeroInformation = axios.get(`/api/user/full?username=${this.hero}`).then(res => {
           return res.data
         }).catch(e => {
-          this.alert.content = `Hero "${this.hero}" not found.`
-          this.openDialog('dialogUserNotFound')
-          this.isFindingAvatar = false
+          this.showInformation(this.hero)
           this.hero = null
         })
         const getEnemyInformation = axios.get(`/api/user/full?username=${this.enemy}`).then(res => {
           return res.data
         }).catch(e => {
-          this.alert.content = `Enemy "${this.enemy}" not found.`
-          this.openDialog('dialogUserNotFound')
-          this.isFindingAvatar = false
+          this.showInformation(this.enemy)
+          this.enemy = null
         })
         const getHeroCurrentStreak = axios.get(`/api/streak/full?username=${this.hero}`).then(res => {
           return this.dealingWithLocale(res.data)
         }).catch(e => {
-          this.alert.content = `Hero "${this.hero}" not found.`
-          this.openDialog('dialogUserNotFound')
-          this.isFindingAvatar = false
+          this.showInformation(this.hero)
           this.hero = null
         })
         const getEnemyCurrentStreak = axios.get(`/api/streak/full?username=${this.enemy}`).then(res => {
           return this.dealingWithLocale(res.data)
         }).catch(e => {
-          this.alert.content = `Enemy "${this.enemy}" not found.`
-          this.openDialog('dialogUserNotFound')
-          this.isFindingAvatar = false
+          this.showInformation(this.enemy)
+          this.enemy = null
         })
 
         Promise.all([
