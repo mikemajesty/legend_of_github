@@ -205,21 +205,21 @@
         <md-layout flex='100'>
           <div class="input-container" style="margin-top:20px">
             <label>HERO</label>
-            <input type="text" v-model='hero' v-bind:readonly='isFindingAvatar' tabindex="1"/>
+            <input type="text"  style="cursor: pointer" v-model='hero' v-bind:readonly='isFindingAvatar' tabindex="1"/>
           </div>
         </md-layout>
         <md-layout md-align='center'>
-          <button type="button" class="battle-button" v-on:click='find' v-bind:disabled='isFindingAvatar || !hero || !enemy' tabindex="3">
+          <button type="button"  style="cursor: pointer" class="battle-button" v-on:click='find' v-bind:disabled='isFindingAvatar || !hero || !enemy' tabindex="3">
             {{ !isFindingAvatar ? 'Start Battle' : 'Battle in progress'}}
           </button>
-          <button type="button" class="button" v-on:click='findFriends' v-bind:disabled='isFindingAvatar || !hero' tabindex="4">
+          <button type="button"  style="cursor: pointer" class="button" v-on:click='findFriends' v-bind:disabled='isFindingAvatar || !hero' tabindex="4">
             Find friends
           </button>
         </md-layout>
         <md-layout flex='100'>
           <div class="input-container" style="margin-top:20px">
             <label>CHALLENGER</label>
-            <input type="text" v-model='enemy' v-bind:readonly='isFindingAvatar' tabindex="2"/>
+            <input type="text" style="cursor: pointer" v-model='enemy' v-bind:readonly='isFindingAvatar' tabindex="2"/>
           </div>
         </md-layout>
       </md-layout>
@@ -237,7 +237,7 @@
     <div style="width: 900px; display: inline-flex;">
       <div v-if='!isFindingAvatar' id="scroll">
         <a onclick="window.scrollTo(0, 0)" v-for='item in friends' :key='item.login' style='padding-left: 2%;'>
-          <img v-bind:src='item.image'  v-on:click='enemy = item.login' alt='item.login'  style='border-radius: 50%; width: 10%' v-bind:title='item.login'>
+          <img v-bind:src='item.image' v-on:click='enemy = item.login' :name="item.login" alt='item.login'  style='border-radius: 50%; width: 10%; padding-bottom: 1%; margin-top:1%; cursor: pointer' v-bind:title='item.login'>
         </a>
       </div>
     </div>
