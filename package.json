@@ -4,6 +4,9 @@
   "description": "This The most epic battles between github accounts.",
   "author": "Mike Lima <mikemajesty2011@gmail.com>",
   "private": false,
+  "engines": {
+    "node": "8.4.0"
+  },
   "scripts": {
     "dev": "concurrently --kill-others \"npm run server\" \"npm run start\"",
     "start": "node build/dev-server.js",
