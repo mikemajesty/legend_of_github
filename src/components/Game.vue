@@ -607,8 +607,6 @@
       update (phaser) {
       },
       onHeroUpdate (anim, frame) {
-        // this.heroName.text = this.hero
-        // this.enemyName.text = this.enemy
         if (this.isTrueBattle() && this.punchHeroFrame(frame)) {
           console.log('hero punch', frame.index)
           this.createHeroBattle()
@@ -616,8 +614,6 @@
         }
       },
       onEnemyUpdate (anim, frame) {
-        // this.heroName.text = this.hero
-        // this.enemyName.text = this.enemy
         if (this.isTrueBattle() && this.punchEnemyFrame(frame)) {
           console.log('enemy punch', frame.index)
           this.createEnemyBattle()
@@ -674,10 +670,6 @@
       },
       updateAvatarBar () {
         this.cleanBar()
-        // this.heroText = this.game.add.text(32, 100, 'heroAvatar', { font: '20px Arial', fill: '#FFE848' })
-        // this.heroText.text = `HP: ${this.heroAvatar.HP}\nMP: ${this.heroAvatar.MP}\nP. ATCK: ${this.heroAvatar.P_ATCK}\nP. DEF: ${this.heroAvatar.P_DEF}\nSPEED: ${this.heroAvatar.SPEED}\nCRITICAL: ${this.heroAvatar.CRITICAL}\nACCURACY: ${this.heroAvatar.ACCURACY}\nSTAMINA: ${this.heroAvatar.STAMINA}`
-        // this.enemyText = this.game.add.text(this.width - 210, 100, 'enemyAvatar', { font: '20px Arial', fill: '#FFE848' })
-        // this.enemyText.text = `HP: ${this.enemyAvatar.HP}\nMP: ${this.enemyAvatar.MP}\nP. ATCK: ${this.enemyAvatar.P_ATCK}\nP. DEF: ${this.enemyAvatar.P_DEF}\nSPEED: ${this.enemyAvatar.SPEED}\nCRITICAL: ${this.enemyAvatar.CRITICAL}\nACCURACY: ${this.enemyAvatar.ACCURACY}\nSTAMINA: ${this.enemyAvatar.STAMINA}`
       },
       dealingWithLocale (data) {
         let currentStreak = []
