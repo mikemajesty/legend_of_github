@@ -5,7 +5,8 @@
   "author": "Mike Lima <mikemajesty2011@gmail.com>",
   "private": false,
   "engines": {
-    "node": "8.4.0"
+    "node": ">= 4.0.0",
+    "npm": ">= 3.0.0"
   },
   "scripts": {
     "dev": "concurrently --kill-others \"npm run server\" \"npm run start\"",
@@ -72,10 +73,6 @@
     "webpack-dev-middleware": "^1.10.0",
     "webpack-hot-middleware": "^2.18.0",
     "webpack-merge": "^4.1.0"
-  },
-  "engines": {
-    "node": ">= 4.0.0",
-    "npm": ">= 3.0.0"
   },
   "browserslist": [
     "> 1%",
