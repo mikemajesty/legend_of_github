@@ -67,11 +67,87 @@
   }
 
   #gameScreen #phaser {
+    position: relative;
     margin: 10px auto 0;
     padding: 6px;
     width: 900px;
     height: 668px;
     background: url("/static/img/game-container-background.svg");
+  }
+
+  #gameScreen #phaser .phaser-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+  }
+
+  #gameScreen #phaser .phaser-overlay .status {
+    position: absolute;
+    width: 369px;
+    height: 326px;
+    background: url("/static/img/status.svg");
+  }
+
+  #gameScreen #phaser .phaser-overlay .status.hero {
+    top: 20px;
+    left: 20px;
+  }
+
+  #gameScreen #phaser .phaser-overlay .status.challenger {
+    top: 20px;
+    right: 20px;
+  }
+
+  #gameScreen #phaser .phaser-overlay .status .hp {
+    position: absolute;
+    top: 76px;
+    left: 19px;
+    width: 331px;
+    height: 18px;
+    overflow: hidden;
+  }
+
+  #gameScreen #phaser .phaser-overlay .status .hp-background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 331px;
+    height: 18px;
+  }
+
+  #gameScreen #phaser .phaser-overlay .status .hp .hp-begin {
+    position: absolute;
+    width: 9px;
+    height: 18px;
+    background: url("/static/img/hp_begin.svg");
+  }
+
+  #gameScreen #phaser .phaser-overlay .status .hp .hp-middle {
+    position: absolute;
+    left: 9px;
+    width: 9px;
+    width: 313px;
+    height: 18px;
+    background: url("/static/img/hp_middle.svg");
+  }
+
+  #gameScreen #phaser .phaser-overlay .status .hp .hp-end {
+    position: absolute;
+    right: 0px;
+    width: 9px;
+    height: 18px;
+    background: url("/static/img/hp_end.svg");
+  }
+
+  #gameScreen #phaser .phaser-overlay .status .info {
+    position: absolute;
+    top: 120px;
+    left: 32px;
+    right: 32px;
+    bottom: 20px;
+    text-align:left;
   }
 
   .large-button {
@@ -233,6 +309,67 @@
     </md-dialog-alert>
     <div id="phaser" ref="phaser">
       <div class="loading" v-if="showSpinner">Loading&#8230;</div>
+      <div class="phaser-overlay">
+        <div class="status hero" v-if="heroAvatar">
+          <h1>{{hero}}</h1>
+          <div class="hp" v-bind:style="{width: heroAvatar.HP/heroAvatar.TOTAL_HP * 331 + 'px'}">
+            <div class="hp-background">
+              <div class="hp-begin"></div>
+              <div class="hp-middle"></div>
+              <div class="hp-end"></div>
+            </div>
+          </div>
+          <div class="info">
+            HP: {{heroAvatar.HP}}
+            <br>
+            TOTAL HP: {{heroAvatar.HP}}
+            <br>
+            MP: {{heroAvatar.MP}}
+            <br>
+            P. ATCK: {{heroAvatar.P_ATCK}}
+            <br>
+            P. DEF: {{heroAvatar.P_DEF}}
+            <br>
+            SPEED: {{heroAvatar.SPEED}}
+            <br>
+            CRITICAL: {{heroAvatar.CRITICAL}}
+            <br>
+            ACCURACY: {{heroAvatar.ACCURACY}}
+            <br>
+            STAMINA: {{heroAvatar.STAMINA}}
+          </div>
+        </div>
+
+        <div class="status challenger" v-if="enemyAvatar">
+          <h1>{{enemy}}</h1>
+          <div class="hp" v-bind:style="{width: enemyAvatar.HP/enemyAvatar.TOTAL_HP * 331 + 'px'}">
+            <div class="hp-background">
+              <div class="hp-begin"></div>
+              <div class="hp-middle"></div>
+              <div class="hp-end"></div>
+            </div>
+          </div>
+          <div class="info">
+            HP: {{enemyAvatar.HP}}
+            <br>
+            TOTAL HP: {{enemyAvatar.HP}}
+            <br>
+            MP: {{enemyAvatar.MP}}
+            <br>
+            P. ATCK: {{enemyAvatar.P_ATCK}}
+            <br>
+            P. DEF: {{enemyAvatar.P_DEF}}
+            <br>
+            SPEED: {{enemyAvatar.SPEED}}
+            <br>
+            CRITICAL: {{enemyAvatar.CRITICAL}}
+            <br>
+            ACCURACY: {{enemyAvatar.ACCURACY}}
+            <br>
+            STAMINA: {{enemyAvatar.STAMINA}}
+          </div>
+        </div>
+      </div>
     </div>
     <div style="width: 900px; display: inline-flex;">
       <div v-if='!isFindingAvatar' id="scroll">
@@ -470,8 +607,8 @@
       update (phaser) {
       },
       onHeroUpdate (anim, frame) {
-        this.heroName.text = this.hero
-        this.enemyName.text = this.enemy
+        // this.heroName.text = this.hero
+        // this.enemyName.text = this.enemy
         if (this.isTrueBattle() && this.punchHeroFrame(frame)) {
           console.log('hero punch', frame.index)
           this.createHeroBattle()
@@ -479,8 +616,8 @@
         }
       },
       onEnemyUpdate (anim, frame) {
-        this.heroName.text = this.hero
-        this.enemyName.text = this.enemy
+        // this.heroName.text = this.hero
+        // this.enemyName.text = this.enemy
         if (this.isTrueBattle() && this.punchEnemyFrame(frame)) {
           console.log('enemy punch', frame.index)
           this.createEnemyBattle()
@@ -537,10 +674,10 @@
       },
       updateAvatarBar () {
         this.cleanBar()
-        this.heroText = this.game.add.text(32, 100, 'heroAvatar', { font: '20px Arial', fill: '#FFE848' })
-        this.heroText.text = `HP: ${this.heroAvatar.HP}\nMP: ${this.heroAvatar.MP}\nP. ATCK: ${this.heroAvatar.P_ATCK}\nP. DEF: ${this.heroAvatar.P_DEF}\nSPEED: ${this.heroAvatar.SPEED}\nCRITICAL: ${this.heroAvatar.CRITICAL}\nACCURACY: ${this.heroAvatar.ACCURACY}\nSTAMINA: ${this.heroAvatar.STAMINA}`
-        this.enemyText = this.game.add.text(this.width - 210, 100, 'enemyAvatar', { font: '20px Arial', fill: '#FFE848' })
-        this.enemyText.text = `HP: ${this.enemyAvatar.HP}\nMP: ${this.enemyAvatar.MP}\nP. ATCK: ${this.enemyAvatar.P_ATCK}\nP. DEF: ${this.enemyAvatar.P_DEF}\nSPEED: ${this.enemyAvatar.SPEED}\nCRITICAL: ${this.enemyAvatar.CRITICAL}\nACCURACY: ${this.enemyAvatar.ACCURACY}\nSTAMINA: ${this.enemyAvatar.STAMINA}`
+        // this.heroText = this.game.add.text(32, 100, 'heroAvatar', { font: '20px Arial', fill: '#FFE848' })
+        // this.heroText.text = `HP: ${this.heroAvatar.HP}\nMP: ${this.heroAvatar.MP}\nP. ATCK: ${this.heroAvatar.P_ATCK}\nP. DEF: ${this.heroAvatar.P_DEF}\nSPEED: ${this.heroAvatar.SPEED}\nCRITICAL: ${this.heroAvatar.CRITICAL}\nACCURACY: ${this.heroAvatar.ACCURACY}\nSTAMINA: ${this.heroAvatar.STAMINA}`
+        // this.enemyText = this.game.add.text(this.width - 210, 100, 'enemyAvatar', { font: '20px Arial', fill: '#FFE848' })
+        // this.enemyText.text = `HP: ${this.enemyAvatar.HP}\nMP: ${this.enemyAvatar.MP}\nP. ATCK: ${this.enemyAvatar.P_ATCK}\nP. DEF: ${this.enemyAvatar.P_DEF}\nSPEED: ${this.enemyAvatar.SPEED}\nCRITICAL: ${this.enemyAvatar.CRITICAL}\nACCURACY: ${this.enemyAvatar.ACCURACY}\nSTAMINA: ${this.enemyAvatar.STAMINA}`
       },
       dealingWithLocale (data) {
         let currentStreak = []

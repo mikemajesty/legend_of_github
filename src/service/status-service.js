@@ -70,6 +70,7 @@ exports.calculate = function (avatar) {
 
   return {
     HP: parseInt(hp),
+    TOTAL_HP: parseInt(hp),
     MP: parseInt(mp),
     P_ATCK: parseInt(pAtack),
     P_DEF: parseInt(pDef),
