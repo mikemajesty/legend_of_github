@@ -5,8 +5,8 @@
   "author": "Mike Lima <mikee_2008@hotmail.com>",
   "private": false,
   "engines": {
-    "node": ">= 4.0.0",
-    "npm": ">= 3.0.0"
+    "node": "6.11.1",
+    "npm": "5.2.0"
   },
   "scripts": {
     "dev": "concurrently --kill-others \"npm run server\" \"npm run start\"",
