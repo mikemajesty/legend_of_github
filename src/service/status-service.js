@@ -77,6 +77,6 @@ exports.calculate = function (avatar) {
     SPEED: parseInt(castSpeed) <= 0 ? 1 : parseInt(castSpeed),
     CRITICAL: parseInt(criticalChance) <= 0 ? 1 : parseInt(criticalChance),
     ACCURACY: parseInt(accuracy) <= 0 ? 1 : parseInt(accuracy),
-    STAMINA: parseInt(stamina)
+    STAMINA: parseInt(stamina) <= 0 ? 1 : parseInt(stamina)
   }
 }
