@@ -2,6 +2,7 @@ exports.calculate = function (avatar) {
   const repositories = avatar.repository
   const streak = avatar.currentStreak
   const information = avatar.information
+
   const hp = calculateHP()
   const mp = calculateMP()
   const pAtack = calculatePAtack()
