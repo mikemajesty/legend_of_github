@@ -2,26 +2,31 @@
   <div id='gameScreen' style='margin-bottom: 5%;text-align:center;'>
     <div class="top-bar">
       <md-layout flex='100'>
+
         <md-layout flex='100'>
           <div class="input-container" style="margin-top:20px">
             <label>HERO</label>
             <input type="text"  style="cursor: pointer" v-model='heroModel' v-bind:readonly='isFindingAvatar' tabindex="1"/>
           </div>
         </md-layout>
+
         <md-layout md-align='center'>
           <button type="button"  style="cursor: pointer" class="battle-button" v-on:click='find' v-bind:disabled='isFindingAvatar || !heroModel || !enemyModel' tabindex="3">
             {{ !isFindingAvatar ? 'Start Battle' : 'Battle in progress'}}
           </button>
+
           <button type="button"  style="cursor: pointer" class="button" v-on:click='findFriends' v-bind:disabled='isFindingAvatar || !heroModel' tabindex="4">
             Find friends
           </button>
         </md-layout>
+
         <md-layout flex='100'>
           <div class="input-container" style="margin-top:20px">
             <label>CHALLENGER</label>
             <input type="text" style="cursor: pointer" v-model='enemyModel' v-bind:readonly='isFindingAvatar' tabindex="2"/>
           </div>
         </md-layout>
+
       </md-layout>
     </div>
 
