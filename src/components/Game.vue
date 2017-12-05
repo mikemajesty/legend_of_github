@@ -43,6 +43,7 @@
       <div class="phaser-overlay">
         <div class="status hero" v-if="heroAvatar">
           <h1>{{heroModel}}</h1>
+          <h3 style="color: #D3BF8F">{{totalHPHero}}/{{heroAvatar.HP}}</h3>
           <div class="hp" v-bind:style="{width: heroAvatar.HP/heroAvatar.TOTAL_HP * 331 + 'px'}">
             <div class="hp-background">
               <div class="hp-begin"></div>
@@ -53,7 +54,7 @@
           <div class="info">
             HP: {{heroAvatar.HP}}
             <br>
-            TOTAL HP: {{heroAvatar.HP}}
+            TOTAL HP: {{totalHPHero}}
             <br>
             MP: {{heroAvatar.MP}}
             <br>
@@ -73,6 +74,7 @@
 
         <div class="status challenger" v-if="enemyAvatar">
           <h1>{{enemyModel}}</h1>
+          <h3 style="color: #D3BF8F">{{totalHPEnemy}}/{{enemyAvatar.HP}}</h3>
           <div class="hp" v-bind:style="{width: enemyAvatar.HP/enemyAvatar.TOTAL_HP * 331 + 'px'}">
             <div class="hp-background">
               <div class="hp-begin"></div>
@@ -83,7 +85,7 @@
           <div class="info">
             HP: {{enemyAvatar.HP}}
             <br>
-            TOTAL HP: {{enemyAvatar.HP}}
+            TOTAL HP: {{totalHPEnemy}}
             <br>
             MP: {{enemyAvatar.MP}}
             <br>
@@ -130,7 +132,15 @@
         type: Number
       },
       height: {
-        default: 656,
+        default: 700,
+        type: Number
+      },
+      totalHPEnemy: {
+        default: 0,
+        type: Number
+      },
+      totalHPHero: {
+        default: 0,
         type: Number
       }
     },
@@ -205,25 +215,25 @@
       getHeroCharByLanguage (language) {
         const frames = {
           java: () => {
-            this.createHeroAnimatioBase({scale: 1, width: this.width - 750, height: this.height - 400, frameImage: 'tanker-java'})
+            this.createHeroAnimatioBase({scale: 1, width: this.width - 750, height: this.height - 350, frameImage: 'tanker-java'})
             this.animateBaseHero(this.getJavaFrame())
           },
           'c#': () => {
-            this.createHeroAnimatioBase({scale: -1, width: this.width - 370, height: this.height - 180, frameImage: 'atacker-c#'})
+            this.createHeroAnimatioBase({scale: -1, width: this.width - 370, height: this.height - 130, frameImage: 'atacker-c#'})
             this.animateBaseHero(this.getCSharpFrame())
           },
           javascript: () => {
-            this.createHeroAnimatioBase({scale: -1, width: this.width - 460, height: this.height - 255, frameImage: 'archer-javascript'})
+            this.createHeroAnimatioBase({scale: -1, width: this.width - 460, height: this.height - 205, frameImage: 'archer-javascript'})
             this.animateBaseHero(this.getJavaScriptFrame())
           },
           ruby: () => {
-            this.createHeroAnimatioBase({scale: 1, width: this.width - 620, height: this.height - 255, frameImage: 'bau-ruby'})
+            this.createHeroAnimatioBase({scale: 1, width: this.width - 620, height: this.height - 205, frameImage: 'bau-ruby'})
             this.animateBaseHero(this.getRubyFrame())
           }
         }
 
         const other = () => {
-          this.createHeroAnimatioBase({scale: -1, width: this.width - 460, height: this.height - 178, frameImage: 'other'})
+          this.createHeroAnimatioBase({scale: -1, width: this.width - 460, height: this.height - 128, frameImage: 'other'})
           this.animateBaseHero(this.getOtherFrame())
         }
 
@@ -232,25 +242,25 @@
       getEnemyCharByLanguage (language) {
         const frames = {
           java: () => {
-            this.createEnemyAnimatioBase({scale: -1, width: this.width - 150, height: this.height - 400, frameImage: 'tanker-java'})
+            this.createEnemyAnimatioBase({scale: -1, width: this.width - 150, height: this.height - 350, frameImage: 'tanker-java'})
             this.animateBaseEnemy(this.getJavaFrame())
           },
           'c#': () => {
-            this.createEnemyAnimatioBase({scale: 1, width: this.width - 530, height: this.height - 180, frameImage: 'atacker-c#'})
+            this.createEnemyAnimatioBase({scale: 1, width: this.width - 530, height: this.height - 130, frameImage: 'atacker-c#'})
             this.animateBaseEnemy(this.getCSharpFrame())
           },
           javascript: () => {
-            this.createEnemyAnimatioBase({scale: 1, width: this.width - 460, height: this.height - 255, frameImage: 'archer-javascript'})
+            this.createEnemyAnimatioBase({scale: 1, width: this.width - 460, height: this.height - 205, frameImage: 'archer-javascript'})
             this.animateBaseEnemy(this.getJavaScriptFrame())
           },
           ruby: () => {
-            this.createEnemyAnimatioBase({scale: -1, width: this.width - 250, height: this.height - 255, frameImage: 'bau-ruby'})
+            this.createEnemyAnimatioBase({scale: -1, width: this.width - 250, height: this.height - 205, frameImage: 'bau-ruby'})
             this.animateBaseEnemy(this.getRubyFrame())
           }
         }
 
         const other = () => {
-          this.createEnemyAnimatioBase({scale: 1, width: this.width - 460, height: this.height - 178, frameImage: 'other'})
+          this.createEnemyAnimatioBase({scale: 1, width: this.width - 460, height: this.height - 128, frameImage: 'other'})
           this.animateBaseEnemy(this.getOtherFrame())
         }
 
@@ -532,7 +542,8 @@
 
           this.heroAvatar = Status.calculate(heroAvatar)
           this.enemyAvatar = Status.calculate(enemyAvatar)
-
+          this.totalHPEnemy = this.enemyAvatar.HP
+          this.totalHPHero = this.heroAvatar.HP
           this.getHeroCharByLanguage(getHeroRepository.language)
           this.getEnemyCharByLanguage(getEnemyRepository.language)
 
@@ -654,7 +665,7 @@
     margin: 10px auto 0;
     padding: 6px;
     width: 900px;
-    height: 668px;
+    height: 710px;
     background: url("/static/img/game-container-background.svg");
   }
 
