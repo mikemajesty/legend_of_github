@@ -1,5 +1,5 @@
 <template>
-  <div id='gameScreen' style='margin-bottom: 5%;text-align:center;'>
+  <div id='gameScreen' style='margin-bottom: 5%;text-align:center;' v-on:keyup.enter="pressEnter">
     <div class="top-bar">
       <md-layout flex='100'>
 
@@ -11,7 +11,7 @@
         </md-layout>
 
         <md-layout md-align='center'>
-          <button type="button"  style="cursor: pointer" class="battle-button" v-on:click='find' v-bind:disabled='isFindingAvatar || !heroModel || !enemyModel' tabindex="3">
+          <button type="button" style="cursor: pointer" class="battle-button" v-on:click='find' v-bind:disabled='isFindingAvatar || !heroModel || !enemyModel' tabindex="3">
             {{ !isFindingAvatar ? 'Start Battle' : 'Battle in progress'}}
           </button>
 
@@ -52,9 +52,7 @@
             </div>
           </div>
           <div class="info">
-            HP: {{heroAvatar.HP}}
-            <br>
-            TOTAL HP: {{totalHPHero}}
+            HP: {{totalHPHero}}
             <br>
             MP: {{heroAvatar.MP}}
             <br>
@@ -83,9 +81,7 @@
             </div>
           </div>
           <div class="info">
-            HP: {{enemyAvatar.HP}}
-            <br>
-            TOTAL HP: {{totalHPEnemy}}
+            HP: {{totalHPEnemy}}
             <br>
             MP: {{enemyAvatar.MP}}
             <br>
@@ -133,14 +129,6 @@
       },
       height: {
         default: 700,
-        type: Number
-      },
-      totalHPEnemy: {
-        default: 0,
-        type: Number
-      },
-      totalHPHero: {
-        default: 0,
         type: Number
       }
     },
@@ -465,6 +453,14 @@
           this.friends = []
         }
       },
+      pressEnter (event) {
+        if (this.heroModel && !this.enemyModel && event.keyCode === 13) {
+          this.findFriends()
+        }
+        if (this.heroModel && this.enemyModel && event.keyCode === 13) {
+          this.find()
+        }
+      },
       find () {
         this.showSpinner = true
         this.cleanBattle()
@@ -550,6 +546,7 @@
           this.isBattle = true
           this.updateAvatarBar()
           this.showSpinner = false
+          window.scrollBy(0, 185)
         })
       }
     },
@@ -558,6 +555,8 @@
     },
     data () {
       return {
+        totalHPEnemy: null,
+        totalHPHero: null,
         game: null,
         heroNameLabel: null,
         enemyNameLabel: null,
