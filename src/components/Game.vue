@@ -43,7 +43,7 @@
       <div class="phaser-overlay">
         <div class="status hero" v-if="heroAvatar">
           <h1>{{heroModel}}</h1>
-          <h3 style="color: #D3BF8F">{{totalHPHero}}/{{heroAvatar.HP}}</h3>
+          <h3 style="color: #D3BF8F">HP: {{heroAvatar.HP}}</h3>
           <div class="hp" v-bind:style="{width: heroAvatar.HP/heroAvatar.TOTAL_HP * 331 + 'px'}">
             <div class="hp-background">
               <div class="hp-begin"></div>
@@ -72,7 +72,7 @@
 
         <div class="status challenger" v-if="enemyAvatar">
           <h1>{{enemyModel}}</h1>
-          <h3 style="color: #D3BF8F">{{totalHPEnemy}}/{{enemyAvatar.HP}}</h3>
+          <h3 style="color: #D3BF8F">HP: {{enemyAvatar.HP}}</h3>
           <div class="hp" v-bind:style="{width: enemyAvatar.HP/enemyAvatar.TOTAL_HP * 331 + 'px'}">
             <div class="hp-background">
               <div class="hp-begin"></div>
