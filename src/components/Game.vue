@@ -445,7 +445,7 @@
       },
       showInformation (avatar) {
         if (avatar) {
-          this.alert.content = `Enemy "${avatar}" not found.`
+          this.alert.content = avatar
           this.openDialog('dialogUserNotFound')
           this.isFindingAvatar = false
           this.showSpinner = false
@@ -473,43 +473,43 @@
         const getHeroRepository = axios.get(`/api/repository/format?username=${this.heroModel}`).then(res => {
           return res.data
         }).catch(e => {
-          this.showInformation(this.heroModel)
-          this.heroModel = null
+          const error = `Hero '${this.heroModel}' not found.`
+          throw error
         })
 
         const getEnemyRepository = axios.get(`/api/repository/format?username=${this.enemyModel}`).then(res => {
           return res.data
         }).catch(e => {
-          this.showInformation(this.enemyModel)
-          this.enemyModel = null
+          const error = `Challenger '${this.enemyModel}' not found.`
+          throw error
         })
 
         const getHeroInformation = axios.get(`/api/user/full?username=${this.heroModel}`).then(res => {
           return res.data
         }).catch(e => {
-          this.showInformation(this.heroModel)
-          this.heroModel = null
+          const error = `Hero '${this.heroModel}' not found.`
+          throw error
         })
 
         const getEnemyInformation = axios.get(`/api/user/full?username=${this.enemyModel}`).then(res => {
           return res.data
         }).catch(e => {
-          this.showInformation(this.enemyModel)
-          this.enemyModelModel = null
+          const error = `Challenger '${this.enemyModel}' not found.`
+          throw error
         })
 
         const getHeroCurrentStreak = axios.get(`/api/streak/full?username=${this.heroModel}`).then(res => {
           return this.dealingWithLocale(res.data)
         }).catch(e => {
-          this.showInformation(this.heroModel)
-          this.heroModel = null
+          const error = `Hero '${this.heroModel}' not found.`
+          throw error
         })
 
         const getEnemyCurrentStreak = axios.get(`/api/streak/full?username=${this.enemyModel}`).then(res => {
           return this.dealingWithLocale(res.data)
         }).catch(e => {
-          this.showInformation(this.enemyModel)
-          this.enemyModel = null
+          const error = `Challenger '${this.enemyModel}' not found.`
+          throw error
         })
 
         Promise.all([
@@ -547,6 +547,9 @@
           this.updateAvatarBar()
           this.showSpinner = false
           window.scrollBy(0, 185)
+        }).catch(err => {
+          this.showInformation(err)
+          this.cleanBattle()
         })
       }
     },
