@@ -310,6 +310,9 @@
       },
       cleanBattle () {
         this.cleanBar()
+        if (this.victoryText) {
+          this.victoryText.destroy()
+        }
 
         if (this.enemyChar) {
           this.enemyChar.destroy()
