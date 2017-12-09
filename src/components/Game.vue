@@ -420,7 +420,7 @@
         this.victoryText.fontSize = 70
         this.victoryText.fontWeight = 'bold'
         this.victoryText.fill = '#FA8132'
-        this.victoryText.setShadow(200, 300, 'rgba(0, 0, 0, 0.5)', 100)
+        this.victoryText.setShadow(20, 20, 'rgba(0,0,0,0.5)', 60)
       },
       pauseBattle () {
         this.heroChar.animations.paused = true
