@@ -336,11 +336,11 @@
         this.game.load.spritesheet('other', 'static/game/char/wizard-161x106.png', 161, 106, 36)
         this.game.load.spritesheet('bau-ruby', 'static/game/pet/bau-231x172.png', 213, 172, 24)
 
-        this.game.load.image('background', 'static/game/img/background.v1.png')
+        this.game.load.image('background-dia', 'static/game/background/deserto-dia.png')
+        this.game.load.image('background-noite', 'static/game/background/deserto-noite.png')
       },
       create (phaser) {
-        this.game.add.tileSprite(0, 0, 1300, 700, 'background')
-
+        this.game.add.tileSprite(0, 0, 1300, 700, 'background-noite')
         this.showSpinner = false
       },
       update (phaser) {
@@ -388,6 +388,7 @@
           if (this.heroAvatar.HP <= 0) {
             this.heroAvatar.HP = 0
           }
+          this.addVictoryText(` ${this.capitalizeFirstLetter(this.heroModel)} Wins`)
           this.enemyChar.animations.frame = 1
           this.heroChar.animations.frame = 1
           this.pauseBattle()
@@ -397,6 +398,7 @@
           this.isFindingAvatar = false
           this.enemyChar.animations.frame = 1
           this.heroChar.animations.frame = 1
+          this.addVictoryText(` ${this.capitalizeFirstLetter(this.enemyModel)} Wins`)
           if (this.enemyAvatar.HP <= 0) {
             this.enemyAvatar.HP = 0
           }
@@ -404,6 +406,18 @@
         } else {
           this.isBattle = true
         }
+      },
+      addVictoryText (text) {
+        this.game.stage.setBackgroundColor(0xfbf6d5)
+
+        this.victoryText = this.game.add.text(this.game.world.centerX, 420, `  ${text}  `)
+        this.victoryText.anchor.set(0.5)
+        this.victoryText.align = 'center'
+        this.victoryText.font = 'Arial Black'
+        this.victoryText.fontSize = 70
+        this.victoryText.fontWeight = 'bold'
+        this.victoryText.fill = '#FA8132'
+        this.victoryText.setShadow(200, 300, 'rgba(0, 0, 0, 0.5)', 100)
       },
       pauseBattle () {
         this.heroChar.animations.paused = true
@@ -420,6 +434,9 @@
       },
       updateAvatarBar () {
         this.cleanBar()
+      },
+      capitalizeFirstLetter (text) {
+        return text.charAt(0).toUpperCase() + text.slice(1)
       },
       dealingWithLocale (data) {
         let currentStreak = []
@@ -580,6 +597,7 @@
         enemyApiResult: null,
         friends: null,
         showSpinner: false,
+        victoryText: null,
         alert: {
           content: 'inital',
           ok: 'Close'
