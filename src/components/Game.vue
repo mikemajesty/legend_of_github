@@ -388,17 +388,18 @@
           if (this.heroAvatar.HP <= 0) {
             this.heroAvatar.HP = 0
           }
-
+          this.enemyChar.animations.frame = 1
+          this.heroChar.animations.frame = 1
           this.pauseBattle()
         } else if (this.heroAvatar.HP <= 0 && this.isBattle) {
           this.isBattle = false
           this.heroAvatar.HP = 0
           this.isFindingAvatar = false
-
+          this.enemyChar.animations.frame = 1
+          this.heroChar.animations.frame = 1
           if (this.enemyAvatar.HP <= 0) {
             this.enemyAvatar.HP = 0
           }
-
           this.pauseBattle()
         } else {
           this.isBattle = true
